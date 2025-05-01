@@ -44,7 +44,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'microsoft'
-          java-version: 21
+          java-version: 17
 
       - name: setup maven
         uses: stCarolas/setup-maven@v5
