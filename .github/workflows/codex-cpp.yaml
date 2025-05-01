@@ -40,13 +40,12 @@ jobs:
           sparse-checkout-cone-mode: false
           path: tests
 
-      - name: check dir
-        run: ls tests
-
       - name: Update CMakeLists
         run: |
+            mv tests/cpp/* tests/
             rm CMakeLists.txt
             mv tests/CMakeLists.txt ./
+            rm -r tests/cpp
 
       - name: Install Dependencies
         run: |
