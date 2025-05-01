@@ -3,33 +3,33 @@ name: Test CodeX Java
 on:
   workflow_call:
     inputs:
-      team-name:
-        required: true
-        type: string
-      pr_head_sha:
-        required: true
-        type: string
-      machine_name:
-        required: true
-        type: string
+        team-name:
+            required: true
+            type: string
+        pr_head_sha:
+            required: true 
+            type: string
+        machine_name:
+            required: true
+            type: string
     secrets:
-      test-repo:
-        required: true
-      auth-token:
-        required: true
-      backend-url:
-        required: true
-      auth-key:
-        required: true
+        test-repo:
+            required: true
+        auth-token:
+            required: true
+        backend-url: 
+            required: true
+        auth-key:
+            required: true
 
 jobs:
   test-project:
     runs-on: ${{ inputs.machine_name }}
-    steps:
+    steps: 
       - name: Checkout PR Code
         uses: actions/checkout@v3
         with:
-          ref: ${{ inputs.pr_head_sha }}
+          ref: ${{ inputs.pr_head_sha }} 
 
       - name: checkout tests
         uses: actions/checkout@v3
@@ -42,9 +42,9 @@ jobs:
 
       - name: setup test files
         run: |
-          mkdir -p src/test/java/com/codejam/codex/authzen
+          mkdir -p src/test/java/com/codejam/codex/authzen 
           mv tests/* src/test/java/com/codejam/codex/authzen/
-
+      
       - name: setup java
         uses: actions/setup-java@v2
         with:
@@ -57,135 +57,694 @@ jobs:
           maven-version: 3.9.9
 
       - name: run test on bug 01
-        run: mvn -Dtest=JwtServiceTest#BUG002 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=JwtServiceTest#BUG002 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-002"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
       - name: run test on bug 02
-        run: mvn -Dtest=JwtServiceTest#BUG003 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=JwtServiceTest#BUG003 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-003"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
       - name: run test on bug 03
-        run: mvn -Dtest=JwtServiceTest#BUG004 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=JwtServiceTest#BUG004 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-004"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
       - name: run test on bug 04
-        run: mvn -Dtest=JwtServiceTest#BUG005 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=JwtServiceTest#BUG005 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-005"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
       - name: run test on bug 05
-        run: mvn -Dtest=JwtServiceTest#BUG006 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=JwtServiceTest#BUG006 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-006"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
       - name: run test on bug 06
-        run: mvn -Dtest=JwtServiceTest#BUG007 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=JwtServiceTest#BUG007 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-007"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
-      # Note: Bug 07 and Bug 08 originally tested the same method BUG009.
-      # Assuming Bug 07 should test BUG008 as per the curl data. If not, adjust accordingly.
       - name: run test on bug 07
-        run: mvn -Dtest=JwtServiceTest#BUG008 test # Adjusted based on original curl data
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=JwtServiceTest#BUG009 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-008"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
       - name: run test on bug 08
-        run: mvn -Dtest=JwtServiceTest#BUG009 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=JwtServiceTest#BUG009 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-009"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
       - name: run test on bug 09
-        run: mvn -Dtest=AuthServiceTest#BUG010 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=AuthServiceTest#BUG010 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-010"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
       - name: run test on bug 10
-        run: mvn -Dtest=AuthServiceTest#BUG011 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=AuthServiceTest#BUG011 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-011"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
       - name: run test on bug 11
-        run: mvn -Dtest=AuthServiceTest#BUG012 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=AuthServiceTest#BUG012 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-012"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
       - name: run test on bug 12
-        run: mvn -Dtest=UserServiceTest#BUG013 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=UserServiceTest#BUG013 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-013"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
       - name: run test on bug 13
-        run: mvn -Dtest=UserServiceTest#BUG014 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=UserServiceTest#BUG014 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-014"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
       - name: run test on bug 14
-        run: mvn -Dtest=UserServiceTest#BUG015 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=UserServiceTest#BUG015 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-015"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
       - name: run test on bug 15
-        run: mvn -Dtest=UserServiceTest#BUG016 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=UserServiceTest#BUG016 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-016"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
       - name: run test on bug 16
-        run: mvn -Dtest=UserServiceTest#BUG017 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=UserServiceTest#BUG017 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-017"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
       - name: run test on bug 17
-        run: mvn -Dtest=UserServiceTest#BUG018 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=UserServiceTest#BUG018 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-018"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
       - name: run test on bug 18
-        run: mvn -Dtest=AdminServiceTest#BUG019 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=AdminServiceTest#BUG019 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-019"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
       - name: run test on bug 19
-        run: mvn -Dtest=AdminServiceTest#BUG020 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=AdminServiceTest#BUG020 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-020"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
       - name: run test on bug 20
-        run: mvn -Dtest=AdminServiceTest#BUG021 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=AdminServiceTest#BUG021 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-021"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
       - name: run test on bug 21
-        run: mvn -Dtest=AdminServiceTest#BUG022 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=AdminServiceTest#BUG022 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-022"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
       - name: run test on bug 22
-        run: mvn -Dtest=AdminServiceTest#BUG023 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=AdminServiceTest#BUG023 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-023"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
       - name: run test on bug 23
-        run: mvn -Dtest=AdminServiceTest#BUG024 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=AdminServiceTest#BUG024 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-024"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
       - name: run test on bug 24
-        run: mvn -Dtest=OAuthServiceTest#BUG025 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=OAuthServiceTest#BUG025 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-025"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
       - name: run test on bug 25
-        run: mvn -Dtest=OAuthServiceTest#BUG026 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=OAuthServiceTest#BUG026 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-026"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
       - name: run test on bug 26
-        run: mvn -Dtest=OAuthServiceTest#BUG027 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=OAuthServiceTest#BUG027 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-027"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
       - name: run test on bug 27
-        run: mvn -Dtest=OAuthServiceTest#BUG028 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=OAuthServiceTest#BUG028 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-028"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
       - name: run test on bug 28
-        run: mvn -Dtest=OAuthServiceTest#BUG029 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=OAuthServiceTest#BUG029 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-029"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
       - name: run test on bug 29
-        run: mvn -Dtest=EmailUtilTest#BUG030 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=EmailUtilTest#BUG030 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-030"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
       - name: run test on bug 30
-        run: mvn -Dtest=EmailUtilTest#BUG031 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=EmailUtilTest#BUG031 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-031"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
       - name: run test on bug 31
-        run: mvn -Dtest=SecurityConfigurationTest#BUG032 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=SecurityConfigurationTest#BUG032 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-032"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
       - name: run test on bug 32
-        run: mvn -Dtest=SecurityConfigurationTest#BUG033 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=SecurityConfigurationTest#BUG033 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-033"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
 
       - name: run test on bug 33
-        run: mvn -Dtest=SecurityConfigurationTest#BUG034 test
+        shell: bash {0}
+        run: |
+          set +e
+          mvn -Dtest=SecurityConfigurationTest#BUG034 test > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then
+              echo "FAILED"
+          else
+            echo "PASSED"
+            curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d '{
+                "teamName": "${{ inputs.team-name }}",
+                "bugCode": "BUG-034"
+            }'
+          fi
+          exit ${result}
         continue-on-error: true
