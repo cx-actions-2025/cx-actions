@@ -70,7 +70,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-02:
     runs-on: ${{ inputs.machine_name }}
@@ -124,7 +123,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-03:
     runs-on: ${{ inputs.machine_name }}
@@ -178,7 +176,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-04:
     runs-on: ${{ inputs.machine_name }}
@@ -232,7 +229,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-05:
     runs-on: ${{ inputs.machine_name }}
@@ -286,7 +282,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-06:
     runs-on: ${{ inputs.machine_name }}
@@ -340,7 +335,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-07:
     runs-on: ${{ inputs.machine_name }}
@@ -395,7 +389,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-08:
     runs-on: ${{ inputs.machine_name }}
@@ -449,7 +442,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-09:
     runs-on: ${{ inputs.machine_name }}
@@ -503,7 +495,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-10:
     runs-on: ${{ inputs.machine_name }}
@@ -557,7 +548,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-11:
     runs-on: ${{ inputs.machine_name }}
@@ -611,7 +601,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-12:
     runs-on: ${{ inputs.machine_name }}
@@ -665,7 +654,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-13:
     runs-on: ${{ inputs.machine_name }}
@@ -719,7 +707,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-14:
     runs-on: ${{ inputs.machine_name }}
@@ -773,7 +760,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-15:
     runs-on: ${{ inputs.machine_name }}
@@ -827,7 +813,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-16:
     runs-on: ${{ inputs.machine_name }}
@@ -881,7 +866,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-17:
     runs-on: ${{ inputs.machine_name }}
@@ -935,7 +919,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-18:
     runs-on: ${{ inputs.machine_name }}
@@ -989,7 +972,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-19:
     runs-on: ${{ inputs.machine_name }}
@@ -1043,7 +1025,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-20:
     runs-on: ${{ inputs.machine_name }}
@@ -1097,7 +1078,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-21:
     runs-on: ${{ inputs.machine_name }}
@@ -1151,7 +1131,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-22:
     runs-on: ${{ inputs.machine_name }}
@@ -1205,7 +1184,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-23:
     runs-on: ${{ inputs.machine_name }}
@@ -1259,7 +1237,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-24:
     runs-on: ${{ inputs.machine_name }}
@@ -1313,7 +1290,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-25:
     runs-on: ${{ inputs.machine_name }}
@@ -1367,7 +1343,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-26:
     runs-on: ${{ inputs.machine_name }}
@@ -1421,7 +1396,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-27:
     runs-on: ${{ inputs.machine_name }}
@@ -1475,7 +1449,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-28:
     runs-on: ${{ inputs.machine_name }}
@@ -1529,7 +1502,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-29:
     runs-on: ${{ inputs.machine_name }}
@@ -1583,7 +1555,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-30:
     runs-on: ${{ inputs.machine_name }}
@@ -1637,7 +1608,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-31:
     runs-on: ${{ inputs.machine_name }}
@@ -1691,7 +1661,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-32:
     runs-on: ${{ inputs.machine_name }}
@@ -1745,7 +1714,6 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
 
   test-bug-33:
     runs-on: ${{ inputs.machine_name }}
@@ -1799,4 +1767,3 @@ jobs:
             }'
           fi
           exit ${result}
-        continue-on-error: true
