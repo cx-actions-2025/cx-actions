@@ -78,248 +78,249 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          ./quantum_tests --gtest_filter=ParallelizationTest.BUG101 > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-101"}'; fi
-          exit ${result}
+          ./quantum_tests --gtest_filter=ParallelizationTest.BUG101
+        #    > /dev/null 2>&1
+        #   result=$?
+        #   if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-101"}'; fi
+        #   exit ${result}
         continue-on-error: true
 
-      - name: run test on bug 02
-        shell: bash {0}
-        run: |
-          set +e
-          ./quantum_tests --gtest_filter=ParallelizationTest.BUG102 > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-102"}'; fi
-          exit ${result}
-        continue-on-error: true
-
-      - name: run test on bug 03
-        shell: bash {0}
-        run: |
-          set +e
-          ./quantum_tests --gtest_filter=ParallelizationTest.BUG103 > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-103"}'; fi
-          exit ${result}
-        continue-on-error: true
-
-      - name: run test on bug 04
-        shell: bash {0}
-        run: |
-          set +e
-          ./quantum_tests --gtest_filter=ParallelizationTest.BUG104 > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-104"}'; fi
-          exit ${result}
-        continue-on-error: true
-
-      - name: run test on bug 05
-        shell: bash {0}
-        run: |
-          set +e
-          ./quantum_tests --gtest_filter=ParallelizationTest.BUG105 > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-105"}'; fi
-          exit ${result}
-        continue-on-error: true
-
-      - name: run test on bug 06
-        shell: bash {0}
-        run: |
-          set +e
-          ./quantum_tests --gtest_filter=ParallelizationTest.BUG106 > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-106"}'; fi
-          exit ${result}
-        continue-on-error: true
-
-      - name: run test on bug 07
-        shell: bash {0}
-        run: |
-          set +e
-          ./quantum_tests --gtest_filter=ParallelizationTest.BUG107 > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-107"}'; fi
-          exit ${result}
-        continue-on-error: true
-
-      - name: run test on bug 08
-        shell: bash {0}
-        run: |
-          set +e
-          ./quantum_tests --gtest_filter=ParallelizationTest.BUG108 > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-108"}'; fi
-          exit ${result}
-        continue-on-error: true
-
-    #   - name: run test on bug 09
+    #   - name: run test on bug 02
     #     shell: bash {0}
     #     run: |
     #       set +e
-    #       ./quantum_tests --gtest_filter=ParallelizationTest.BUG109 > /dev/null 2>&1
+    #       ./quantum_tests --gtest_filter=ParallelizationTest.BUG102 > /dev/null 2>&1
     #       result=$?
-    #       if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-109"}'; fi
+    #       if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-102"}'; fi
     #       exit ${result}
     #     continue-on-error: true
 
-      - name: run test on bug 10
-        shell: bash {0}
-        run: |
-          set +e
-          ./quantum_tests --gtest_filter=ContainmentFieldTest.BUG110 > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-110"}'; fi
-          exit ${result}
-        continue-on-error: true
+    #   - name: run test on bug 03
+    #     shell: bash {0}
+    #     run: |
+    #       set +e
+    #       ./quantum_tests --gtest_filter=ParallelizationTest.BUG103 > /dev/null 2>&1
+    #       result=$?
+    #       if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-103"}'; fi
+    #       exit ${result}
+    #     continue-on-error: true
 
-      - name: run test on bug 11
-        shell: bash {0}
-        run: |
-          set +e
-          ./quantum_tests --gtest_filter=ContainmentFieldTest.BUG111 > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-111"}'; fi
-          exit ${result}
-        continue-on-error: true
+    #   - name: run test on bug 04
+    #     shell: bash {0}
+    #     run: |
+    #       set +e
+    #       ./quantum_tests --gtest_filter=ParallelizationTest.BUG104 > /dev/null 2>&1
+    #       result=$?
+    #       if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-104"}'; fi
+    #       exit ${result}
+    #     continue-on-error: true
 
-      - name: run test on bug 12
-        shell: bash {0}
-        run: |
-          set +e
-          ./quantum_tests --gtest_filter=ContainmentFieldTest.BUG112 > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-112"}'; fi
-          exit ${result}
-        continue-on-error: true
+    #   - name: run test on bug 05
+    #     shell: bash {0}
+    #     run: |
+    #       set +e
+    #       ./quantum_tests --gtest_filter=ParallelizationTest.BUG105 > /dev/null 2>&1
+    #       result=$?
+    #       if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-105"}'; fi
+    #       exit ${result}
+    #     continue-on-error: true
 
-      - name: run test on bug 13
-        shell: bash {0}
-        run: |
-          set +e
-          ./quantum_tests --gtest_filter=ContainmentFieldTest.BUG113 > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-113"}'; fi
-          exit ${result}
-        continue-on-error: true
+    #   - name: run test on bug 06
+    #     shell: bash {0}
+    #     run: |
+    #       set +e
+    #       ./quantum_tests --gtest_filter=ParallelizationTest.BUG106 > /dev/null 2>&1
+    #       result=$?
+    #       if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-106"}'; fi
+    #       exit ${result}
+    #     continue-on-error: true
 
-      - name: run test on bug 14
-        shell: bash {0}
-        run: |
-          set +e
-          ./quantum_tests --gtest_filter=ParticleTest.BUG114 > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-114"}'; fi
-          exit ${result}
-        continue-on-error: true
+    #   - name: run test on bug 07
+    #     shell: bash {0}
+    #     run: |
+    #       set +e
+    #       ./quantum_tests --gtest_filter=ParallelizationTest.BUG107 > /dev/null 2>&1
+    #       result=$?
+    #       if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-107"}'; fi
+    #       exit ${result}
+    #     continue-on-error: true
 
-      - name: run test on bug 15
-        shell: bash {0}
-        run: |
-          set +e
-          ./quantum_tests --gtest_filter=ParticleTest.BUG115 > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-115"}'; fi
-          exit ${result}
-        continue-on-error: true
+    #   - name: run test on bug 08
+    #     shell: bash {0}
+    #     run: |
+    #       set +e
+    #       ./quantum_tests --gtest_filter=ParallelizationTest.BUG108 > /dev/null 2>&1
+    #       result=$?
+    #       if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-108"}'; fi
+    #       exit ${result}
+    #     continue-on-error: true
 
-      - name: run test on bug 16
-        shell: bash {0}
-        run: |
-          set +e
-          ./quantum_tests --gtest_filter=ParticleTest.BUG116 > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-116"}'; fi
-          exit ${result}
-        continue-on-error: true
+    # #   - name: run test on bug 09
+    # #     shell: bash {0}
+    # #     run: |
+    # #       set +e
+    # #       ./quantum_tests --gtest_filter=ParallelizationTest.BUG109 > /dev/null 2>&1
+    # #       result=$?
+    # #       if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-109"}'; fi
+    # #       exit ${result}
+    # #     continue-on-error: true
 
-      - name: run test on bug 17
-        shell: bash {0}
-        run: |
-          set +e
-          ./quantum_tests --gtest_filter=ParticleTest.BUG117 > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-117"}'; fi
-          exit ${result}
-        continue-on-error: true
+    #   - name: run test on bug 10
+    #     shell: bash {0}
+    #     run: |
+    #       set +e
+    #       ./quantum_tests --gtest_filter=ContainmentFieldTest.BUG110 > /dev/null 2>&1
+    #       result=$?
+    #       if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-110"}'; fi
+    #       exit ${result}
+    #     continue-on-error: true
 
-      - name: run test on bug 18
-        shell: bash {0}
-        run: |
-          set +e
-          ./quantum_tests --gtest_filter=ParticleTest.BUG118 > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-118"}'; fi
-          exit ${result}
-        continue-on-error: true
+    #   - name: run test on bug 11
+    #     shell: bash {0}
+    #     run: |
+    #       set +e
+    #       ./quantum_tests --gtest_filter=ContainmentFieldTest.BUG111 > /dev/null 2>&1
+    #       result=$?
+    #       if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-111"}'; fi
+    #       exit ${result}
+    #     continue-on-error: true
 
-      - name: run test on bug 19
-        shell: bash {0}
-        run: |
-          set +e
-          ./quantum_tests --gtest_filter=ParticleTest.BUG119 > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-119"}'; fi
-          exit ${result}
-        continue-on-error: true
+    #   - name: run test on bug 12
+    #     shell: bash {0}
+    #     run: |
+    #       set +e
+    #       ./quantum_tests --gtest_filter=ContainmentFieldTest.BUG112 > /dev/null 2>&1
+    #       result=$?
+    #       if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-112"}'; fi
+    #       exit ${result}
+    #     continue-on-error: true
 
-      - name: run test on bug 20
-        shell: bash {0}
-        run: |
-          set +e
-          ./quantum_tests --gtest_filter=SimulationTest.BUG120 > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-120"}'; fi
-          exit ${result}
-        continue-on-error: true
+    #   - name: run test on bug 13
+    #     shell: bash {0}
+    #     run: |
+    #       set +e
+    #       ./quantum_tests --gtest_filter=ContainmentFieldTest.BUG113 > /dev/null 2>&1
+    #       result=$?
+    #       if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-113"}'; fi
+    #       exit ${result}
+    #     continue-on-error: true
 
-      - name: run test on bug 21
-        shell: bash {0}
-        run: |
-          set +e
-          ./quantum_tests --gtest_filter=SimulationTest.BUG121 > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-121"}'; fi
-          exit ${result}
-        continue-on-error: true
+    #   - name: run test on bug 14
+    #     shell: bash {0}
+    #     run: |
+    #       set +e
+    #       ./quantum_tests --gtest_filter=ParticleTest.BUG114 > /dev/null 2>&1
+    #       result=$?
+    #       if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-114"}'; fi
+    #       exit ${result}
+    #     continue-on-error: true
 
-      - name: run test on bug 22
-        shell: bash {0}
-        run: |
-          set +e
-          ./quantum_tests --gtest_filter=SimulationTest.BUG122 > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-122"}'; fi
-          exit ${result}
-        continue-on-error: true
+    #   - name: run test on bug 15
+    #     shell: bash {0}
+    #     run: |
+    #       set +e
+    #       ./quantum_tests --gtest_filter=ParticleTest.BUG115 > /dev/null 2>&1
+    #       result=$?
+    #       if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-115"}'; fi
+    #       exit ${result}
+    #     continue-on-error: true
 
-      - name: run test on bug 23
-        shell: bash {0}
-        run: |
-          set +e
-          ./quantum_tests --gtest_filter=SimulationTest.BUG123 > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-123"}'; fi
-          exit ${result}
-        continue-on-error: true
+    #   - name: run test on bug 16
+    #     shell: bash {0}
+    #     run: |
+    #       set +e
+    #       ./quantum_tests --gtest_filter=ParticleTest.BUG116 > /dev/null 2>&1
+    #       result=$?
+    #       if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-116"}'; fi
+    #       exit ${result}
+    #     continue-on-error: true
 
-      - name: run test on bug 24
-        shell: bash {0}
-        run: |
-          set +e
-          ./quantum_tests --gtest_filter=SimulationTest.BUG124 > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-124"}'; fi
-          exit ${result}
-        continue-on-error: true
+    #   - name: run test on bug 17
+    #     shell: bash {0}
+    #     run: |
+    #       set +e
+    #       ./quantum_tests --gtest_filter=ParticleTest.BUG117 > /dev/null 2>&1
+    #       result=$?
+    #       if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-117"}'; fi
+    #       exit ${result}
+    #     continue-on-error: true
 
-      - name: run test on bug 25
-        shell: bash {0}
-        run: |
-          set +e
-          ./quantum_tests --gtest_filter=SimulationTest.BUG125 > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-125"}'; fi
-          exit ${result}
-        continue-on-error: true
+    #   - name: run test on bug 18
+    #     shell: bash {0}
+    #     run: |
+    #       set +e
+    #       ./quantum_tests --gtest_filter=ParticleTest.BUG118 > /dev/null 2>&1
+    #       result=$?
+    #       if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-118"}'; fi
+    #       exit ${result}
+    #     continue-on-error: true
+
+    #   - name: run test on bug 19
+    #     shell: bash {0}
+    #     run: |
+    #       set +e
+    #       ./quantum_tests --gtest_filter=ParticleTest.BUG119 > /dev/null 2>&1
+    #       result=$?
+    #       if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-119"}'; fi
+    #       exit ${result}
+    #     continue-on-error: true
+
+    #   - name: run test on bug 20
+    #     shell: bash {0}
+    #     run: |
+    #       set +e
+    #       ./quantum_tests --gtest_filter=SimulationTest.BUG120 > /dev/null 2>&1
+    #       result=$?
+    #       if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-120"}'; fi
+    #       exit ${result}
+    #     continue-on-error: true
+
+    #   - name: run test on bug 21
+    #     shell: bash {0}
+    #     run: |
+    #       set +e
+    #       ./quantum_tests --gtest_filter=SimulationTest.BUG121 > /dev/null 2>&1
+    #       result=$?
+    #       if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-121"}'; fi
+    #       exit ${result}
+    #     continue-on-error: true
+
+    #   - name: run test on bug 22
+    #     shell: bash {0}
+    #     run: |
+    #       set +e
+    #       ./quantum_tests --gtest_filter=SimulationTest.BUG122 > /dev/null 2>&1
+    #       result=$?
+    #       if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-122"}'; fi
+    #       exit ${result}
+    #     continue-on-error: true
+
+    #   - name: run test on bug 23
+    #     shell: bash {0}
+    #     run: |
+    #       set +e
+    #       ./quantum_tests --gtest_filter=SimulationTest.BUG123 > /dev/null 2>&1
+    #       result=$?
+    #       if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-123"}'; fi
+    #       exit ${result}
+    #     continue-on-error: true
+
+    #   - name: run test on bug 24
+    #     shell: bash {0}
+    #     run: |
+    #       set +e
+    #       ./quantum_tests --gtest_filter=SimulationTest.BUG124 > /dev/null 2>&1
+    #       result=$?
+    #       if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-124"}'; fi
+    #       exit ${result}
+    #     continue-on-error: true
+
+    #   - name: run test on bug 25
+    #     shell: bash {0}
+    #     run: |
+    #       set +e
+    #       ./quantum_tests --gtest_filter=SimulationTest.BUG125 > /dev/null 2>&1
+    #       result=$?
+    #       if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-125"}'; fi
+    #       exit ${result}
+    #     continue-on-error: true
