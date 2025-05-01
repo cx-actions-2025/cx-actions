@@ -3,33 +3,33 @@ name: Test CodeX Java
 on:
   workflow_call:
     inputs:
-        team-name:
-            required: true
-            type: string
-        pr_head_sha:
-            required: true 
-            type: string
-        machine_name:
-            required: true
-            type: string
+      team-name:
+        required: true
+        type: string
+      pr_head_sha:
+        required: true
+        type: string
+      machine_name:
+        required: true
+        type: string
     secrets:
-        test-repo:
-            required: true
-        auth-token:
-            required: true
-        backend-url: 
-            required: true
-        auth-key:
-            required: true
+      test-repo:
+        required: true
+      auth-token:
+        required: true
+      backend-url:
+        required: true
+      auth-key:
+        required: true
 
 jobs:
-  test-project:
+  test-bug-01:
     runs-on: ${{ inputs.machine_name }}
-    steps: 
+    steps:
       - name: Checkout PR Code
         uses: actions/checkout@v3
         with:
-          ref: ${{ inputs.pr_head_sha }} 
+          ref: ${{ inputs.pr_head_sha }}
 
       - name: checkout tests
         uses: actions/checkout@v3
@@ -42,9 +42,9 @@ jobs:
 
       - name: setup test files
         run: |
-          mkdir -p src/test/java/com/codejam/codex/authzen 
+          mkdir -p src/test/java/com/codejam/codex/authzen
           mv tests/* src/test/java/com/codejam/codex/authzen/
-      
+
       - name: setup java
         uses: actions/setup-java@v2
         with:
@@ -77,6 +77,39 @@ jobs:
           exit ${result}
         continue-on-error: true
 
+  test-bug-02:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
+
       - name: run test on bug 02
         shell: bash {0}
         run: |
@@ -97,6 +130,39 @@ jobs:
           fi
           exit ${result}
         continue-on-error: true
+
+  test-bug-03:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
 
       - name: run test on bug 03
         shell: bash {0}
@@ -119,6 +185,39 @@ jobs:
           exit ${result}
         continue-on-error: true
 
+  test-bug-04:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
+
       - name: run test on bug 04
         shell: bash {0}
         run: |
@@ -139,6 +238,39 @@ jobs:
           fi
           exit ${result}
         continue-on-error: true
+
+  test-bug-05:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
 
       - name: run test on bug 05
         shell: bash {0}
@@ -161,6 +293,39 @@ jobs:
           exit ${result}
         continue-on-error: true
 
+  test-bug-06:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
+
       - name: run test on bug 06
         shell: bash {0}
         run: |
@@ -182,10 +347,44 @@ jobs:
           exit ${result}
         continue-on-error: true
 
+  test-bug-07:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
+
       - name: run test on bug 07
         shell: bash {0}
         run: |
           set +e
+          # Note: Original had mvn test BUG009 but curl BUG-008
           mvn -Dtest=JwtServiceTest#BUG009 test > /dev/null 2>&1
           result=$?
           if [ ${result} -ne 0 ]; then
@@ -202,6 +401,39 @@ jobs:
           fi
           exit ${result}
         continue-on-error: true
+
+  test-bug-08:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
 
       - name: run test on bug 08
         shell: bash {0}
@@ -224,6 +456,39 @@ jobs:
           exit ${result}
         continue-on-error: true
 
+  test-bug-09:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
+
       - name: run test on bug 09
         shell: bash {0}
         run: |
@@ -244,6 +509,39 @@ jobs:
           fi
           exit ${result}
         continue-on-error: true
+
+  test-bug-10:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
 
       - name: run test on bug 10
         shell: bash {0}
@@ -266,6 +564,39 @@ jobs:
           exit ${result}
         continue-on-error: true
 
+  test-bug-11:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
+
       - name: run test on bug 11
         shell: bash {0}
         run: |
@@ -286,6 +617,39 @@ jobs:
           fi
           exit ${result}
         continue-on-error: true
+
+  test-bug-12:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
 
       - name: run test on bug 12
         shell: bash {0}
@@ -308,6 +672,39 @@ jobs:
           exit ${result}
         continue-on-error: true
 
+  test-bug-13:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
+
       - name: run test on bug 13
         shell: bash {0}
         run: |
@@ -328,6 +725,39 @@ jobs:
           fi
           exit ${result}
         continue-on-error: true
+
+  test-bug-14:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
 
       - name: run test on bug 14
         shell: bash {0}
@@ -350,6 +780,39 @@ jobs:
           exit ${result}
         continue-on-error: true
 
+  test-bug-15:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
+
       - name: run test on bug 15
         shell: bash {0}
         run: |
@@ -370,6 +833,39 @@ jobs:
           fi
           exit ${result}
         continue-on-error: true
+
+  test-bug-16:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
 
       - name: run test on bug 16
         shell: bash {0}
@@ -392,6 +888,39 @@ jobs:
           exit ${result}
         continue-on-error: true
 
+  test-bug-17:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
+
       - name: run test on bug 17
         shell: bash {0}
         run: |
@@ -412,6 +941,39 @@ jobs:
           fi
           exit ${result}
         continue-on-error: true
+
+  test-bug-18:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
 
       - name: run test on bug 18
         shell: bash {0}
@@ -434,6 +996,39 @@ jobs:
           exit ${result}
         continue-on-error: true
 
+  test-bug-19:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
+
       - name: run test on bug 19
         shell: bash {0}
         run: |
@@ -454,6 +1049,39 @@ jobs:
           fi
           exit ${result}
         continue-on-error: true
+
+  test-bug-20:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
 
       - name: run test on bug 20
         shell: bash {0}
@@ -476,6 +1104,39 @@ jobs:
           exit ${result}
         continue-on-error: true
 
+  test-bug-21:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
+
       - name: run test on bug 21
         shell: bash {0}
         run: |
@@ -496,6 +1157,39 @@ jobs:
           fi
           exit ${result}
         continue-on-error: true
+
+  test-bug-22:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
 
       - name: run test on bug 22
         shell: bash {0}
@@ -518,6 +1212,39 @@ jobs:
           exit ${result}
         continue-on-error: true
 
+  test-bug-23:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
+
       - name: run test on bug 23
         shell: bash {0}
         run: |
@@ -538,6 +1265,39 @@ jobs:
           fi
           exit ${result}
         continue-on-error: true
+
+  test-bug-24:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
 
       - name: run test on bug 24
         shell: bash {0}
@@ -560,6 +1320,39 @@ jobs:
           exit ${result}
         continue-on-error: true
 
+  test-bug-25:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
+
       - name: run test on bug 25
         shell: bash {0}
         run: |
@@ -580,6 +1373,39 @@ jobs:
           fi
           exit ${result}
         continue-on-error: true
+
+  test-bug-26:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
 
       - name: run test on bug 26
         shell: bash {0}
@@ -602,6 +1428,39 @@ jobs:
           exit ${result}
         continue-on-error: true
 
+  test-bug-27:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
+
       - name: run test on bug 27
         shell: bash {0}
         run: |
@@ -622,6 +1481,39 @@ jobs:
           fi
           exit ${result}
         continue-on-error: true
+
+  test-bug-28:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
 
       - name: run test on bug 28
         shell: bash {0}
@@ -644,6 +1536,39 @@ jobs:
           exit ${result}
         continue-on-error: true
 
+  test-bug-29:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
+
       - name: run test on bug 29
         shell: bash {0}
         run: |
@@ -664,6 +1589,39 @@ jobs:
           fi
           exit ${result}
         continue-on-error: true
+
+  test-bug-30:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
 
       - name: run test on bug 30
         shell: bash {0}
@@ -686,6 +1644,39 @@ jobs:
           exit ${result}
         continue-on-error: true
 
+  test-bug-31:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
+
       - name: run test on bug 31
         shell: bash {0}
         run: |
@@ -707,6 +1698,39 @@ jobs:
           exit ${result}
         continue-on-error: true
 
+  test-bug-32:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
+
       - name: run test on bug 32
         shell: bash {0}
         run: |
@@ -727,6 +1751,39 @@ jobs:
           fi
           exit ${result}
         continue-on-error: true
+
+  test-bug-33:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: java
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: setup test files
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: setup maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.9.9
 
       - name: run test on bug 33
         shell: bash {0}
