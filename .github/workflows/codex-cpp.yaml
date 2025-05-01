@@ -23,7 +23,7 @@ on:
             required: true
 
 jobs:
-  test-bug-101:
+  test-bug-01:
     name: Run test for BUG-101
     runs-on: ${{ inputs.machine_name }}
     steps:
@@ -76,9 +76,8 @@ jobs:
           result=$?
           if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-101"}'; fi
           exit ${result}
-        continue-on-error: true
 
-  test-bug-102:
+  test-bug-02:
     name: Run test for BUG-102
     runs-on: ${{ inputs.machine_name }}
     steps:
@@ -131,9 +130,8 @@ jobs:
           result=$?
           if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-102"}'; fi
           exit ${result}
-        continue-on-error: true
 
-  test-bug-103:
+  test-bug-03:
     name: Run test for BUG-103
     runs-on: ${{ inputs.machine_name }}
     steps:
@@ -186,9 +184,8 @@ jobs:
           result=$?
           if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-103"}'; fi
           exit ${result}
-        continue-on-error: true
 
-  test-bug-104:
+  test-bug-04:
     name: Run test for BUG-104
     runs-on: ${{ inputs.machine_name }}
     steps:
@@ -241,9 +238,8 @@ jobs:
           result=$?
           if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-104"}'; fi
           exit ${result}
-        continue-on-error: true
 
-  test-bug-105:
+  test-bug-05:
     name: Run test for BUG-105
     runs-on: ${{ inputs.machine_name }}
     steps:
@@ -296,9 +292,8 @@ jobs:
           result=$?
           if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-105"}'; fi
           exit ${result}
-        continue-on-error: true
 
-  test-bug-106:
+  test-bug-06:
     name: Run test for BUG-106
     runs-on: ${{ inputs.machine_name }}
     steps:
@@ -351,9 +346,8 @@ jobs:
           result=$?
           if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-106"}'; fi
           exit ${result}
-        continue-on-error: true
 
-  test-bug-107:
+  test-bug-07:
     name: Run test for BUG-107
     runs-on: ${{ inputs.machine_name }}
     steps:
@@ -406,9 +400,8 @@ jobs:
           result=$?
           if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-107"}'; fi
           exit ${result}
-        continue-on-error: true
 
-  test-bug-108:
+  test-bug-08:
     name: Run test for BUG-108
     runs-on: ${{ inputs.machine_name }}
     steps:
@@ -461,9 +454,8 @@ jobs:
           result=$?
           if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-108"}'; fi
           exit ${result}
-        continue-on-error: true
 
-  test-bug-110:
+  test-bug-09:
     name: Run test for BUG-110
     runs-on: ${{ inputs.machine_name }}
     steps:
@@ -516,9 +508,8 @@ jobs:
           result=$?
           if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-110"}'; fi
           exit ${result}
-        continue-on-error: true
 
-  test-bug-111:
+  test-bug-10:
     name: Run test for BUG-111
     runs-on: ${{ inputs.machine_name }}
     steps:
@@ -571,9 +562,8 @@ jobs:
           result=$?
           if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-111"}'; fi
           exit ${result}
-        continue-on-error: true
 
-  test-bug-112:
+  test-bug-11:
     name: Run test for BUG-112
     runs-on: ${{ inputs.machine_name }}
     steps:
@@ -626,9 +616,8 @@ jobs:
           result=$?
           if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-112"}'; fi
           exit ${result}
-        continue-on-error: true
 
-  test-bug-113:
+  test-bug-12:
     name: Run test for BUG-113
     runs-on: ${{ inputs.machine_name }}
     steps:
@@ -681,9 +670,8 @@ jobs:
           result=$?
           if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-113"}'; fi
           exit ${result}
-        continue-on-error: true
 
-  test-bug-114:
+  test-bug-13:
     name: Run test for BUG-114
     runs-on: ${{ inputs.machine_name }}
     steps:
@@ -736,9 +724,8 @@ jobs:
           result=$?
           if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-114"}'; fi
           exit ${result}
-        continue-on-error: true
 
-  test-bug-115:
+  test-bug-14:
     name: Run test for BUG-115
     runs-on: ${{ inputs.machine_name }}
     steps:
@@ -791,9 +778,8 @@ jobs:
           result=$?
           if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-115"}'; fi
           exit ${result}
-        continue-on-error: true
 
-  test-bug-116:
+  test-bug-15:
     name: Run test for BUG-116
     runs-on: ${{ inputs.machine_name }}
     steps:
@@ -846,9 +832,8 @@ jobs:
           result=$?
           if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-116"}'; fi
           exit ${result}
-        continue-on-error: true
 
-  test-bug-117:
+  test-bug-16:
     name: Run test for BUG-117
     runs-on: ${{ inputs.machine_name }}
     steps:
@@ -901,9 +886,8 @@ jobs:
           result=$?
           if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-117"}'; fi
           exit ${result}
-        continue-on-error: true
 
-  test-bug-118:
+  test-bug-17:
     name: Run test for BUG-118
     runs-on: ${{ inputs.machine_name }}
     steps:
@@ -956,9 +940,8 @@ jobs:
           result=$?
           if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-118"}'; fi
           exit ${result}
-        continue-on-error: true
 
-  test-bug-119:
+  test-bug-18:
     name: Run test for BUG-119
     runs-on: ${{ inputs.machine_name }}
     steps:
@@ -1011,9 +994,8 @@ jobs:
           result=$?
           if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-119"}'; fi
           exit ${result}
-        continue-on-error: true
 
-  test-bug-120:
+  test-bug-19:
     name: Run test for BUG-120
     runs-on: ${{ inputs.machine_name }}
     steps:
@@ -1066,9 +1048,8 @@ jobs:
           result=$?
           if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-120"}'; fi
           exit ${result}
-        continue-on-error: true
 
-  test-bug-121:
+  test-bug-20:
     name: Run test for BUG-121
     runs-on: ${{ inputs.machine_name }}
     steps:
@@ -1121,9 +1102,8 @@ jobs:
           result=$?
           if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-121"}'; fi
           exit ${result}
-        continue-on-error: true
 
-  test-bug-122:
+  test-bug-21:
     name: Run test for BUG-122
     runs-on: ${{ inputs.machine_name }}
     steps:
@@ -1176,9 +1156,8 @@ jobs:
           result=$?
           if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-122"}'; fi
           exit ${result}
-        continue-on-error: true
 
-  test-bug-123:
+  test-bug-22:
     name: Run test for BUG-123
     runs-on: ${{ inputs.machine_name }}
     steps:
@@ -1231,9 +1210,8 @@ jobs:
           result=$?
           if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-123"}'; fi
           exit ${result}
-        continue-on-error: true
 
-  test-bug-124:
+  test-bug-23:
     name: Run test for BUG-124
     runs-on: ${{ inputs.machine_name }}
     steps:
@@ -1286,9 +1264,8 @@ jobs:
           result=$?
           if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-124"}'; fi
           exit ${result}
-        continue-on-error: true
 
-  test-bug-125:
+  test-bug-24:
     name: Run test for BUG-125
     runs-on: ${{ inputs.machine_name }}
     steps:
@@ -1341,4 +1318,3 @@ jobs:
           result=$?
           if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-125"}'; fi
           exit ${result}
-        continue-on-error: true
