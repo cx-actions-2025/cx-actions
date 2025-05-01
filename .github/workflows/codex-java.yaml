@@ -38,12 +38,7 @@ jobs:
           token: ${{ secrets.auth-token }}
           sparse-checkout: java
           sparse-checkout-cone-mode: false
-          path: tests
-
-      - name: setup test files
-        run: |
-          mkdir -p src/test/java/com/codejam/codex/authzen
-          mv tests/* src/test/java/com/codejam/codex/authzen/
+          path: src/test/java/com/codejam/codex/authzen/
 
       - name: setup java
         uses: actions/setup-java@v2
