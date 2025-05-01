@@ -78,11 +78,10 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParallelizationTest.BUG101
-        #    > /dev/null 2>&1
-        #   result=$?
-        #   if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-101"}'; fi
-        #   exit ${result}
+          build/quantum_tests --gtest_filter=ParallelizationTest.BUG101 > /dev/null 2>&1
+          result=$?
+          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-101"}'; fi
+          exit ${result}
         continue-on-error: true
 
     #   - name: run test on bug 02
