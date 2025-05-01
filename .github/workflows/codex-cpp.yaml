@@ -24,7 +24,7 @@ on:
 
 jobs:
   test-bug-01:
-    name: Run test for BUG-101
+    name: test-bug-01 # Changed
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -78,7 +78,7 @@ jobs:
           exit ${result}
 
   test-bug-02:
-    name: Run test for BUG-102
+    name: test-bug-02 # Changed
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -132,7 +132,7 @@ jobs:
           exit ${result}
 
   test-bug-03:
-    name: Run test for BUG-103
+    name: test-bug-03 # Changed
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -186,7 +186,7 @@ jobs:
           exit ${result}
 
   test-bug-04:
-    name: Run test for BUG-104
+    name: test-bug-04 # Changed
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -240,7 +240,7 @@ jobs:
           exit ${result}
 
   test-bug-05:
-    name: Run test for BUG-105
+    name: test-bug-05 # Changed
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -294,7 +294,7 @@ jobs:
           exit ${result}
 
   test-bug-06:
-    name: Run test for BUG-106
+    name: test-bug-06 # Changed
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -348,7 +348,7 @@ jobs:
           exit ${result}
 
   test-bug-07:
-    name: Run test for BUG-107
+    name: test-bug-07 # Changed
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -402,7 +402,7 @@ jobs:
           exit ${result}
 
   test-bug-08:
-    name: Run test for BUG-108
+    name: test-bug-08 # Changed
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -456,7 +456,7 @@ jobs:
           exit ${result}
 
   test-bug-09:
-    name: Run test for BUG-110
+    name: test-bug-09 # Changed
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -510,7 +510,7 @@ jobs:
           exit ${result}
 
   test-bug-10:
-    name: Run test for BUG-111
+    name: test-bug-10 # Changed
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -564,7 +564,7 @@ jobs:
           exit ${result}
 
   test-bug-11:
-    name: Run test for BUG-112
+    name: test-bug-11 # Changed
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -618,7 +618,7 @@ jobs:
           exit ${result}
 
   test-bug-12:
-    name: Run test for BUG-113
+    name: test-bug-12 # Changed
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -672,7 +672,7 @@ jobs:
           exit ${result}
 
   test-bug-13:
-    name: Run test for BUG-114
+    name: test-bug-13 # Changed
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -726,7 +726,7 @@ jobs:
           exit ${result}
 
   test-bug-14:
-    name: Run test for BUG-115
+    name: test-bug-14 # Changed
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -780,7 +780,7 @@ jobs:
           exit ${result}
 
   test-bug-15:
-    name: Run test for BUG-116
+    name: test-bug-15 # Changed
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -834,7 +834,7 @@ jobs:
           exit ${result}
 
   test-bug-16:
-    name: Run test for BUG-117
+    name: test-bug-16 # Changed
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -888,7 +888,7 @@ jobs:
           exit ${result}
 
   test-bug-17:
-    name: Run test for BUG-118
+    name: test-bug-17 # Changed
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -942,7 +942,7 @@ jobs:
           exit ${result}
 
   test-bug-18:
-    name: Run test for BUG-119
+    name: test-bug-18 # Changed
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -996,7 +996,7 @@ jobs:
           exit ${result}
 
   test-bug-19:
-    name: Run test for BUG-120
+    name: test-bug-19 # Changed
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -1050,7 +1050,7 @@ jobs:
           exit ${result}
 
   test-bug-20:
-    name: Run test for BUG-121
+    name: test-bug-20 # Changed
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -1104,7 +1104,7 @@ jobs:
           exit ${result}
 
   test-bug-21:
-    name: Run test for BUG-122
+    name: test-bug-21 # Changed
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -1158,7 +1158,7 @@ jobs:
           exit ${result}
 
   test-bug-22:
-    name: Run test for BUG-123
+    name: test-bug-22 # Changed
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -1212,7 +1212,7 @@ jobs:
           exit ${result}
 
   test-bug-23:
-    name: Run test for BUG-124
+    name: test-bug-23 # Changed
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -1266,7 +1266,7 @@ jobs:
           exit ${result}
 
   test-bug-24:
-    name: Run test for BUG-125
+    name: test-bug-24 # Changed
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -1318,3 +1318,4 @@ jobs:
           result=$?
           if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-125"}'; fi
           exit ${result}
+          
