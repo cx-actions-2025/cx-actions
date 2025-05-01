@@ -40,6 +40,9 @@ jobs:
           sparse-checkout-cone-mode: false
           path: tests
 
+      - name: check dir
+        run: ls tests
+
       - name: Update CMakeLists
         run: |
             rm CMakeLists.txt
