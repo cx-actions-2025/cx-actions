@@ -7,7 +7,7 @@ on:
             required: true
             type: string
         pr_head_sha:
-            required: true 
+            required: true
             type: string
         machine_name:
             required: true
@@ -17,20 +17,20 @@ on:
             required: true
         auth-token:
             required: true
-        backend-url: 
+        backend-url:
             required: true
         auth-key:
             required: true
 
 jobs:
-  test-project:
+  test-bug-101:
+    name: Run test for BUG-101
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
         uses: actions/checkout@v3
         with:
-          ref: ${{ inputs.pr_head_sha }} 
-
+          ref: ${{ inputs.pr_head_sha }}
       - name: checkout tests
         uses: actions/checkout@v3
         with:
@@ -39,25 +39,21 @@ jobs:
           sparse-checkout: cpp
           sparse-checkout-cone-mode: false
           path: tests
-
       - name: Update CMakeLists
         run: |
             mv tests/cpp/* tests/
-            rm CMakeLists.txt
+            rm -f CMakeLists.txt
             mv tests/CMakeLists.txt ./
-            rm -r tests/cpp
-
+            rm -rf tests/cpp
       - name: Install Dependencies
         run: |
             sudo apt update
             sudo apt install -y build-essential cmake git
-  
       - name: Install GCC (C++17 support)
         run: |
             sudo apt install -y g++-10
             sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
             g++ --version
-  
       - name: Verify CMake Version
         run: |
             cmake --version
@@ -67,14 +63,12 @@ jobs:
                 echo "CMake version is lower than 3.10"
                 exit 1
             fi
-
       - name: Build Project
         run: |
             mkdir -p build && cd build
             cmake ..
             make
-
-      - name: run test on bug 01
+      - name: run test on bug 101
         shell: bash {0}
         run: |
           set +e
@@ -84,7 +78,52 @@ jobs:
           exit ${result}
         continue-on-error: true
 
-      - name: run test on bug 02
+  test-bug-102:
+    name: Run test for BUG-102
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: cpp
+          sparse-checkout-cone-mode: false
+          path: tests
+      - name: Update CMakeLists
+        run: |
+            mv tests/cpp/* tests/
+            rm -f CMakeLists.txt
+            mv tests/CMakeLists.txt ./
+            rm -rf tests/cpp
+      - name: Install Dependencies
+        run: |
+            sudo apt update
+            sudo apt install -y build-essential cmake git
+      - name: Install GCC (C++17 support)
+        run: |
+            sudo apt install -y g++-10
+            sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
+            g++ --version
+      - name: Verify CMake Version
+        run: |
+            cmake --version
+            cmake_min_version=$(cmake --version | head -n1 | awk '{print $3}')
+            required_version="3.10"
+            if [ "$(printf '%s\n' "$required_version" "$cmake_min_version" | sort -V | head -n1)" != "$required_version" ]; then
+                echo "CMake version is lower than 3.10"
+                exit 1
+            fi
+      - name: Build Project
+        run: |
+            mkdir -p build && cd build
+            cmake ..
+            make
+      - name: run test on bug 102
         shell: bash {0}
         run: |
           set +e
@@ -94,7 +133,52 @@ jobs:
           exit ${result}
         continue-on-error: true
 
-      - name: run test on bug 03
+  test-bug-103:
+    name: Run test for BUG-103
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: cpp
+          sparse-checkout-cone-mode: false
+          path: tests
+      - name: Update CMakeLists
+        run: |
+            mv tests/cpp/* tests/
+            rm -f CMakeLists.txt
+            mv tests/CMakeLists.txt ./
+            rm -rf tests/cpp
+      - name: Install Dependencies
+        run: |
+            sudo apt update
+            sudo apt install -y build-essential cmake git
+      - name: Install GCC (C++17 support)
+        run: |
+            sudo apt install -y g++-10
+            sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
+            g++ --version
+      - name: Verify CMake Version
+        run: |
+            cmake --version
+            cmake_min_version=$(cmake --version | head -n1 | awk '{print $3}')
+            required_version="3.10"
+            if [ "$(printf '%s\n' "$required_version" "$cmake_min_version" | sort -V | head -n1)" != "$required_version" ]; then
+                echo "CMake version is lower than 3.10"
+                exit 1
+            fi
+      - name: Build Project
+        run: |
+            mkdir -p build && cd build
+            cmake ..
+            make
+      - name: run test on bug 103
         shell: bash {0}
         run: |
           set +e
@@ -104,7 +188,52 @@ jobs:
           exit ${result}
         continue-on-error: true
 
-      - name: run test on bug 04
+  test-bug-104:
+    name: Run test for BUG-104
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: cpp
+          sparse-checkout-cone-mode: false
+          path: tests
+      - name: Update CMakeLists
+        run: |
+            mv tests/cpp/* tests/
+            rm -f CMakeLists.txt
+            mv tests/CMakeLists.txt ./
+            rm -rf tests/cpp
+      - name: Install Dependencies
+        run: |
+            sudo apt update
+            sudo apt install -y build-essential cmake git
+      - name: Install GCC (C++17 support)
+        run: |
+            sudo apt install -y g++-10
+            sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
+            g++ --version
+      - name: Verify CMake Version
+        run: |
+            cmake --version
+            cmake_min_version=$(cmake --version | head -n1 | awk '{print $3}')
+            required_version="3.10"
+            if [ "$(printf '%s\n' "$required_version" "$cmake_min_version" | sort -V | head -n1)" != "$required_version" ]; then
+                echo "CMake version is lower than 3.10"
+                exit 1
+            fi
+      - name: Build Project
+        run: |
+            mkdir -p build && cd build
+            cmake ..
+            make
+      - name: run test on bug 104
         shell: bash {0}
         run: |
           set +e
@@ -114,7 +243,52 @@ jobs:
           exit ${result}
         continue-on-error: true
 
-      - name: run test on bug 05
+  test-bug-105:
+    name: Run test for BUG-105
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: cpp
+          sparse-checkout-cone-mode: false
+          path: tests
+      - name: Update CMakeLists
+        run: |
+            mv tests/cpp/* tests/
+            rm -f CMakeLists.txt
+            mv tests/CMakeLists.txt ./
+            rm -rf tests/cpp
+      - name: Install Dependencies
+        run: |
+            sudo apt update
+            sudo apt install -y build-essential cmake git
+      - name: Install GCC (C++17 support)
+        run: |
+            sudo apt install -y g++-10
+            sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
+            g++ --version
+      - name: Verify CMake Version
+        run: |
+            cmake --version
+            cmake_min_version=$(cmake --version | head -n1 | awk '{print $3}')
+            required_version="3.10"
+            if [ "$(printf '%s\n' "$required_version" "$cmake_min_version" | sort -V | head -n1)" != "$required_version" ]; then
+                echo "CMake version is lower than 3.10"
+                exit 1
+            fi
+      - name: Build Project
+        run: |
+            mkdir -p build && cd build
+            cmake ..
+            make
+      - name: run test on bug 105
         shell: bash {0}
         run: |
           set +e
@@ -124,7 +298,52 @@ jobs:
           exit ${result}
         continue-on-error: true
 
-      - name: run test on bug 06
+  test-bug-106:
+    name: Run test for BUG-106
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: cpp
+          sparse-checkout-cone-mode: false
+          path: tests
+      - name: Update CMakeLists
+        run: |
+            mv tests/cpp/* tests/
+            rm -f CMakeLists.txt
+            mv tests/CMakeLists.txt ./
+            rm -rf tests/cpp
+      - name: Install Dependencies
+        run: |
+            sudo apt update
+            sudo apt install -y build-essential cmake git
+      - name: Install GCC (C++17 support)
+        run: |
+            sudo apt install -y g++-10
+            sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
+            g++ --version
+      - name: Verify CMake Version
+        run: |
+            cmake --version
+            cmake_min_version=$(cmake --version | head -n1 | awk '{print $3}')
+            required_version="3.10"
+            if [ "$(printf '%s\n' "$required_version" "$cmake_min_version" | sort -V | head -n1)" != "$required_version" ]; then
+                echo "CMake version is lower than 3.10"
+                exit 1
+            fi
+      - name: Build Project
+        run: |
+            mkdir -p build && cd build
+            cmake ..
+            make
+      - name: run test on bug 106
         shell: bash {0}
         run: |
           set +e
@@ -134,7 +353,52 @@ jobs:
           exit ${result}
         continue-on-error: true
 
-      - name: run test on bug 07
+  test-bug-107:
+    name: Run test for BUG-107
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: cpp
+          sparse-checkout-cone-mode: false
+          path: tests
+      - name: Update CMakeLists
+        run: |
+            mv tests/cpp/* tests/
+            rm -f CMakeLists.txt
+            mv tests/CMakeLists.txt ./
+            rm -rf tests/cpp
+      - name: Install Dependencies
+        run: |
+            sudo apt update
+            sudo apt install -y build-essential cmake git
+      - name: Install GCC (C++17 support)
+        run: |
+            sudo apt install -y g++-10
+            sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
+            g++ --version
+      - name: Verify CMake Version
+        run: |
+            cmake --version
+            cmake_min_version=$(cmake --version | head -n1 | awk '{print $3}')
+            required_version="3.10"
+            if [ "$(printf '%s\n' "$required_version" "$cmake_min_version" | sort -V | head -n1)" != "$required_version" ]; then
+                echo "CMake version is lower than 3.10"
+                exit 1
+            fi
+      - name: Build Project
+        run: |
+            mkdir -p build && cd build
+            cmake ..
+            make
+      - name: run test on bug 107
         shell: bash {0}
         run: |
           set +e
@@ -144,7 +408,52 @@ jobs:
           exit ${result}
         continue-on-error: true
 
-      - name: run test on bug 08
+  test-bug-108:
+    name: Run test for BUG-108
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: cpp
+          sparse-checkout-cone-mode: false
+          path: tests
+      - name: Update CMakeLists
+        run: |
+            mv tests/cpp/* tests/
+            rm -f CMakeLists.txt
+            mv tests/CMakeLists.txt ./
+            rm -rf tests/cpp
+      - name: Install Dependencies
+        run: |
+            sudo apt update
+            sudo apt install -y build-essential cmake git
+      - name: Install GCC (C++17 support)
+        run: |
+            sudo apt install -y g++-10
+            sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
+            g++ --version
+      - name: Verify CMake Version
+        run: |
+            cmake --version
+            cmake_min_version=$(cmake --version | head -n1 | awk '{print $3}')
+            required_version="3.10"
+            if [ "$(printf '%s\n' "$required_version" "$cmake_min_version" | sort -V | head -n1)" != "$required_version" ]; then
+                echo "CMake version is lower than 3.10"
+                exit 1
+            fi
+      - name: Build Project
+        run: |
+            mkdir -p build && cd build
+            cmake ..
+            make
+      - name: run test on bug 108
         shell: bash {0}
         run: |
           set +e
@@ -154,17 +463,52 @@ jobs:
           exit ${result}
         continue-on-error: true
 
-    #   - name: run test on bug 09
-    #     shell: bash {0}
-    #     run: |
-    #       set +e
-    #       build/quantum_tests --gtest_filter=ParallelizationTest.BUG109 > /dev/null 2>&1
-    #       result=$?
-    #       if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-109"}'; fi
-    #       exit ${result}
-    #     continue-on-error: true
-
-      - name: run test on bug 10
+  test-bug-110:
+    name: Run test for BUG-110
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: cpp
+          sparse-checkout-cone-mode: false
+          path: tests
+      - name: Update CMakeLists
+        run: |
+            mv tests/cpp/* tests/
+            rm -f CMakeLists.txt
+            mv tests/CMakeLists.txt ./
+            rm -rf tests/cpp
+      - name: Install Dependencies
+        run: |
+            sudo apt update
+            sudo apt install -y build-essential cmake git
+      - name: Install GCC (C++17 support)
+        run: |
+            sudo apt install -y g++-10
+            sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
+            g++ --version
+      - name: Verify CMake Version
+        run: |
+            cmake --version
+            cmake_min_version=$(cmake --version | head -n1 | awk '{print $3}')
+            required_version="3.10"
+            if [ "$(printf '%s\n' "$required_version" "$cmake_min_version" | sort -V | head -n1)" != "$required_version" ]; then
+                echo "CMake version is lower than 3.10"
+                exit 1
+            fi
+      - name: Build Project
+        run: |
+            mkdir -p build && cd build
+            cmake ..
+            make
+      - name: run test on bug 110
         shell: bash {0}
         run: |
           set +e
@@ -174,7 +518,52 @@ jobs:
           exit ${result}
         continue-on-error: true
 
-      - name: run test on bug 11
+  test-bug-111:
+    name: Run test for BUG-111
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: cpp
+          sparse-checkout-cone-mode: false
+          path: tests
+      - name: Update CMakeLists
+        run: |
+            mv tests/cpp/* tests/
+            rm -f CMakeLists.txt
+            mv tests/CMakeLists.txt ./
+            rm -rf tests/cpp
+      - name: Install Dependencies
+        run: |
+            sudo apt update
+            sudo apt install -y build-essential cmake git
+      - name: Install GCC (C++17 support)
+        run: |
+            sudo apt install -y g++-10
+            sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
+            g++ --version
+      - name: Verify CMake Version
+        run: |
+            cmake --version
+            cmake_min_version=$(cmake --version | head -n1 | awk '{print $3}')
+            required_version="3.10"
+            if [ "$(printf '%s\n' "$required_version" "$cmake_min_version" | sort -V | head -n1)" != "$required_version" ]; then
+                echo "CMake version is lower than 3.10"
+                exit 1
+            fi
+      - name: Build Project
+        run: |
+            mkdir -p build && cd build
+            cmake ..
+            make
+      - name: run test on bug 111
         shell: bash {0}
         run: |
           set +e
@@ -184,7 +573,52 @@ jobs:
           exit ${result}
         continue-on-error: true
 
-      - name: run test on bug 12
+  test-bug-112:
+    name: Run test for BUG-112
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: cpp
+          sparse-checkout-cone-mode: false
+          path: tests
+      - name: Update CMakeLists
+        run: |
+            mv tests/cpp/* tests/
+            rm -f CMakeLists.txt
+            mv tests/CMakeLists.txt ./
+            rm -rf tests/cpp
+      - name: Install Dependencies
+        run: |
+            sudo apt update
+            sudo apt install -y build-essential cmake git
+      - name: Install GCC (C++17 support)
+        run: |
+            sudo apt install -y g++-10
+            sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
+            g++ --version
+      - name: Verify CMake Version
+        run: |
+            cmake --version
+            cmake_min_version=$(cmake --version | head -n1 | awk '{print $3}')
+            required_version="3.10"
+            if [ "$(printf '%s\n' "$required_version" "$cmake_min_version" | sort -V | head -n1)" != "$required_version" ]; then
+                echo "CMake version is lower than 3.10"
+                exit 1
+            fi
+      - name: Build Project
+        run: |
+            mkdir -p build && cd build
+            cmake ..
+            make
+      - name: run test on bug 112
         shell: bash {0}
         run: |
           set +e
@@ -194,7 +628,52 @@ jobs:
           exit ${result}
         continue-on-error: true
 
-      - name: run test on bug 13
+  test-bug-113:
+    name: Run test for BUG-113
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: cpp
+          sparse-checkout-cone-mode: false
+          path: tests
+      - name: Update CMakeLists
+        run: |
+            mv tests/cpp/* tests/
+            rm -f CMakeLists.txt
+            mv tests/CMakeLists.txt ./
+            rm -rf tests/cpp
+      - name: Install Dependencies
+        run: |
+            sudo apt update
+            sudo apt install -y build-essential cmake git
+      - name: Install GCC (C++17 support)
+        run: |
+            sudo apt install -y g++-10
+            sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
+            g++ --version
+      - name: Verify CMake Version
+        run: |
+            cmake --version
+            cmake_min_version=$(cmake --version | head -n1 | awk '{print $3}')
+            required_version="3.10"
+            if [ "$(printf '%s\n' "$required_version" "$cmake_min_version" | sort -V | head -n1)" != "$required_version" ]; then
+                echo "CMake version is lower than 3.10"
+                exit 1
+            fi
+      - name: Build Project
+        run: |
+            mkdir -p build && cd build
+            cmake ..
+            make
+      - name: run test on bug 113
         shell: bash {0}
         run: |
           set +e
@@ -204,7 +683,52 @@ jobs:
           exit ${result}
         continue-on-error: true
 
-      - name: run test on bug 14
+  test-bug-114:
+    name: Run test for BUG-114
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: cpp
+          sparse-checkout-cone-mode: false
+          path: tests
+      - name: Update CMakeLists
+        run: |
+            mv tests/cpp/* tests/
+            rm -f CMakeLists.txt
+            mv tests/CMakeLists.txt ./
+            rm -rf tests/cpp
+      - name: Install Dependencies
+        run: |
+            sudo apt update
+            sudo apt install -y build-essential cmake git
+      - name: Install GCC (C++17 support)
+        run: |
+            sudo apt install -y g++-10
+            sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
+            g++ --version
+      - name: Verify CMake Version
+        run: |
+            cmake --version
+            cmake_min_version=$(cmake --version | head -n1 | awk '{print $3}')
+            required_version="3.10"
+            if [ "$(printf '%s\n' "$required_version" "$cmake_min_version" | sort -V | head -n1)" != "$required_version" ]; then
+                echo "CMake version is lower than 3.10"
+                exit 1
+            fi
+      - name: Build Project
+        run: |
+            mkdir -p build && cd build
+            cmake ..
+            make
+      - name: run test on bug 114
         shell: bash {0}
         run: |
           set +e
@@ -214,7 +738,52 @@ jobs:
           exit ${result}
         continue-on-error: true
 
-      - name: run test on bug 15
+  test-bug-115:
+    name: Run test for BUG-115
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: cpp
+          sparse-checkout-cone-mode: false
+          path: tests
+      - name: Update CMakeLists
+        run: |
+            mv tests/cpp/* tests/
+            rm -f CMakeLists.txt
+            mv tests/CMakeLists.txt ./
+            rm -rf tests/cpp
+      - name: Install Dependencies
+        run: |
+            sudo apt update
+            sudo apt install -y build-essential cmake git
+      - name: Install GCC (C++17 support)
+        run: |
+            sudo apt install -y g++-10
+            sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
+            g++ --version
+      - name: Verify CMake Version
+        run: |
+            cmake --version
+            cmake_min_version=$(cmake --version | head -n1 | awk '{print $3}')
+            required_version="3.10"
+            if [ "$(printf '%s\n' "$required_version" "$cmake_min_version" | sort -V | head -n1)" != "$required_version" ]; then
+                echo "CMake version is lower than 3.10"
+                exit 1
+            fi
+      - name: Build Project
+        run: |
+            mkdir -p build && cd build
+            cmake ..
+            make
+      - name: run test on bug 115
         shell: bash {0}
         run: |
           set +e
@@ -224,7 +793,52 @@ jobs:
           exit ${result}
         continue-on-error: true
 
-      - name: run test on bug 16
+  test-bug-116:
+    name: Run test for BUG-116
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: cpp
+          sparse-checkout-cone-mode: false
+          path: tests
+      - name: Update CMakeLists
+        run: |
+            mv tests/cpp/* tests/
+            rm -f CMakeLists.txt
+            mv tests/CMakeLists.txt ./
+            rm -rf tests/cpp
+      - name: Install Dependencies
+        run: |
+            sudo apt update
+            sudo apt install -y build-essential cmake git
+      - name: Install GCC (C++17 support)
+        run: |
+            sudo apt install -y g++-10
+            sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
+            g++ --version
+      - name: Verify CMake Version
+        run: |
+            cmake --version
+            cmake_min_version=$(cmake --version | head -n1 | awk '{print $3}')
+            required_version="3.10"
+            if [ "$(printf '%s\n' "$required_version" "$cmake_min_version" | sort -V | head -n1)" != "$required_version" ]; then
+                echo "CMake version is lower than 3.10"
+                exit 1
+            fi
+      - name: Build Project
+        run: |
+            mkdir -p build && cd build
+            cmake ..
+            make
+      - name: run test on bug 116
         shell: bash {0}
         run: |
           set +e
@@ -234,7 +848,52 @@ jobs:
           exit ${result}
         continue-on-error: true
 
-      - name: run test on bug 17
+  test-bug-117:
+    name: Run test for BUG-117
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: cpp
+          sparse-checkout-cone-mode: false
+          path: tests
+      - name: Update CMakeLists
+        run: |
+            mv tests/cpp/* tests/
+            rm -f CMakeLists.txt
+            mv tests/CMakeLists.txt ./
+            rm -rf tests/cpp
+      - name: Install Dependencies
+        run: |
+            sudo apt update
+            sudo apt install -y build-essential cmake git
+      - name: Install GCC (C++17 support)
+        run: |
+            sudo apt install -y g++-10
+            sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
+            g++ --version
+      - name: Verify CMake Version
+        run: |
+            cmake --version
+            cmake_min_version=$(cmake --version | head -n1 | awk '{print $3}')
+            required_version="3.10"
+            if [ "$(printf '%s\n' "$required_version" "$cmake_min_version" | sort -V | head -n1)" != "$required_version" ]; then
+                echo "CMake version is lower than 3.10"
+                exit 1
+            fi
+      - name: Build Project
+        run: |
+            mkdir -p build && cd build
+            cmake ..
+            make
+      - name: run test on bug 117
         shell: bash {0}
         run: |
           set +e
@@ -244,7 +903,52 @@ jobs:
           exit ${result}
         continue-on-error: true
 
-      - name: run test on bug 18
+  test-bug-118:
+    name: Run test for BUG-118
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: cpp
+          sparse-checkout-cone-mode: false
+          path: tests
+      - name: Update CMakeLists
+        run: |
+            mv tests/cpp/* tests/
+            rm -f CMakeLists.txt
+            mv tests/CMakeLists.txt ./
+            rm -rf tests/cpp
+      - name: Install Dependencies
+        run: |
+            sudo apt update
+            sudo apt install -y build-essential cmake git
+      - name: Install GCC (C++17 support)
+        run: |
+            sudo apt install -y g++-10
+            sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
+            g++ --version
+      - name: Verify CMake Version
+        run: |
+            cmake --version
+            cmake_min_version=$(cmake --version | head -n1 | awk '{print $3}')
+            required_version="3.10"
+            if [ "$(printf '%s\n' "$required_version" "$cmake_min_version" | sort -V | head -n1)" != "$required_version" ]; then
+                echo "CMake version is lower than 3.10"
+                exit 1
+            fi
+      - name: Build Project
+        run: |
+            mkdir -p build && cd build
+            cmake ..
+            make
+      - name: run test on bug 118
         shell: bash {0}
         run: |
           set +e
@@ -254,7 +958,52 @@ jobs:
           exit ${result}
         continue-on-error: true
 
-      - name: run test on bug 19
+  test-bug-119:
+    name: Run test for BUG-119
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: cpp
+          sparse-checkout-cone-mode: false
+          path: tests
+      - name: Update CMakeLists
+        run: |
+            mv tests/cpp/* tests/
+            rm -f CMakeLists.txt
+            mv tests/CMakeLists.txt ./
+            rm -rf tests/cpp
+      - name: Install Dependencies
+        run: |
+            sudo apt update
+            sudo apt install -y build-essential cmake git
+      - name: Install GCC (C++17 support)
+        run: |
+            sudo apt install -y g++-10
+            sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
+            g++ --version
+      - name: Verify CMake Version
+        run: |
+            cmake --version
+            cmake_min_version=$(cmake --version | head -n1 | awk '{print $3}')
+            required_version="3.10"
+            if [ "$(printf '%s\n' "$required_version" "$cmake_min_version" | sort -V | head -n1)" != "$required_version" ]; then
+                echo "CMake version is lower than 3.10"
+                exit 1
+            fi
+      - name: Build Project
+        run: |
+            mkdir -p build && cd build
+            cmake ..
+            make
+      - name: run test on bug 119
         shell: bash {0}
         run: |
           set +e
@@ -264,7 +1013,52 @@ jobs:
           exit ${result}
         continue-on-error: true
 
-      - name: run test on bug 20
+  test-bug-120:
+    name: Run test for BUG-120
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: cpp
+          sparse-checkout-cone-mode: false
+          path: tests
+      - name: Update CMakeLists
+        run: |
+            mv tests/cpp/* tests/
+            rm -f CMakeLists.txt
+            mv tests/CMakeLists.txt ./
+            rm -rf tests/cpp
+      - name: Install Dependencies
+        run: |
+            sudo apt update
+            sudo apt install -y build-essential cmake git
+      - name: Install GCC (C++17 support)
+        run: |
+            sudo apt install -y g++-10
+            sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
+            g++ --version
+      - name: Verify CMake Version
+        run: |
+            cmake --version
+            cmake_min_version=$(cmake --version | head -n1 | awk '{print $3}')
+            required_version="3.10"
+            if [ "$(printf '%s\n' "$required_version" "$cmake_min_version" | sort -V | head -n1)" != "$required_version" ]; then
+                echo "CMake version is lower than 3.10"
+                exit 1
+            fi
+      - name: Build Project
+        run: |
+            mkdir -p build && cd build
+            cmake ..
+            make
+      - name: run test on bug 120
         shell: bash {0}
         run: |
           set +e
@@ -274,7 +1068,52 @@ jobs:
           exit ${result}
         continue-on-error: true
 
-      - name: run test on bug 21
+  test-bug-121:
+    name: Run test for BUG-121
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: cpp
+          sparse-checkout-cone-mode: false
+          path: tests
+      - name: Update CMakeLists
+        run: |
+            mv tests/cpp/* tests/
+            rm -f CMakeLists.txt
+            mv tests/CMakeLists.txt ./
+            rm -rf tests/cpp
+      - name: Install Dependencies
+        run: |
+            sudo apt update
+            sudo apt install -y build-essential cmake git
+      - name: Install GCC (C++17 support)
+        run: |
+            sudo apt install -y g++-10
+            sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
+            g++ --version
+      - name: Verify CMake Version
+        run: |
+            cmake --version
+            cmake_min_version=$(cmake --version | head -n1 | awk '{print $3}')
+            required_version="3.10"
+            if [ "$(printf '%s\n' "$required_version" "$cmake_min_version" | sort -V | head -n1)" != "$required_version" ]; then
+                echo "CMake version is lower than 3.10"
+                exit 1
+            fi
+      - name: Build Project
+        run: |
+            mkdir -p build && cd build
+            cmake ..
+            make
+      - name: run test on bug 121
         shell: bash {0}
         run: |
           set +e
@@ -284,7 +1123,52 @@ jobs:
           exit ${result}
         continue-on-error: true
 
-      - name: run test on bug 22
+  test-bug-122:
+    name: Run test for BUG-122
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: cpp
+          sparse-checkout-cone-mode: false
+          path: tests
+      - name: Update CMakeLists
+        run: |
+            mv tests/cpp/* tests/
+            rm -f CMakeLists.txt
+            mv tests/CMakeLists.txt ./
+            rm -rf tests/cpp
+      - name: Install Dependencies
+        run: |
+            sudo apt update
+            sudo apt install -y build-essential cmake git
+      - name: Install GCC (C++17 support)
+        run: |
+            sudo apt install -y g++-10
+            sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
+            g++ --version
+      - name: Verify CMake Version
+        run: |
+            cmake --version
+            cmake_min_version=$(cmake --version | head -n1 | awk '{print $3}')
+            required_version="3.10"
+            if [ "$(printf '%s\n' "$required_version" "$cmake_min_version" | sort -V | head -n1)" != "$required_version" ]; then
+                echo "CMake version is lower than 3.10"
+                exit 1
+            fi
+      - name: Build Project
+        run: |
+            mkdir -p build && cd build
+            cmake ..
+            make
+      - name: run test on bug 122
         shell: bash {0}
         run: |
           set +e
@@ -294,7 +1178,52 @@ jobs:
           exit ${result}
         continue-on-error: true
 
-      - name: run test on bug 23
+  test-bug-123:
+    name: Run test for BUG-123
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: cpp
+          sparse-checkout-cone-mode: false
+          path: tests
+      - name: Update CMakeLists
+        run: |
+            mv tests/cpp/* tests/
+            rm -f CMakeLists.txt
+            mv tests/CMakeLists.txt ./
+            rm -rf tests/cpp
+      - name: Install Dependencies
+        run: |
+            sudo apt update
+            sudo apt install -y build-essential cmake git
+      - name: Install GCC (C++17 support)
+        run: |
+            sudo apt install -y g++-10
+            sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
+            g++ --version
+      - name: Verify CMake Version
+        run: |
+            cmake --version
+            cmake_min_version=$(cmake --version | head -n1 | awk '{print $3}')
+            required_version="3.10"
+            if [ "$(printf '%s\n' "$required_version" "$cmake_min_version" | sort -V | head -n1)" != "$required_version" ]; then
+                echo "CMake version is lower than 3.10"
+                exit 1
+            fi
+      - name: Build Project
+        run: |
+            mkdir -p build && cd build
+            cmake ..
+            make
+      - name: run test on bug 123
         shell: bash {0}
         run: |
           set +e
@@ -304,7 +1233,52 @@ jobs:
           exit ${result}
         continue-on-error: true
 
-      - name: run test on bug 24
+  test-bug-124:
+    name: Run test for BUG-124
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: cpp
+          sparse-checkout-cone-mode: false
+          path: tests
+      - name: Update CMakeLists
+        run: |
+            mv tests/cpp/* tests/
+            rm -f CMakeLists.txt
+            mv tests/CMakeLists.txt ./
+            rm -rf tests/cpp
+      - name: Install Dependencies
+        run: |
+            sudo apt update
+            sudo apt install -y build-essential cmake git
+      - name: Install GCC (C++17 support)
+        run: |
+            sudo apt install -y g++-10
+            sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
+            g++ --version
+      - name: Verify CMake Version
+        run: |
+            cmake --version
+            cmake_min_version=$(cmake --version | head -n1 | awk '{print $3}')
+            required_version="3.10"
+            if [ "$(printf '%s\n' "$required_version" "$cmake_min_version" | sort -V | head -n1)" != "$required_version" ]; then
+                echo "CMake version is lower than 3.10"
+                exit 1
+            fi
+      - name: Build Project
+        run: |
+            mkdir -p build && cd build
+            cmake ..
+            make
+      - name: run test on bug 124
         shell: bash {0}
         run: |
           set +e
@@ -314,7 +1288,52 @@ jobs:
           exit ${result}
         continue-on-error: true
 
-      - name: run test on bug 25
+  test-bug-125:
+    name: Run test for BUG-125
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: cpp
+          sparse-checkout-cone-mode: false
+          path: tests
+      - name: Update CMakeLists
+        run: |
+            mv tests/cpp/* tests/
+            rm -f CMakeLists.txt
+            mv tests/CMakeLists.txt ./
+            rm -rf tests/cpp
+      - name: Install Dependencies
+        run: |
+            sudo apt update
+            sudo apt install -y build-essential cmake git
+      - name: Install GCC (C++17 support)
+        run: |
+            sudo apt install -y g++-10
+            sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
+            g++ --version
+      - name: Verify CMake Version
+        run: |
+            cmake --version
+            cmake_min_version=$(cmake --version | head -n1 | awk '{print $3}')
+            required_version="3.10"
+            if [ "$(printf '%s\n' "$required_version" "$cmake_min_version" | sort -V | head -n1)" != "$required_version" ]; then
+                echo "CMake version is lower than 3.10"
+                exit 1
+            fi
+      - name: Build Project
+        run: |
+            mkdir -p build && cd build
+            cmake ..
+            make
+      - name: run test on bug 125
         shell: bash {0}
         run: |
           set +e
