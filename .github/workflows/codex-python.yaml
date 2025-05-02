@@ -58,7 +58,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::BUG301 > /dev/null 2>&1
+          python -m pytest -v --disable-warnings tests/test_auth_advanced::BUG301 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -116,7 +116,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::BUG302 > /dev/null 2>&1
+          python -m pytest -v --disable-warnings tests/test_auth_advanced::BUG302 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -173,7 +173,7 @@ jobs:
         run: |
           set +e
           # Ensured redirection > /dev/null 2>&1
-          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::BUG303 > /dev/null 2>&1
+          python -m pytest -v --disable-warnings tests/test_auth_advanced::BUG303 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -230,7 +230,7 @@ jobs:
         run: |
           set +e
           # Added redirection > /dev/null 2>&1
-          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::BUG304 > /dev/null 2>&1
+          python -m pytest -v --disable-warnings tests/test_auth_advanced::BUG304 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -287,7 +287,7 @@ jobs:
         run: |
           set +e
           # Added redirection > /dev/null 2>&1
-          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::BUG305 > /dev/null 2>&1
+          python -m pytest -v --disable-warnings tests/test_auth_advanced::BUG305 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -344,7 +344,7 @@ jobs:
         run: |
           set +e
           # Added redirection > /dev/null 2>&1
-          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::BUG306 > /dev/null 2>&1
+          python -m pytest -v --disable-warnings tests/test_auth_advanced::BUG306 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -401,7 +401,7 @@ jobs:
         run: |
           set +e
           # Added redirection > /dev/null 2>&1
-          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::BUG307 > /dev/null 2>&1
+          python -m pytest -v --disable-warnings tests/test_auth_advanced::BUG307 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -458,7 +458,7 @@ jobs:
         run: |
           set +e
           # Added redirection > /dev/null 2>&1
-          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::BUG308 > /dev/null 2>&1
+          python -m pytest -v --disable-warnings tests/test_auth_advanced::BUG308 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -515,7 +515,7 @@ jobs:
         run: |
           set +e
           # Added redirection > /dev/null 2>&1
-          python -m pytest -v --disable-warnings tests/test_security.py::BUG309 > /dev/null 2>&1
+          python -m pytest -v --disable-warnings tests/test_security::BUG309 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -572,7 +572,7 @@ jobs:
         run: |
           set +e
           # Added redirection > /dev/null 2>&1
-          python -m pytest -v --disable-warnings tests/test_transactions.py::BUG310 > /dev/null 2>&1
+          python -m pytest -v --disable-warnings tests/test_transactions::BUG310 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -629,7 +629,7 @@ jobs:
         run: |
           set +e
           # Added redirection > /dev/null 2>&1
-          python -m pytest -v --disable-warnings tests/test_transactions.py::BUG311 > /dev/null 2>&1
+          python -m pytest -v --disable-warnings tests/test_transactions::BUG311 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -686,7 +686,7 @@ jobs:
         run: |
           set +e
           # Added redirection > /dev/null 2>&1
-          python -m pytest -v --disable-warnings tests/test_transactions.py::BUG312 > /dev/null 2>&1
+          python -m pytest -v --disable-warnings tests/test_transactions::BUG312 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -743,7 +743,7 @@ jobs:
         run: |
           set +e
           # Added redirection > /dev/null 2>&1
-          python -m pytest -v --disable-warnings tests/test_transactions.py::BUG313 > /dev/null 2>&1
+          python -m pytest -v --disable-warnings tests/test_transactions::BUG313 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -800,7 +800,7 @@ jobs:
         run: |
           set +e
           # Added redirection > /dev/null 2>&1
-          python -m pytest -v --disable-warnings tests/test_transactions.py::BUG314 > /dev/null 2>&1
+          python -m pytest -v --disable-warnings tests/test_transactions::BUG314 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -857,7 +857,7 @@ jobs:
         run: |
           set +e
           # Added redirection > /dev/null 2>&1
-          python -m pytest -v --disable-warnings tests/test_transactions_advanced.py::BUG315 > /dev/null 2>&1
+          python -m pytest -v --disable-warnings tests/test_transactions_advanced::BUG315 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -914,7 +914,7 @@ jobs:
         run: |
           set +e
           # Added redirection > /dev/null 2>&1
-          python -m pytest -v --disable-warnings tests/test_accounts.py::BUG316 > /dev/null 2>&1
+          python -m pytest -v --disable-warnings tests/test_accounts::BUG316 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -971,7 +971,7 @@ jobs:
         run: |
           set +e
           # Added redirection > /dev/null 2>&1
-          python -m pytest -v --disable-warnings tests/test_accounts.py::BUG317 > /dev/null 2>&1
+          python -m pytest -v --disable-warnings tests/test_accounts::BUG317 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1028,7 +1028,7 @@ jobs:
         run: |
           set +e
           # Added redirection > /dev/null 2>&1
-          python -m pytest -v --disable-warnings tests/test_accounts.py::BUG318 > /dev/null 2>&1
+          python -m pytest -v --disable-warnings tests/test_accounts::BUG318 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1085,7 +1085,7 @@ jobs:
         run: |
           set +e
           # Added redirection > /dev/null 2>&1
-          python -m pytest -v --disable-warnings tests/test_accounts.py::BUG319 > /dev/null 2>&1
+          python -m pytest -v --disable-warnings tests/test_accounts::BUG319 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1142,7 +1142,7 @@ jobs:
         run: |
           set +e
           # Added redirection > /dev/null 2>&1
-          python -m pytest -v --disable-warnings tests/test_accounts.py::BUG320 > /dev/null 2>&1
+          python -m pytest -v --disable-warnings tests/test_accounts::BUG320 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1199,7 +1199,7 @@ jobs:
         run: |
           set +e
           # Added redirection > /dev/null 2>&1
-          python -m pytest -v --disable-warnings tests/test_accounts.py::BUG321 > /dev/null 2>&1
+          python -m pytest -v --disable-warnings tests/test_accounts::BUG321 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1256,7 +1256,7 @@ jobs:
         run: |
           set +e
           # Added redirection > /dev/null 2>&1
-          python -m pytest -v --disable-warnings tests/test_accounts.py::BUG322 > /dev/null 2>&1
+          python -m pytest -v --disable-warnings tests/test_accounts::BUG322 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1313,7 +1313,7 @@ jobs:
         run: |
           set +e
           # Added redirection > /dev/null 2>&1
-          python -m pytest -v --disable-warnings tests/test_accounts_advanced.py::BUG323 > /dev/null 2>&1
+          python -m pytest -v --disable-warnings tests/test_accounts_advanced::BUG323 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1370,7 +1370,7 @@ jobs:
         run: |
           set +e
           # Added redirection > /dev/null 2>&1
-          python -m pytest -v --disable-warnings tests/test_accounts_advanced.py::BUG324 > /dev/null 2>&1
+          python -m pytest -v --disable-warnings tests/test_accounts_advanced::BUG324 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1427,7 +1427,7 @@ jobs:
         run: |
           set +e
           # Added redirection > /dev/null 2>&1
-          python -m pytest -v --disable-warnings tests/test_accounts_advanced.py::BUG325 > /dev/null 2>&1
+          python -m pytest -v --disable-warnings tests/test_accounts_advanced::BUG325 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1484,7 +1484,7 @@ jobs:
         run: |
           set +e
           # Added redirection > /dev/null 2>&1
-          python -m pytest -v --disable-warnings tests/test_accounts_advanced.py::BUG326 > /dev/null 2>&1
+          python -m pytest -v --disable-warnings tests/test_accounts_advanced::BUG326 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1541,7 +1541,7 @@ jobs:
         run: |
           set +e
           # Added redirection > /dev/null 2>&1
-          python -m pytest -v --disable-warnings tests/test_accounts_advanced.py::BUG327 > /dev/null 2>&1
+          python -m pytest -v --disable-warnings tests/test_accounts_advanced::BUG327 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1562,4 +1562,3 @@ jobs:
                 \"status\": \"$test_status\"
             }"
           exit ${result}
-          
