@@ -1,5 +1,4 @@
 name: Test CodeX Java
-
 on:
   workflow_call:
     inputs:
@@ -38,7 +37,12 @@ jobs:
           token: ${{ secrets.auth-token }}
           sparse-checkout: java
           sparse-checkout-cone-mode: false
-          path: src/test/java/com/codejam/codex/authzen/
+          path: tests # Corrected path
+
+      - name: setup test files # Added step for consistency
+        run: |
+          mkdir -p src/test/java/com/codejam/codex/authzen
+          mv tests/* src/test/java/com/codejam/codex/authzen/
 
       - name: setup java
         uses: actions/setup-java@v2
@@ -51,24 +55,31 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 01
+      - name: run test on bug 01 and report status
         shell: bash {0}
         run: |
-          set +e
-          mvn -Dtest=JwtServiceTest#BUG002 test > /dev/null 2>&1
+          set +e # Allow script to continue after mvn failure
+          mvn -Dtest=JwtServiceTest#BUG002 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-002"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-002\",
+                \"status\": \"$test_status\"
+            }"
+          # Exit with the original test result code to reflect job status
           exit ${result}
 
   test-bug-02:
@@ -104,24 +115,30 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 02
+      - name: run test on bug 02 and report status
         shell: bash {0}
         run: |
           set +e
-          mvn -Dtest=JwtServiceTest#BUG003 test > /dev/null 2>&1
+          mvn -Dtest=JwtServiceTest#BUG003 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-003"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-003\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-03:
@@ -157,24 +174,30 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 03
+      - name: run test on bug 03 and report status
         shell: bash {0}
         run: |
           set +e
-          mvn -Dtest=JwtServiceTest#BUG004 test > /dev/null 2>&1
+          mvn -Dtest=JwtServiceTest#BUG004 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-004"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-004\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-04:
@@ -210,24 +233,30 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 04
+      - name: run test on bug 04 and report status
         shell: bash {0}
         run: |
           set +e
-          mvn -Dtest=JwtServiceTest#BUG005 test > /dev/null 2>&1
+          mvn -Dtest=JwtServiceTest#BUG005 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-005"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-005\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-05:
@@ -263,24 +292,30 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 05
+      - name: run test on bug 05 and report status
         shell: bash {0}
         run: |
           set +e
-          mvn -Dtest=JwtServiceTest#BUG006 test > /dev/null 2>&1
+          mvn -Dtest=JwtServiceTest#BUG006 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-006"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-006\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-06:
@@ -316,24 +351,30 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 06
+      - name: run test on bug 06 and report status
         shell: bash {0}
         run: |
           set +e
-          mvn -Dtest=JwtServiceTest#BUG007 test > /dev/null 2>&1
+          mvn -Dtest=JwtServiceTest#BUG007 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-007"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-007\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-07:
@@ -369,25 +410,31 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 07
+      - name: run test on bug 07 and report status
         shell: bash {0}
         run: |
           set +e
-          # Note: Original had mvn test BUG009 but curl BUG-008
-          mvn -Dtest=JwtServiceTest#BUG009 test > /dev/null 2>&1
+          # Note: Original had mvn test BUG009 but curl BUG-008. Assuming test BUG009 is correct for bugCode BUG-008 here. Adjust if needed.
+          mvn -Dtest=JwtServiceTest#BUG009 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-008"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-008\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-08:
@@ -423,24 +470,30 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 08
+      - name: run test on bug 08 and report status
         shell: bash {0}
         run: |
           set +e
-          mvn -Dtest=JwtServiceTest#BUG009 test > /dev/null 2>&1
+          mvn -Dtest=JwtServiceTest#BUG009 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-009"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-009\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-09:
@@ -476,24 +529,30 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 09
+      - name: run test on bug 09 and report status
         shell: bash {0}
         run: |
           set +e
-          mvn -Dtest=AuthServiceTest#BUG010 test > /dev/null 2>&1
+          mvn -Dtest=AuthServiceTest#BUG010 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-010"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-010\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-10:
@@ -529,25 +588,33 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 10
+      - name: run test on bug 10 and report status
         shell: bash {0}
         run: |
           set +e
-          mvn -Dtest=AuthServiceTest#BUG011 test > /dev/null 2>&1
+          mvn -Dtest=AuthServiceTest#BUG011 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-011"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-011\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
+
+  # ... (Repeat the pattern for test-bug-11 through test-bug-33) ...
 
   test-bug-11:
     runs-on: ${{ inputs.machine_name }}
@@ -582,24 +649,30 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 11
+      - name: run test on bug 11 and report status
         shell: bash {0}
         run: |
           set +e
-          mvn -Dtest=AuthServiceTest#BUG012 test > /dev/null 2>&1
+          mvn -Dtest=AuthServiceTest#BUG012 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-012"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-012\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-12:
@@ -635,24 +708,30 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 12
+      - name: run test on bug 12 and report status
         shell: bash {0}
         run: |
           set +e
-          mvn -Dtest=UserServiceTest#BUG013 test > /dev/null 2>&1
+          mvn -Dtest=UserServiceTest#BUG013 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-013"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-013\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-13:
@@ -688,24 +767,30 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 13
+      - name: run test on bug 13 and report status
         shell: bash {0}
         run: |
           set +e
-          mvn -Dtest=UserServiceTest#BUG014 test > /dev/null 2>&1
+          mvn -Dtest=UserServiceTest#BUG014 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-014"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-014\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-14:
@@ -741,24 +826,30 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 14
+      - name: run test on bug 14 and report status
         shell: bash {0}
         run: |
           set +e
-          mvn -Dtest=UserServiceTest#BUG015 test > /dev/null 2>&1
+          mvn -Dtest=UserServiceTest#BUG015 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-015"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-015\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-15:
@@ -794,24 +885,30 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 15
+      - name: run test on bug 15 and report status
         shell: bash {0}
         run: |
           set +e
-          mvn -Dtest=UserServiceTest#BUG016 test > /dev/null 2>&1
+          mvn -Dtest=UserServiceTest#BUG016 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-016"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-016\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-16:
@@ -847,24 +944,30 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 16
+      - name: run test on bug 16 and report status
         shell: bash {0}
         run: |
           set +e
-          mvn -Dtest=UserServiceTest#BUG017 test > /dev/null 2>&1
+          mvn -Dtest=UserServiceTest#BUG017 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-017"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-017\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-17:
@@ -900,24 +1003,30 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 17
+      - name: run test on bug 17 and report status
         shell: bash {0}
         run: |
           set +e
-          mvn -Dtest=UserServiceTest#BUG018 test > /dev/null 2>&1
+          mvn -Dtest=UserServiceTest#BUG018 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-018"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-018\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-18:
@@ -953,24 +1062,30 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 18
+      - name: run test on bug 18 and report status
         shell: bash {0}
         run: |
           set +e
-          mvn -Dtest=AdminServiceTest#BUG019 test > /dev/null 2>&1
+          mvn -Dtest=AdminServiceTest#BUG019 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-019"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-019\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-19:
@@ -1006,24 +1121,30 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 19
+      - name: run test on bug 19 and report status
         shell: bash {0}
         run: |
           set +e
-          mvn -Dtest=AdminServiceTest#BUG020 test > /dev/null 2>&1
+          mvn -Dtest=AdminServiceTest#BUG020 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-020"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-020\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-20:
@@ -1059,24 +1180,30 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 20
+      - name: run test on bug 20 and report status
         shell: bash {0}
         run: |
           set +e
-          mvn -Dtest=AdminServiceTest#BUG021 test > /dev/null 2>&1
+          mvn -Dtest=AdminServiceTest#BUG021 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-021"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-021\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-21:
@@ -1112,24 +1239,30 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 21
+      - name: run test on bug 21 and report status
         shell: bash {0}
         run: |
           set +e
-          mvn -Dtest=AdminServiceTest#BUG022 test > /dev/null 2>&1
+          mvn -Dtest=AdminServiceTest#BUG022 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-022"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-022\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-22:
@@ -1165,24 +1298,30 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 22
+      - name: run test on bug 22 and report status
         shell: bash {0}
         run: |
           set +e
-          mvn -Dtest=AdminServiceTest#BUG023 test > /dev/null 2>&1
+          mvn -Dtest=AdminServiceTest#BUG023 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-023"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-023\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-23:
@@ -1218,24 +1357,30 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 23
+      - name: run test on bug 23 and report status
         shell: bash {0}
         run: |
           set +e
-          mvn -Dtest=AdminServiceTest#BUG024 test > /dev/null 2>&1
+          mvn -Dtest=AdminServiceTest#BUG024 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-024"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-024\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-24:
@@ -1271,24 +1416,30 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 24
+      - name: run test on bug 24 and report status
         shell: bash {0}
         run: |
           set +e
-          mvn -Dtest=OAuthServiceTest#BUG025 test > /dev/null 2>&1
+          mvn -Dtest=OAuthServiceTest#BUG025 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-025"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-025\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-25:
@@ -1324,24 +1475,30 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 25
+      - name: run test on bug 25 and report status
         shell: bash {0}
         run: |
           set +e
-          mvn -Dtest=OAuthServiceTest#BUG026 test > /dev/null 2>&1
+          mvn -Dtest=OAuthServiceTest#BUG026 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-026"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-026\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-26:
@@ -1377,24 +1534,30 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 26
+      - name: run test on bug 26 and report status
         shell: bash {0}
         run: |
           set +e
-          mvn -Dtest=OAuthServiceTest#BUG027 test > /dev/null 2>&1
+          mvn -Dtest=OAuthServiceTest#BUG027 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-027"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-027\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-27:
@@ -1430,24 +1593,30 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 27
+      - name: run test on bug 27 and report status
         shell: bash {0}
         run: |
           set +e
-          mvn -Dtest=OAuthServiceTest#BUG028 test > /dev/null 2>&1
+          mvn -Dtest=OAuthServiceTest#BUG028 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-028"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-028\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-28:
@@ -1483,24 +1652,30 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 28
+      - name: run test on bug 28 and report status
         shell: bash {0}
         run: |
           set +e
-          mvn -Dtest=OAuthServiceTest#BUG029 test > /dev/null 2>&1
+          mvn -Dtest=OAuthServiceTest#BUG029 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-029"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-029\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-29:
@@ -1536,24 +1711,30 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 29
+      - name: run test on bug 29 and report status
         shell: bash {0}
         run: |
           set +e
-          mvn -Dtest=EmailUtilTest#BUG030 test > /dev/null 2>&1
+          mvn -Dtest=EmailUtilTest#BUG030 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-030"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-030\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-30:
@@ -1589,24 +1770,30 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 30
+      - name: run test on bug 30 and report status
         shell: bash {0}
         run: |
           set +e
-          mvn -Dtest=EmailUtilTest#BUG031 test > /dev/null 2>&1
+          mvn -Dtest=EmailUtilTest#BUG031 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-031"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-031\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-31:
@@ -1642,24 +1829,30 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 31
+      - name: run test on bug 31 and report status
         shell: bash {0}
         run: |
           set +e
-          mvn -Dtest=SecurityConfigurationTest#BUG032 test > /dev/null 2>&1
+          mvn -Dtest=SecurityConfigurationTest#BUG032 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-032"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-032\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-32:
@@ -1695,24 +1888,30 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 32
+      - name: run test on bug 32 and report status
         shell: bash {0}
         run: |
           set +e
-          mvn -Dtest=SecurityConfigurationTest#BUG033 test > /dev/null 2>&1
+          mvn -Dtest=SecurityConfigurationTest#BUG033 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-033"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-033\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-33:
@@ -1748,22 +1947,28 @@ jobs:
         with:
           maven-version: 3.9.9
 
-      - name: run test on bug 33
+      - name: run test on bug 33 and report status
         shell: bash {0}
         run: |
           set +e
-          mvn -Dtest=SecurityConfigurationTest#BUG034 test > /dev/null 2>&1
+          mvn -Dtest=SecurityConfigurationTest#BUG034 test > maven_output.log 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-              echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-034"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-034\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
