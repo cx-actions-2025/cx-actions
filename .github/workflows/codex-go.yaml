@@ -75,7 +75,7 @@ jobs:
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"$bug_code\",
                 \"status\": \"$test_status\"
-            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
+            }"
           exit ${result}
 
   # --- Test BUG-502 ---
@@ -114,15 +114,15 @@ jobs:
         working-directory: pr-code
         run: |
           set +e
-          go test ./tests -v -run '^TestPersistentRestart$' > test_output.log 2>&1
+          go test ./tests -v -run '^TestClusterAutoPrune$' > test_output.log 2>&1
           result=$?
           test_status="fail"
           bug_code="BUG-502"
           if [ ${result} -ne 0 ]; then
-              echo "Test FAILED: TestPersistentRestart"
+              echo "Test FAILED: TestClusterAutoPrune"
               cat test_output.log
           else
-              echo "Test PASSED: TestPersistentRestart"
+              echo "Test PASSED: TestClusterAutoPrune"
               test_status="pass"
           fi
           echo "Sending status '$test_status' for bug '$bug_code' to backend..."
@@ -134,7 +134,7 @@ jobs:
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"$bug_code\",
                 \"status\": \"$test_status\"
-            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
+            }"
           exit ${result}
 
   # --- Test BUG-503 ---
@@ -193,7 +193,7 @@ jobs:
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"$bug_code\",
                 \"status\": \"$test_status\"
-            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
+            }"
           exit ${result}
 
   # --- Test BUG-504 ---
@@ -252,7 +252,7 @@ jobs:
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"$bug_code\",
                 \"status\": \"$test_status\"
-            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
+            }"
           exit ${result}
 
   # --- Test BUG-505 ---
@@ -311,7 +311,7 @@ jobs:
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"$bug_code\",
                 \"status\": \"$test_status\"
-            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
+            }"
           exit ${result}
 
   # --- Test BUG-506 ---
@@ -370,7 +370,7 @@ jobs:
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"$bug_code\",
                 \"status\": \"$test_status\"
-            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
+            }"
           exit ${result}
 
   # --- Test BUG-507 ---
@@ -429,7 +429,7 @@ jobs:
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"$bug_code\",
                 \"status\": \"$test_status\"
-            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
+            }"
           exit ${result}
 
   # --- Test BUG-508 ---
@@ -488,7 +488,7 @@ jobs:
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"$bug_code\",
                 \"status\": \"$test_status\"
-            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
+            }"
           exit ${result}
 
   # --- Test BUG-509 ---
@@ -547,7 +547,7 @@ jobs:
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"$bug_code\",
                 \"status\": \"$test_status\"
-            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
+            }"
           exit ${result}
 
   # --- Test BUG-510 ---
@@ -606,7 +606,7 @@ jobs:
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"$bug_code\",
                 \"status\": \"$test_status\"
-            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
+            }"
           exit ${result}
 
   # --- Test BUG-511 ---
@@ -665,7 +665,7 @@ jobs:
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"$bug_code\",
                 \"status\": \"$test_status\"
-            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
+            }"
           exit ${result}
 
   # --- Test BUG-512 ---
@@ -724,5 +724,5 @@ jobs:
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"$bug_code\",
                 \"status\": \"$test_status\"
-            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
+            }"
           exit ${result}
