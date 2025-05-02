@@ -88,7 +88,7 @@ jobs:
 
       - name: Run Test 01
         run: |
-            python test/single_tests/test_resized_image.py  > /dev/null 2>&1
+            python test/single_tests/test_resized_image.py 
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-201", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-201", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
@@ -160,7 +160,7 @@ jobs:
 
       - name: Run Test 02
         run: |
-            python test/single_tests/test_greyscale_image.py > /dev/null 2>&1
+            python test/single_tests/test_greyscale_image.py
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-202", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-202", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
@@ -231,7 +231,7 @@ jobs:
 
       - name: Run Test 03
         run: |
-            python test/single_tests/test_negative_image.py > /dev/null 2>&1
+            python test/single_tests/test_negative_image.py
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-203", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-203", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
@@ -302,7 +302,7 @@ jobs:
 
       - name: Run Test 04
         run: |
-            python test/single_tests/test_contrast_20.py > /dev/null 2>&1
+            python test/single_tests/test_contrast_20.py
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-204", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-204", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
@@ -373,7 +373,7 @@ jobs:
 
       - name: Run Test 05
         run: |
-            python test/single_tests/test_rotated_image.py > /dev/null 2>&1
+            python test/single_tests/test_rotated_image.py
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-205", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-205", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
@@ -444,7 +444,7 @@ jobs:
 
       - name: Run Test 06
         run: |
-            python test/single_tests/test_sharpened_image.py > /dev/null 2>&1
+            python test/single_tests/test_sharpened_image.py
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-206", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-206", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
@@ -515,7 +515,7 @@ jobs:
 
       - name: Run Test 07
         run: |
-            python test/single_tests/test_embossed_standard.py > /dev/null 2>&1
+            python test/single_tests/test_embossed_standard.py
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-207", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-207", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
@@ -586,7 +586,7 @@ jobs:
 
       - name: Run Test 08
         run: |
-            python test/single_tests/test_histogram_equalized.py > /dev/null 2>&1
+            python test/single_tests/test_histogram_equalized.py
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-208", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-208", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
@@ -658,7 +658,7 @@ jobs:
 
       - name: Run Test 09
         run: |
-            python test/single_tests/test_flood_filled_input.py > /dev/null 2>&1
+            python test/single_tests/test_flood_filled_input.py
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-209", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-209", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
@@ -729,7 +729,7 @@ jobs:
 
       - name: Run Test 10
         run: |
-            python test/single_tests/test_canny_edge_detection.py > /dev/null 2>&1
+            python test/single_tests/test_canny_edge_detection.py
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-210", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-210", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
@@ -800,7 +800,7 @@ jobs:
 
       - name: Run Test 11
         run: |
-            python test/single_tests/test_harris_corners.py > /dev/null 2>&1
+            python test/single_tests/test_harris_corners.py
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-211", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-211", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
