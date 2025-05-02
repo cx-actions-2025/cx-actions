@@ -72,7 +72,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e # Allow script to continue after test failure
-          build/quantum_tests --gtest_filter=ParallelizationTest.BUG101 > /dev/null 2>&1 # Run test
+          build/quantum_tests --gtest_filter=ParallelizationTest.BUG101 # Run test
           result=$? # Capture exit code
           test_status="" # Initialize status variable
           if [ ${result} -ne 0 ]; then
@@ -145,7 +145,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParallelizationTest.BUG102 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ParallelizationTest.BUG102
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -216,7 +216,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParallelizationTest.BUG103 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ParallelizationTest.BUG103
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -287,7 +287,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParallelizationTest.BUG104 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ParallelizationTest.BUG104
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -358,7 +358,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParallelizationTest.BUG105 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ParallelizationTest.BUG105
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -429,7 +429,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParallelizationTest.BUG106 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ParallelizationTest.BUG106
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -500,7 +500,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParallelizationTest.BUG107 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ParallelizationTest.BUG107
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -571,7 +571,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParallelizationTest.BUG108 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ParallelizationTest.BUG108
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -642,7 +642,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ContainmentFieldTest.BUG110 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ContainmentFieldTest.BUG110
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -713,7 +713,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ContainmentFieldTest.BUG111 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ContainmentFieldTest.BUG111
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -784,7 +784,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ContainmentFieldTest.BUG112 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ContainmentFieldTest.BUG112
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -855,7 +855,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ContainmentFieldTest.BUG113 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ContainmentFieldTest.BUG113
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -926,7 +926,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParticleTest.BUG114 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ParticleTest.BUG114
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -997,7 +997,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParticleTest.BUG115 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ParticleTest.BUG115
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1068,7 +1068,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParticleTest.BUG116 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ParticleTest.BUG116
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1139,7 +1139,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParticleTest.BUG117 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ParticleTest.BUG117
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1210,7 +1210,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParticleTest.BUG118 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ParticleTest.BUG118
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1281,7 +1281,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParticleTest.BUG119 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ParticleTest.BUG119
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1352,7 +1352,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=SimulationTest.BUG120 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=SimulationTest.BUG120
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1423,7 +1423,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=SimulationTest.BUG121 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=SimulationTest.BUG121
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1494,7 +1494,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=SimulationTest.BUG122 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=SimulationTest.BUG122
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1565,7 +1565,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=SimulationTest.BUG123 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=SimulationTest.BUG123
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1636,7 +1636,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=SimulationTest.BUG124 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=SimulationTest.BUG124
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1707,7 +1707,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=SimulationTest.BUG125 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=SimulationTest.BUG125
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
