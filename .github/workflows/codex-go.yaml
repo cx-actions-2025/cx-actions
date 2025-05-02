@@ -53,7 +53,7 @@ jobs:
 
       - name: Download Go Modules # Added step
         working-directory: pr-code
-        run: go mod download
+        run: go mod tidy
 
       - name: Run Cluster Tests and Report Status
         working-directory: pr-code
@@ -115,7 +115,7 @@ jobs:
 
       - name: Download Go Modules # Added step
         working-directory: pr-code
-        run: go mod download
+        run: go mod tidy
 
       - name: Run Election Tests and Report Status
         working-directory: pr-code
@@ -177,7 +177,7 @@ jobs:
 
       - name: Download Go Modules 
         working-directory: pr-code
-        run: go mod download
+        run: go mod tidy
 
       - name: Run KV Store Tests and Report Status
         working-directory: pr-code
@@ -239,7 +239,7 @@ jobs:
 
       - name: Download Go Modules # Added step
         working-directory: pr-code
-        run: go mod download
+        run: go mod tidy
 
       - name: Run Log Truncation Tests and Report Status
         working-directory: pr-code
