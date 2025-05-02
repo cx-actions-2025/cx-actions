@@ -72,7 +72,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e # Allow script to continue after test failure
-          build/quantum_tests --gtest_filter=ParallelizationTest.BUG101 > test_output.log 2>&1 # Run test
+          build/quantum_tests --gtest_filter=ParallelizationTest.BUG101 > /dev/null 2>&1 # Run test
           result=$? # Capture exit code
           test_status="" # Initialize status variable
           if [ ${result} -ne 0 ]; then
@@ -88,6 +88,7 @@ jobs:
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
             -d "{
+                \"tablePrefix\": \"uni_\",
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"BUG-101\",
                 \"status\": \"$test_status\"
@@ -144,7 +145,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParallelizationTest.BUG102 > test_output.log 2>&1
+          build/quantum_tests --gtest_filter=ParallelizationTest.BUG102 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -159,6 +160,7 @@ jobs:
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
             -d "{
+                \"tablePrefix\": \"uni_\",
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"BUG-102\",
                 \"status\": \"$test_status\"
@@ -214,7 +216,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParallelizationTest.BUG103 > test_output.log 2>&1
+          build/quantum_tests --gtest_filter=ParallelizationTest.BUG103 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -229,6 +231,7 @@ jobs:
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
             -d "{
+                \"tablePrefix\": \"uni_\",
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"BUG-103\",
                 \"status\": \"$test_status\"
@@ -284,7 +287,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParallelizationTest.BUG104 > test_output.log 2>&1
+          build/quantum_tests --gtest_filter=ParallelizationTest.BUG104 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -299,6 +302,7 @@ jobs:
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
             -d "{
+                \"tablePrefix\": \"uni_\",
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"BUG-104\",
                 \"status\": \"$test_status\"
@@ -354,7 +358,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParallelizationTest.BUG105 > test_output.log 2>&1
+          build/quantum_tests --gtest_filter=ParallelizationTest.BUG105 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -369,6 +373,7 @@ jobs:
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
             -d "{
+                \"tablePrefix\": \"uni_\",
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"BUG-105\",
                 \"status\": \"$test_status\"
@@ -424,7 +429,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParallelizationTest.BUG106 > test_output.log 2>&1
+          build/quantum_tests --gtest_filter=ParallelizationTest.BUG106 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -439,6 +444,7 @@ jobs:
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
             -d "{
+                \"tablePrefix\": \"uni_\",
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"BUG-106\",
                 \"status\": \"$test_status\"
@@ -494,7 +500,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParallelizationTest.BUG107 > test_output.log 2>&1
+          build/quantum_tests --gtest_filter=ParallelizationTest.BUG107 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -509,6 +515,7 @@ jobs:
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
             -d "{
+                \"tablePrefix\": \"uni_\",
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"BUG-107\",
                 \"status\": \"$test_status\"
@@ -564,7 +571,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParallelizationTest.BUG108 > test_output.log 2>&1
+          build/quantum_tests --gtest_filter=ParallelizationTest.BUG108 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -579,6 +586,7 @@ jobs:
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
             -d "{
+                \"tablePrefix\": \"uni_\",
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"BUG-108\",
                 \"status\": \"$test_status\"
@@ -634,7 +642,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ContainmentFieldTest.BUG110 > test_output.log 2>&1
+          build/quantum_tests --gtest_filter=ContainmentFieldTest.BUG110 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -649,6 +657,7 @@ jobs:
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
             -d "{
+                \"tablePrefix\": \"uni_\",
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"BUG-110\",
                 \"status\": \"$test_status\"
@@ -704,7 +713,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ContainmentFieldTest.BUG111 > test_output.log 2>&1
+          build/quantum_tests --gtest_filter=ContainmentFieldTest.BUG111 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -719,6 +728,7 @@ jobs:
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
             -d "{
+                \"tablePrefix\": \"uni_\",
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"BUG-111\",
                 \"status\": \"$test_status\"
@@ -774,7 +784,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ContainmentFieldTest.BUG112 > test_output.log 2>&1
+          build/quantum_tests --gtest_filter=ContainmentFieldTest.BUG112 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -789,6 +799,7 @@ jobs:
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
             -d "{
+                \"tablePrefix\": \"uni_\",
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"BUG-112\",
                 \"status\": \"$test_status\"
@@ -844,7 +855,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ContainmentFieldTest.BUG113 > test_output.log 2>&1
+          build/quantum_tests --gtest_filter=ContainmentFieldTest.BUG113 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -859,6 +870,7 @@ jobs:
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
             -d "{
+                \"tablePrefix\": \"uni_\",
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"BUG-113\",
                 \"status\": \"$test_status\"
@@ -914,7 +926,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParticleTest.BUG114 > test_output.log 2>&1
+          build/quantum_tests --gtest_filter=ParticleTest.BUG114 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -929,6 +941,7 @@ jobs:
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
             -d "{
+                \"tablePrefix\": \"uni_\",
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"BUG-114\",
                 \"status\": \"$test_status\"
@@ -984,7 +997,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParticleTest.BUG115 > test_output.log 2>&1
+          build/quantum_tests --gtest_filter=ParticleTest.BUG115 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -999,6 +1012,7 @@ jobs:
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
             -d "{
+                \"tablePrefix\": \"uni_\",
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"BUG-115\",
                 \"status\": \"$test_status\"
@@ -1054,7 +1068,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParticleTest.BUG116 > test_output.log 2>&1
+          build/quantum_tests --gtest_filter=ParticleTest.BUG116 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1069,6 +1083,7 @@ jobs:
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
             -d "{
+                \"tablePrefix\": \"uni_\",
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"BUG-116\",
                 \"status\": \"$test_status\"
@@ -1124,7 +1139,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParticleTest.BUG117 > test_output.log 2>&1
+          build/quantum_tests --gtest_filter=ParticleTest.BUG117 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1139,6 +1154,7 @@ jobs:
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
             -d "{
+                \"tablePrefix\": \"uni_\",
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"BUG-117\",
                 \"status\": \"$test_status\"
@@ -1194,7 +1210,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParticleTest.BUG118 > test_output.log 2>&1
+          build/quantum_tests --gtest_filter=ParticleTest.BUG118 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1209,6 +1225,7 @@ jobs:
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
             -d "{
+                \"tablePrefix\": \"uni_\",
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"BUG-118\",
                 \"status\": \"$test_status\"
@@ -1264,7 +1281,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParticleTest.BUG119 > test_output.log 2>&1
+          build/quantum_tests --gtest_filter=ParticleTest.BUG119 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1279,6 +1296,7 @@ jobs:
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
             -d "{
+                \"tablePrefix\": \"uni_\",
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"BUG-119\",
                 \"status\": \"$test_status\"
@@ -1334,7 +1352,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=SimulationTest.BUG120 > test_output.log 2>&1
+          build/quantum_tests --gtest_filter=SimulationTest.BUG120 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1349,6 +1367,7 @@ jobs:
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
             -d "{
+                \"tablePrefix\": \"uni_\",
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"BUG-120\",
                 \"status\": \"$test_status\"
@@ -1404,7 +1423,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=SimulationTest.BUG121 > test_output.log 2>&1
+          build/quantum_tests --gtest_filter=SimulationTest.BUG121 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1419,6 +1438,7 @@ jobs:
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
             -d "{
+                \"tablePrefix\": \"uni_\",
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"BUG-121\",
                 \"status\": \"$test_status\"
@@ -1474,7 +1494,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=SimulationTest.BUG122 > test_output.log 2>&1
+          build/quantum_tests --gtest_filter=SimulationTest.BUG122 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1489,6 +1509,7 @@ jobs:
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
             -d "{
+                \"tablePrefix\": \"uni_\",
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"BUG-122\",
                 \"status\": \"$test_status\"
@@ -1544,7 +1565,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=SimulationTest.BUG123 > test_output.log 2>&1
+          build/quantum_tests --gtest_filter=SimulationTest.BUG123 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1559,6 +1580,7 @@ jobs:
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
             -d "{
+                \"tablePrefix\": \"uni_\",
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"BUG-123\",
                 \"status\": \"$test_status\"
@@ -1614,7 +1636,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=SimulationTest.BUG124 > test_output.log 2>&1
+          build/quantum_tests --gtest_filter=SimulationTest.BUG124 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1629,6 +1651,7 @@ jobs:
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
             -d "{
+                \"tablePrefix\": \"uni_\",
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"BUG-124\",
                 \"status\": \"$test_status\"
@@ -1684,7 +1707,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=SimulationTest.BUG125 > test_output.log 2>&1
+          build/quantum_tests --gtest_filter=SimulationTest.BUG125 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1699,6 +1722,7 @@ jobs:
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
             -d "{
+                \"tablePrefix\": \"uni_\",
                 \"teamName\": \"${{ inputs.team-name }}\",
                 \"bugCode\": \"BUG-125\",
                 \"status\": \"$test_status\"

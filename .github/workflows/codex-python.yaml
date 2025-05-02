@@ -1,4 +1,4 @@
-name: Test School Python 01
+name: Test CodeX Python
 
 on:
   workflow_call:
@@ -7,7 +7,7 @@ on:
             required: true
             type: string
         pr_head_sha:
-            required: true 
+            required: true
             type: string
         machine_name:
             required: true
@@ -17,19 +17,20 @@ on:
             required: true
         auth-token:
             required: true
-        backend-url: 
+        backend-url:
             required: true
         auth-key:
             required: true
 
 jobs:
-  test-project:
+  test-bug-301:
+    name: test-bug-301
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
         uses: actions/checkout@v3
         with:
-          ref: ${{ inputs.pr_head_sha }} 
+          ref: ${{ inputs.pr_head_sha }}
 
       - name: checkout tests
         uses: actions/checkout@v3
@@ -51,254 +52,1460 @@ jobs:
       - name: install dependencies
         run: python -m pip install -r requirements.txt
 
-      - name: run test on bug 01
+      - name: run test on bug 301 and report status
         shell: bash {0}
         run: |
           set +e
-          python -m unittest test_bank.TestBankOperator.test_create_account_with_no_users > /dev/null 2>&1
+          # Run the specific pytest test for BUG-301 using BUGXXX format
+          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::BUG301 > /dev/null 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-            echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-001"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-301\",
+                \"status\": \"$test_status\"
+            }"
+          # Exit with the original test result code to reflect job status
           exit ${result}
-        continue-on-error: true
 
-      - name: run test on bug 02
-        shell: bash {0}
-        run: |
-          set +e
-          python -m unittest test_bank.TestBankOperator.test_invalid_user_selection > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then
-            echo "FAILED"
-          else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
-            -H "Content-Type: application/json" \
-            -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-002"
-            }'
-          fi
-          exit ${result}
-        continue-on-error: true
+  test-bug-302:
+    name: test-bug-302
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
 
-      - name: run test on bug 03
-        shell: bash {0}
-        run: |
-          set +e
-          python -m unittest test_bank.TestBankAccount.test_invalid_deposit > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then
-            echo "FAILED"
-          else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
-            -H "Content-Type: application/json" \
-            -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-003"
-            }'
-          fi
-          exit ${result}
-        continue-on-error: true
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: python
+          sparse-checkout-cone-mode: false
+          path: tests
 
-      - name: run test on bug 04
-        shell: bash {0}
-        run: |
-          set +e
-          python -m unittest test_bank.TestBankAccount.test_withdrawal > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then
-            echo "FAILED"
-          else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
-            -H "Content-Type: application/json" \
-            -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-004"
-            }'
-          fi
-          exit ${result}
-        continue-on-error: true
+      - name: Setup test files
+        run: mv tests/python/* tests/
 
-      - name: run test on bug 05
-        shell: bash {0}
-        run: |
-          set +e
-          python -m unittest test_bank.TestBankAccount.test_withdrawal_below_zero > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then
-            echo "FAILED"
-          else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
-            -H "Content-Type: application/json" \
-            -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-005"
-            }'
-          fi
-          exit ${result}
-        continue-on-error: true
+      - name: setup python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
 
-      - name: run test on bug 06
-        shell: bash {0}
-        run: |
-          set +e
-          python -m unittest test_bank.TestBankAccount.test_balance_after_multiple_operations > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then
-            echo "FAILED"
-          else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
-            -H "Content-Type: application/json" \
-            -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-006"
-            }'
-          fi
-          exit ${result}
-        continue-on-error: true
+      - name: install dependencies
+        run: python -m pip install -r requirements.txt
 
-      - name: run test on bug 07
+      - name: run test on bug 302 and report status
         shell: bash {0}
         run: |
           set +e
-          python -m unittest test_bank.TestBankAccount.test_savings_account > /dev/null 2>&1
+          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::BUG302 > /dev/null 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-            echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-007"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-302\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
-        continue-on-error: true
 
-      - name: run test on bug 08
-        shell: bash {0}
-        run: |
-          set +e
-          python -m unittest test_bank.TestUser.test_add_account > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then
-            echo "FAILED"
-          else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
-            -H "Content-Type: application/json" \
-            -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-008"
-            }'
-          fi
-          exit ${result}
-        continue-on-error: true
+  test-bug-303:
+    name: test-bug-303
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
 
-      - name: run test on bug 09
-        shell: bash {0}
-        run: |
-          set +e
-          python -m unittest test_bank.TestUser.test_total_balance > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then
-            echo "FAILED"
-          else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
-            -H "Content-Type: application/json" \
-            -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-009"
-            }'
-          fi
-          exit ${result}
-        continue-on-error: true
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: python
+          sparse-checkout-cone-mode: false
+          path: tests
 
-      - name: run test on bug 10
-        shell: bash {0}
-        run: |
-          set +e
-          python -m unittest test_bank.TestUser.test_invalid_email_on_user_creation > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then
-            echo "FAILED"
-          else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
-            -H "Content-Type: application/json" \
-            -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-010"
-            }'
-          fi
-          exit ${result}
-        continue-on-error: true
+      - name: Setup test files
+        run: mv tests/python/* tests/
 
-      - name: run test on bug 11
-        shell: bash {0}
-        run: |
-          set +e
-          python -m unittest test_bank.TestUser.test_add_invalid_account > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then
-            echo "FAILED"
-          else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
-            -H "Content-Type: application/json" \
-            -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-011"
-            }'
-          fi
-          exit ${result}
-        continue-on-error: true
+      - name: setup python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
 
-      - name: run test on bug 12
+      - name: install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: run test on bug 303 and report status
         shell: bash {0}
         run: |
           set +e
-          python -m unittest test_bank.TestUser.test_remove_account > /dev/null 2>&1
+          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::BUG303 > /dev/null 2>&1
           result=$?
+          test_status=""
           if [ ${result} -ne 0 ]; then
-            echo "FAILED"
+              echo "Test FAILED"
+              test_status="fail"
           else
-            echo "PASSED"
-            curl -X POST ${{ secrets.backend-url }} \
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
             -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d '{
-                "teamName": "${{ inputs.team-name }}",
-                "bugCode": "BUG-012"
-            }'
-          fi
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-303\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
-        continue-on-error: true
+
+  test-bug-304:
+    name: test-bug-304
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: python
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: Setup test files
+        run: mv tests/python/* tests/
+
+      - name: setup python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+
+      - name: install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: run test on bug 304 and report status
+        shell: bash {0}
+        run: |
+          set +e
+          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::BUG304 > /dev/null 2>&1
+          result=$?
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-304\",
+                \"status\": \"$test_status\"
+            }"
+          exit ${result}
+
+  test-bug-305:
+    name: test-bug-305
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: python
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: Setup test files
+        run: mv tests/python/* tests/
+
+      - name: setup python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+
+      - name: install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: run test on bug 305 and report status
+        shell: bash {0}
+        run: |
+          set +e
+          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::BUG305 > /dev/null 2>&1
+          result=$?
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-305\",
+                \"status\": \"$test_status\"
+            }"
+          exit ${result}
+
+  test-bug-306:
+    name: test-bug-306
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: python
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: Setup test files
+        run: mv tests/python/* tests/
+
+      - name: setup python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+
+      - name: install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: run test on bug 306 and report status
+        shell: bash {0}
+        run: |
+          set +e
+          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::BUG306 > /dev/null 2>&1
+          result=$?
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-306\",
+                \"status\": \"$test_status\"
+            }"
+          exit ${result}
+
+  test-bug-307:
+    name: test-bug-307
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: python
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: Setup test files
+        run: mv tests/python/* tests/
+
+      - name: setup python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+
+      - name: install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: run test on bug 307 and report status
+        shell: bash {0}
+        run: |
+          set +e
+          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::BUG307 > /dev/null 2>&1
+          result=$?
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-307\",
+                \"status\": \"$test_status\"
+            }"
+          exit ${result}
+
+  test-bug-308:
+    name: test-bug-308
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: python
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: Setup test files
+        run: mv tests/python/* tests/
+
+      - name: setup python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+
+      - name: install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: run test on bug 308 and report status
+        shell: bash {0}
+        run: |
+          set +e
+          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::BUG308 > /dev/null 2>&1
+          result=$?
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-308\",
+                \"status\": \"$test_status\"
+            }"
+          exit ${result}
+
+  test-bug-309:
+    name: test-bug-309
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: python
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: Setup test files
+        run: mv tests/python/* tests/
+
+      - name: setup python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+
+      - name: install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: run test on bug 309 and report status
+        shell: bash {0}
+        run: |
+          set +e
+          python -m pytest -v --disable-warnings tests/test_security.py::BUG309 > /dev/null 2>&1
+          result=$?
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-309\",
+                \"status\": \"$test_status\"
+            }"
+          exit ${result}
+
+  test-bug-310:
+    name: test-bug-310
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: python
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: Setup test files
+        run: mv tests/python/* tests/
+
+      - name: setup python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+
+      - name: install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: run test on bug 310 and report status
+        shell: bash {0}
+        run: |
+          set +e
+          python -m pytest -v --disable-warnings tests/test_transactions.py::BUG310 > /dev/null 2>&1
+          result=$?
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-310\",
+                \"status\": \"$test_status\"
+            }"
+          exit ${result}
+
+  test-bug-311:
+    name: test-bug-311
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: python
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: Setup test files
+        run: mv tests/python/* tests/
+
+      - name: setup python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+
+      - name: install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: run test on bug 311 and report status
+        shell: bash {0}
+        run: |
+          set +e
+          python -m pytest -v --disable-warnings tests/test_transactions.py::BUG311 > /dev/null 2>&1
+          result=$?
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-311\",
+                \"status\": \"$test_status\"
+            }"
+          exit ${result}
+
+  test-bug-312:
+    name: test-bug-312
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: python
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: Setup test files
+        run: mv tests/python/* tests/
+
+      - name: setup python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+
+      - name: install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: run test on bug 312 and report status
+        shell: bash {0}
+        run: |
+          set +e
+          python -m pytest -v --disable-warnings tests/test_transactions.py::BUG312 > /dev/null 2>&1
+          result=$?
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-312\",
+                \"status\": \"$test_status\"
+            }"
+          exit ${result}
+
+  test-bug-313:
+    name: test-bug-313
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: python
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: Setup test files
+        run: mv tests/python/* tests/
+
+      - name: setup python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+
+      - name: install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: run test on bug 313 and report status
+        shell: bash {0}
+        run: |
+          set +e
+          python -m pytest -v --disable-warnings tests/test_transactions.py::BUG313 > /dev/null 2>&1
+          result=$?
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-313\",
+                \"status\": \"$test_status\"
+            }"
+          exit ${result}
+
+  test-bug-314:
+    name: test-bug-314
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: python
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: Setup test files
+        run: mv tests/python/* tests/
+
+      - name: setup python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+
+      - name: install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: run test on bug 314 and report status
+        shell: bash {0}
+        run: |
+          set +e
+          python -m pytest -v --disable-warnings tests/test_transactions.py::BUG314 > /dev/null 2>&1
+          result=$?
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-314\",
+                \"status\": \"$test_status\"
+            }"
+          exit ${result}
+
+  test-bug-315:
+    name: test-bug-315
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: python
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: Setup test files
+        run: mv tests/python/* tests/
+
+      - name: setup python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+
+      - name: install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: run test on bug 315 and report status
+        shell: bash {0}
+        run: |
+          set +e
+          python -m pytest -v --disable-warnings tests/test_transactions_advanced.py::BUG315 > /dev/null 2>&1
+          result=$?
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-315\",
+                \"status\": \"$test_status\"
+            }"
+          exit ${result}
+
+  test-bug-316:
+    name: test-bug-316
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: python
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: Setup test files
+        run: mv tests/python/* tests/
+
+      - name: setup python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+
+      - name: install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: run test on bug 316 and report status
+        shell: bash {0}
+        run: |
+          set +e
+          python -m pytest -v --disable-warnings tests/test_accounts.py::BUG316 > /dev/null 2>&1
+          result=$?
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-316\",
+                \"status\": \"$test_status\"
+            }"
+          exit ${result}
+
+  test-bug-317:
+    name: test-bug-317
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: python
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: Setup test files
+        run: mv tests/python/* tests/
+
+      - name: setup python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+
+      - name: install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: run test on bug 317 and report status
+        shell: bash {0}
+        run: |
+          set +e
+          python -m pytest -v --disable-warnings tests/test_accounts.py::BUG317 > /dev/null 2>&1
+          result=$?
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-317\",
+                \"status\": \"$test_status\"
+            }"
+          exit ${result}
+
+  test-bug-318:
+    name: test-bug-318
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: python
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: Setup test files
+        run: mv tests/python/* tests/
+
+      - name: setup python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+
+      - name: install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: run test on bug 318 and report status
+        shell: bash {0}
+        run: |
+          set +e
+          python -m pytest -v --disable-warnings tests/test_accounts.py::BUG318 > /dev/null 2>&1
+          result=$?
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-318\",
+                \"status\": \"$test_status\"
+            }"
+          exit ${result}
+
+  test-bug-319:
+    name: test-bug-319
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: python
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: Setup test files
+        run: mv tests/python/* tests/
+
+      - name: setup python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+
+      - name: install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: run test on bug 319 and report status
+        shell: bash {0}
+        run: |
+          set +e
+          python -m pytest -v --disable-warnings tests/test_accounts.py::BUG319 > /dev/null 2>&1
+          result=$?
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-319\",
+                \"status\": \"$test_status\"
+            }"
+          exit ${result}
+
+  test-bug-320:
+    name: test-bug-320
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: python
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: Setup test files
+        run: mv tests/python/* tests/
+
+      - name: setup python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+
+      - name: install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: run test on bug 320 and report status
+        shell: bash {0}
+        run: |
+          set +e
+          python -m pytest -v --disable-warnings tests/test_accounts.py::BUG320 > /dev/null 2>&1
+          result=$?
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-320\",
+                \"status\": \"$test_status\"
+            }"
+          exit ${result}
+
+  test-bug-321:
+    name: test-bug-321
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: python
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: Setup test files
+        run: mv tests/python/* tests/
+
+      - name: setup python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+
+      - name: install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: run test on bug 321 and report status
+        shell: bash {0}
+        run: |
+          set +e
+          python -m pytest -v --disable-warnings tests/test_accounts.py::BUG321 > /dev/null 2>&1
+          result=$?
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-321\",
+                \"status\": \"$test_status\"
+            }"
+          exit ${result}
+
+  test-bug-322:
+    name: test-bug-322
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: python
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: Setup test files
+        run: mv tests/python/* tests/
+
+      - name: setup python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+
+      - name: install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: run test on bug 322 and report status
+        shell: bash {0}
+        run: |
+          set +e
+          python -m pytest -v --disable-warnings tests/test_accounts.py::BUG322 > /dev/null 2>&1
+          result=$?
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-322\",
+                \"status\": \"$test_status\"
+            }"
+          exit ${result}
+
+  test-bug-323:
+    name: test-bug-323
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: python
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: Setup test files
+        run: mv tests/python/* tests/
+
+      - name: setup python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+
+      - name: install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: run test on bug 323 and report status
+        shell: bash {0}
+        run: |
+          set +e
+          python -m pytest -v --disable-warnings tests/test_accounts_advanced.py::BUG323 > /dev/null 2>&1
+          result=$?
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-323\",
+                \"status\": \"$test_status\"
+            }"
+          exit ${result}
+
+  test-bug-324:
+    name: test-bug-324
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: python
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: Setup test files
+        run: mv tests/python/* tests/
+
+      - name: setup python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+
+      - name: install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: run test on bug 324 and report status
+        shell: bash {0}
+        run: |
+          set +e
+          python -m pytest -v --disable-warnings tests/test_accounts_advanced.py::BUG324 > /dev/null 2>&1
+          result=$?
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-324\",
+                \"status\": \"$test_status\"
+            }"
+          exit ${result}
+
+  test-bug-325:
+    name: test-bug-325
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: python
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: Setup test files
+        run: mv tests/python/* tests/
+
+      - name: setup python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+
+      - name: install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: run test on bug 325 and report status
+        shell: bash {0}
+        run: |
+          set +e
+          python -m pytest -v --disable-warnings tests/test_accounts_advanced.py::BUG325 > /dev/null 2>&1
+          result=$?
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-325\",
+                \"status\": \"$test_status\"
+            }"
+          exit ${result}
+
+  test-bug-326:
+    name: test-bug-326
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: python
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: Setup test files
+        run: mv tests/python/* tests/
+
+      - name: setup python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+
+      - name: install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: run test on bug 326 and report status
+        shell: bash {0}
+        run: |
+          set +e
+          python -m pytest -v --disable-warnings tests/test_accounts_advanced.py::BUG326 > /dev/null 2>&1
+          result=$?
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-326\",
+                \"status\": \"$test_status\"
+            }"
+          exit ${result}
+
+  test-bug-327:
+    name: test-bug-327
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: python
+          sparse-checkout-cone-mode: false
+          path: tests
+
+      - name: Setup test files
+        run: mv tests/python/* tests/
+
+      - name: setup python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+
+      - name: install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: run test on bug 327 and report status
+        shell: bash {0}
+        run: |
+          set +e
+          python -m pytest -v --disable-warnings tests/test_accounts_advanced.py::BUG327 > /dev/null 2>&1
+          result=$?
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-327\",
+                \"status\": \"$test_status\"
+            }"
+          exit ${result}
