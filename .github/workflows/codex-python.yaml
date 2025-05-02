@@ -24,7 +24,6 @@ on:
 
 jobs:
   test-bug-301:
-    # Corrected name to match bug code
     name: test-bug-301
     runs-on: ${{ inputs.machine_name }}
     steps:
@@ -53,12 +52,11 @@ jobs:
       - name: install dependencies
         run: python -m pip install -r requirements.txt
 
-      # Corrected step name and added echo
       - name: run test on bug 301
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_password_change.py::BUG301
+          python -m pytest -v --disable-warnings tests/test_password_change.py::BUG301 > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -68,7 +66,6 @@ jobs:
               echo "Test PASSED"
               test_status="pass"
           fi
-          # Added this echo line for consistency
           echo "Sending status '$test_status' to backend..."
           curl -X POST ${{ secrets.backend-url }} \
             -H "Content-Type: application/json" \
@@ -81,7 +78,7 @@ jobs:
             }"
           exit ${result}
 
-  test-bug-02: 
+  test-bug-02:
     name: test-bug-302
     runs-on: ${{ inputs.machine_name }}
     steps:
@@ -110,12 +107,11 @@ jobs:
       - name: install dependencies
         run: python -m pip install -r requirements.txt
 
-      # Corrected step name
       - name: run test on bug 302
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::test_token_refresh
+          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::test_token_refresh > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -166,12 +162,11 @@ jobs:
       - name: install dependencies
         run: python -m pip install -r requirements.txt
 
-      # Corrected step name, ensured redirection
       - name: run test on bug 303
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::test_token_refresh_with_role
+          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::test_token_refresh_with_role > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -222,12 +217,11 @@ jobs:
       - name: install dependencies
         run: python -m pip install -r requirements.txt
 
-      # Corrected step name, added redirection
       - name: run test on bug 304
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::test_verify_token_with_expired_token
+          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::test_verify_token_with_expired_token > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -278,12 +272,11 @@ jobs:
       - name: install dependencies
         run: python -m pip install -r requirements.txt
 
-      # Corrected step name, added redirection
       - name: run test on bug 305
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::test_logout_with_refresh_token
+          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::test_logout_with_refresh_token > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -334,12 +327,11 @@ jobs:
       - name: install dependencies
         run: python -m pip install -r requirements.txt
 
-      # Corrected step name, added redirection
       - name: run test on bug 306
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::test_fresh_token_required
+          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::test_fresh_token_required > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -390,12 +382,11 @@ jobs:
       - name: install dependencies
         run: python -m pip install -r requirements.txt
 
-      # Corrected step name, added redirection
       - name: run test on bug 307
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::test_token_claims
+          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::test_token_claims > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -446,12 +437,11 @@ jobs:
       - name: install dependencies
         run: python -m pip install -r requirements.txt
 
-      # Corrected step name, added redirection
       - name: run test on bug 308
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::test_token_blocklist_persistence
+          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::test_token_blocklist_persistence > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -502,12 +492,11 @@ jobs:
       - name: install dependencies
         run: python -m pip install -r requirements.txt
 
-      # Corrected step name, added redirection
       - name: run test on bug 309
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_security.py::test_resource_authorization
+          python -m pytest -v --disable-warnings tests/test_security.py::test_resource_authorization > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -558,12 +547,11 @@ jobs:
       - name: install dependencies
         run: python -m pip install -r requirements.txt
 
-      # Corrected step name, added redirection
       - name: run test on bug 310
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_transactions.py::test_deposit
+          python -m pytest -v --disable-warnings tests/test_transactions.py::test_deposit > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -614,12 +602,11 @@ jobs:
       - name: install dependencies
         run: python -m pip install -r requirements.txt
 
-      # Corrected step name, added redirection
       - name: run test on bug 311
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_transactions.py::test_withdraw
+          python -m pytest -v --disable-warnings tests/test_transactions.py::test_withdraw > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -670,12 +657,11 @@ jobs:
       - name: install dependencies
         run: python -m pip install -r requirements.txt
 
-      # Corrected step name, added redirection
       - name: run test on bug 312
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_transactions.py::test_withdraw_insufficient_funds
+          python -m pytest -v --disable-warnings tests/test_transactions.py::test_withdraw_insufficient_funds > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -726,12 +712,11 @@ jobs:
       - name: install dependencies
         run: python -m pip install -r requirements.txt
 
-      # Corrected step name, added redirection
       - name: run test on bug 313
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_transactions.py::test_transfer
+          python -m pytest -v --disable-warnings tests/test_transactions.py::test_transfer > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -782,12 +767,11 @@ jobs:
       - name: install dependencies
         run: python -m pip install -r requirements.txt
 
-      # Corrected step name, added redirection
       - name: run test on bug 314
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_transactions.py::test_get_transactions
+          python -m pytest -v --disable-warnings tests/test_transactions.py::test_get_transactions > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -838,12 +822,11 @@ jobs:
       - name: install dependencies
         run: python -m pip install -r requirements.txt
 
-      # Corrected step name, added redirection
       - name: run test on bug 315
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_transactions_advanced.py::test_transaction_filtering
+          python -m pytest -v --disable-warnings tests/test_transactions_advanced.py::test_transaction_filtering > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -894,12 +877,11 @@ jobs:
       - name: install dependencies
         run: python -m pip install -r requirements.txt
 
-      # Corrected step name, added redirection
       - name: run test on bug 316
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_accounts.py::test_account_creation
+          python -m pytest -v --disable-warnings tests/test_accounts.py::test_account_creation > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -950,12 +932,11 @@ jobs:
       - name: install dependencies
         run: python -m pip install -r requirements.txt
 
-      # Corrected step name, added redirection
       - name: run test on bug 317
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_accounts.py::test_account_creation_validation
+          python -m pytest -v --disable-warnings tests/test_accounts.py::test_account_creation_validation > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1006,12 +987,11 @@ jobs:
       - name: install dependencies
         run: python -m pip install -r requirements.txt
 
-      # Corrected step name, added redirection
       - name: run test on bug 318
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_accounts.py::test_get_accounts
+          python -m pytest -v --disable-warnings tests/test_accounts.py::test_get_accounts > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1062,12 +1042,11 @@ jobs:
       - name: install dependencies
         run: python -m pip install -r requirements.txt
 
-      # Corrected step name, added redirection
       - name: run test on bug 319
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_accounts.py::test_get_account_by_id
+          python -m pytest -v --disable-warnings tests/test_accounts.py::test_get_account_by_id > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1118,12 +1097,11 @@ jobs:
       - name: install dependencies
         run: python -m pip install -r requirements.txt
 
-      # Corrected step name, added redirection
       - name: run test on bug 320
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_accounts.py::test_get_nonexistent_account
+          python -m pytest -v --disable-warnings tests/test_accounts.py::test_get_nonexistent_account > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1174,12 +1152,11 @@ jobs:
       - name: install dependencies
         run: python -m pip install -r requirements.txt
 
-      # Corrected step name, added redirection
       - name: run test on bug 321
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_accounts.py::test_update_account
+          python -m pytest -v --disable-warnings tests/test_accounts.py::test_update_account > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1230,12 +1207,11 @@ jobs:
       - name: install dependencies
         run: python -m pip install -r requirements.txt
 
-      # Corrected step name, added redirection
       - name: run test on bug 322
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_accounts.py::test_delete_account
+          python -m pytest -v --disable-warnings tests/test_accounts.py::test_delete_account > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1286,12 +1262,11 @@ jobs:
       - name: install dependencies
         run: python -m pip install -r requirements.txt
 
-      # Corrected step name, added redirection
       - name: run test on bug 323
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_accounts_advanced.py::test_account_type_validation
+          python -m pytest -v --disable-warnings tests/test_accounts_advanced.py::test_account_type_validation > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1342,12 +1317,11 @@ jobs:
       - name: install dependencies
         run: python -m pip install -r requirements.txt
 
-      # Corrected step name, added redirection
       - name: run test on bug 324
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_accounts_advanced.py::test_account_name_validation
+          python -m pytest -v --disable-warnings tests/test_accounts_advanced.py::test_account_name_validation > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1398,12 +1372,11 @@ jobs:
       - name: install dependencies
         run: python -m pip install -r requirements.txt
 
-      # Corrected step name, added redirection
       - name: run test on bug 325
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_accounts_advanced.py::test_account_listing
+          python -m pytest -v --disable-warnings tests/test_accounts_advanced.py::test_account_listing > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1454,12 +1427,11 @@ jobs:
       - name: install dependencies
         run: python -m pip install -r requirements.txt
 
-      # Corrected step name, added redirection
       - name: run test on bug 326
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_accounts_advanced.py::test_account_access_control
+          python -m pytest -v --disable-warnings tests/test_accounts_advanced.py::test_account_access_control > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1510,12 +1482,11 @@ jobs:
       - name: install dependencies
         run: python -m pip install -r requirements.txt
 
-      # Corrected step name, added redirection
       - name: run test on bug 327
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_accounts_advanced.py::test_account_limit
+          python -m pytest -v --disable-warnings tests/test_accounts_advanced.py::test_account_limit > /dev/null 2>&1
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1536,3 +1507,4 @@ jobs:
                 \"status\": \"$test_status\"
             }"
           exit ${result}
+          
