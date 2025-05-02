@@ -1,0 +1,252 @@
+name: Test CodeX Go Project
+
+on:
+  workflow_call:
+    inputs:
+      team-name:
+        required: true
+        type: string
+      pr_head_sha:
+        required: true
+        type: string
+      machine_name:
+        required: true
+        type: string
+    secrets:
+      backend-url:
+        required: true
+      auth-key:
+        required: true
+
+jobs:
+  test-cluster:
+    name: Test Cluster Logic
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+          path: pr-code
+
+      - name: Checkout Main Branch Tests
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          path: main-branch-code
+          sparse-checkout: |
+            tests
+            go.mod
+            go.sum
+          sparse-checkout-cone-mode: false
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Prepare Test Environment
+        working-directory: pr-code
+        run: |
+          mkdir -p tests
+          cp -r ../main-branch-code/tests/* ./tests/
+
+      - name: Run Cluster Tests and Report Status
+        working-directory: pr-code
+        run: |
+          set +e
+          go test ./tests -v > /dev/null 2>&1
+          result=$?
+          test_status="fail"
+          bug_code="CLUSTER"
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' for bug '$bug_code' to backend..."
+          curl -sf -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"$bug_code\",
+                \"status\": \"$test_status\"
+            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
+          exit ${result}
+
+  test-election:
+    name: Test Election Logic
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+          path: pr-code
+
+      - name: Checkout Main Branch Tests
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          path: main-branch-code
+          sparse-checkout: |
+            tests
+            go.mod
+            go.sum
+          sparse-checkout-cone-mode: false
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Prepare Test Environment
+        working-directory: pr-code
+        run: |
+          mkdir -p tests
+          cp -r ../main-branch-code/tests/* ./tests/
+
+      - name: Run Election Tests and Report Status
+        working-directory: pr-code
+        run: |
+          set +e
+          go test ./tests -v > /dev/null 2>&1
+          result=$?
+          test_status="fail"
+          bug_code="ELECTION"
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' for bug '$bug_code' to backend..."
+          curl -sf -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"$bug_code\",
+                \"status\": \"$test_status\"
+            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
+          exit ${result}
+
+  test-kv-store:
+    name: Test KV Store Logic
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+          path: pr-code
+
+      - name: Checkout Main Branch Tests
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          path: main-branch-code
+          sparse-checkout: |
+            tests
+            go.mod
+            go.sum
+          sparse-checkout-cone-mode: false
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Prepare Test Environment
+        working-directory: pr-code
+        run: |
+          mkdir -p tests
+          cp -r ../main-branch-code/tests/* ./tests/
+
+      - name: Run KV Store Tests and Report Status
+        working-directory: pr-code
+        run: |
+          set +e
+          go test ./tests -v > /dev/null 2>&1
+          result=$?
+          test_status="fail"
+          bug_code="KV-STORE"
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' for bug '$bug_code' to backend..."
+          curl -sf -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"$bug_code\",
+                \"status\": \"$test_status\"
+            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
+          exit ${result}
+
+  test-log-truncation:
+    name: Test Log Truncation Logic
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+          path: pr-code
+
+      - name: Checkout Main Branch Tests
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          path: main-branch-code
+          sparse-checkout: |
+            tests
+            go.mod
+            go.sum
+          sparse-checkout-cone-mode: false
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Prepare Test Environment
+        working-directory: pr-code
+        run: |
+          mkdir -p tests
+          cp -r ../main-branch-code/tests/* ./tests/
+
+      - name: Run Log Truncation Tests and Report Status
+        working-directory: pr-code
+        run: |
+          set +e
+          go test ./tests -v > /dev/null 2>&1
+          result=$?
+          test_status="fail"
+          bug_code="LOG-TRUNCATION"
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' for bug '$bug_code' to backend..."
+          curl -sf -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"$bug_code\",
+                \"status\": \"$test_status\"
+            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
+          exit ${result}
