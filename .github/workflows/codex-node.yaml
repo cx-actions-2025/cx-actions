@@ -1,4 +1,4 @@
-name: Test Node Project
+name: Test Nest Project
 on:
   workflow_call:
     inputs:
@@ -20,11 +20,8 @@ on:
             required: true
         auth-key:
             required: true
-        firebase-token:
+        image-url:
             required: true
-
-# NOTE: The bug codes (e.g., BUG-102, BUG-GREYSCALE) are placeholders.
-# Replace them with the actual codes used by your backend system if they differ.
 
 jobs:
   test-bug-01:
@@ -51,6 +48,8 @@ jobs:
 
       - name: Setup test files
         run: |
+            mkdir -p apps/cse40/expected_images
+            mv test/node/expected_images/* apps/cse40/expected_images/
             mv test/node/* test/
 
       - uses: actions/setup-node@v3
@@ -71,7 +70,7 @@ jobs:
       - name: Download input image
         run: |
           mkdir -p apps/cse40/images
-          wget -O apps/cse40/images/input_image.png "https://firebasestorage.googleapis.com/v0/b/profile-image-1c78a.appspot.com/o/codejam%2Finput_image.png?alt=media&token=${{ secrets.firebase-token }}"
+          wget -O apps/cse40/images/input_image.png "${{ secrets.image-url }}"
 
       - name: Start Services and Make API Call
         run: |
@@ -119,6 +118,8 @@ jobs:
 
       - name: Setup test files
         run: |
+            mkdir -p apps/cse40/expected_images
+            mv test/node/expected_images/* apps/cse40/expected_images/
             mv test/node/* test/
 
       - name: Set up Node.js
@@ -141,7 +142,7 @@ jobs:
       - name: Download input image
         run: |
           mkdir -p apps/cse40/images # Ensure directory exists
-          wget -O apps/cse40/images/input_image.png "https://firebasestorage.googleapis.com/v0/b/profile-image-1c78a.appspot.com/o/codejam%2Finput_image.png?alt=media&token=${{ secrets.firebase-token }}"
+          wget -O apps/cse40/images/input_image.png "${{ secrets.image-url }}"
 
       - name: Start Services and Run Greyscale API
         run: |
@@ -188,6 +189,8 @@ jobs:
 
       - name: Setup test files
         run: |
+            mkdir -p apps/cse40/expected_images
+            mv test/node/expected_images/* apps/cse40/expected_images/
             mv test/node/* test/
 
       - name: Set up Node.js
@@ -210,7 +213,7 @@ jobs:
       - name: Download input image
         run: |
           mkdir -p apps/cse40/images # Ensure directory exists
-          wget -O apps/cse40/images/input_image.png "https://firebasestorage.googleapis.com/v0/b/profile-image-1c78a.appspot.com/o/codejam%2Finput_image.png?alt=media&token=${{ secrets.firebase-token }}"
+          wget -O apps/cse40/images/input_image.png "${{ secrets.image-url }}"
 
       - name: Start Services and Run Negative API
         run: |
@@ -257,6 +260,8 @@ jobs:
 
       - name: Setup test files
         run: |
+            mkdir -p apps/cse40/expected_images
+            mv test/node/expected_images/* apps/cse40/expected_images/
             mv test/node/* test/
 
       - name: Set up Node.js
@@ -279,7 +284,7 @@ jobs:
       - name: Download input image
         run: |
           mkdir -p apps/cse40/images # Ensure directory exists
-          wget -O apps/cse40/images/input_image.png "https://firebasestorage.googleapis.com/v0/b/profile-image-1c78a.appspot.com/o/codejam%2Finput_image.png?alt=media&token=${{ secrets.firebase-token }}"
+          wget -O apps/cse40/images/input_image.png "${{ secrets.image-url }}"
 
       - name: Start Services and Run Contrast API
         run: |
@@ -326,6 +331,8 @@ jobs:
 
       - name: Setup test files
         run: |
+            mkdir -p apps/cse40/expected_images
+            mv test/node/expected_images/* apps/cse40/expected_images/
             mv test/node/* test/
 
       - name: Set up Node.js
@@ -348,7 +355,7 @@ jobs:
       - name: Download input image
         run: |
           mkdir -p apps/cse40/images # Ensure directory exists
-          wget -O apps/cse40/images/input_image.png "https://firebasestorage.googleapis.com/v0/b/profile-image-1c78a.appspot.com/o/codejam%2Finput_image.png?alt=media&token=${{ secrets.firebase-token }}"
+          wget -O apps/cse40/images/input_image.png "${{ secrets.image-url }}"
 
       - name: Start Services and Run Rotate API
         run: |
@@ -395,6 +402,8 @@ jobs:
 
       - name: Setup test files
         run: |
+            mkdir -p apps/cse40/expected_images
+            mv test/node/expected_images/* apps/cse40/expected_images/
             mv test/node/* test/
 
       - name: Set up Node.js
@@ -417,7 +426,7 @@ jobs:
       - name: Download input image
         run: |
           mkdir -p apps/cse40/images # Ensure directory exists
-          wget -O apps/cse40/images/input_image.png "https://firebasestorage.googleapis.com/v0/b/profile-image-1c78a.appspot.com/o/codejam%2Finput_image.png?alt=media&token=${{ secrets.firebase-token }}"
+          wget -O apps/cse40/images/input_image.png "${{ secrets.image-url }}"
 
       - name: Start Services and Run Sharpen API
         run: |
@@ -464,6 +473,8 @@ jobs:
 
       - name: Setup test files
         run: |
+            mkdir -p apps/cse40/expected_images
+            mv test/node/expected_images/* apps/cse40/expected_images/
             mv test/node/* test/
 
       - name: Set up Node.js
@@ -486,7 +497,7 @@ jobs:
       - name: Download input image
         run: |
           mkdir -p apps/cse40/images # Ensure directory exists
-          wget -O apps/cse40/images/input_image.png "https://firebasestorage.googleapis.com/v0/b/profile-image-1c78a.appspot.com/o/codejam%2Finput_image.png?alt=media&token=${{ secrets.firebase-token }}"
+          wget -O apps/cse40/images/input_image.png "${{ secrets.image-url }}"
 
       - name: Start Services and Run Emboss API
         run: |
@@ -533,6 +544,8 @@ jobs:
 
       - name: Setup test files
         run: |
+            mkdir -p apps/cse40/expected_images
+            mv test/node/expected_images/* apps/cse40/expected_images/
             mv test/node/* test/
 
       - name: Set up Node.js
@@ -555,7 +568,7 @@ jobs:
       - name: Download input image
         run: |
           mkdir -p apps/cse40/images # Ensure directory exists
-          wget -O apps/cse40/images/input_image.png "https://firebasestorage.googleapis.com/v0/b/profile-image-1c78a.appspot.com/o/codejam%2Finput_image.png?alt=media&token=${{ secrets.firebase-token }}"
+          wget -O apps/cse40/images/input_image.png "${{ secrets.image-url }}"
 
       - name: Start Services and Run Histogram Equalization API
         run: |
@@ -602,6 +615,8 @@ jobs:
 
       - name: Setup test files
         run: |
+            mkdir -p apps/cse40/expected_images
+            mv test/node/expected_images/* apps/cse40/expected_images/
             mv test/node/* test/
 
       - name: Set up Node.js
@@ -624,7 +639,7 @@ jobs:
       - name: Download input image
         run: |
           mkdir -p apps/cse40/images # Ensure directory exists
-          wget -O apps/cse40/images/input_image.png "https://firebasestorage.googleapis.com/v0/b/profile-image-1c78a.appspot.com/o/codejam%2Finput_image.png?alt=media&token=${{ secrets.firebase-token }}"
+          wget -O apps/cse40/images/input_image.png "${{ secrets.image-url }}"
 
       - name: Start Services and Run Flood Fill API
         run: |
@@ -672,6 +687,8 @@ jobs:
 
       - name: Setup test files
         run: |
+            mkdir -p apps/cse40/expected_images
+            mv test/node/expected_images/* apps/cse40/expected_images/
             mv test/node/* test/
 
       - name: Set up Node.js
@@ -694,7 +711,7 @@ jobs:
       - name: Download input image
         run: |
           mkdir -p apps/cse40/images # Ensure directory exists
-          wget -O apps/cse40/images/input_image.png "https://firebasestorage.googleapis.com/v0/b/profile-image-1c78a.appspot.com/o/codejam%2Finput_image.png?alt=media&token=${{ secrets.firebase-token }}"
+          wget -O apps/cse40/images/input_image.png "${{ secrets.image-url }}"
 
       - name: Start Services and Run Canny Edge Detection API
         run: |
@@ -741,6 +758,8 @@ jobs:
 
       - name: Setup test files
         run: |
+            mkdir -p apps/cse40/expected_images
+            mv test/node/expected_images/* apps/cse40/expected_images/
             mv test/node/* test/
 
       - name: Set up Node.js
@@ -763,7 +782,7 @@ jobs:
       - name: Download input image
         run: |
           mkdir -p apps/cse40/images # Ensure directory exists
-          wget -O apps/cse40/images/input_image.png "https://firebasestorage.googleapis.com/v0/b/profile-image-1c78a.appspot.com/o/codejam%2Finput_image.png?alt=media&token=${{ secrets.firebase-token }}"
+          wget -O apps/cse40/images/input_image.png "${{ secrets.image-url }}"
 
       - name: Start Services and Run Harris Corner Detection API
         run: |
