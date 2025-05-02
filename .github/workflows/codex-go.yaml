@@ -1,4 +1,4 @@
-name: Test CodeX Go Project (mini-etcd)
+name: Test CodeX Go Project
 
 on:
   workflow_call:
@@ -18,177 +18,711 @@ on:
       auth-key:
         required: true
 
-
-x-test-steps: &test-steps
-  - name: Checkout PR code
-    uses: actions/checkout@v3
-    with:
-      ref: ${{ inputs.pr_head_sha }}
-      path: pr-code
-
-  - name: Checkout Main-branch tests
-    uses: actions/checkout@v3
-    with:
-      ref: main
-      path: main-tests
-      sparse-checkout: |
-        tests
-        go.mod
-        go.sum
-      sparse-checkout-cone-mode: false
-
-  - name: Setup Go
-    uses: actions/setup-go@v5
-    with:
-      go-version: '1.22'
-
-  - name: Copy public tests into PR workspace
-    working-directory: pr-code
-    run: |
-      mkdir -p tests
-      cp -r ../main-tests/tests/* ./tests/
-
-  - name: Download Go modules
-    working-directory: pr-code
-    run: go mod tidy
-
-  # ------------------------------------------------------------
-  #  The test itself – the two env vars are filled per-job.
-  # ------------------------------------------------------------
-  - name: Run ${{ env.TEST_NAME }} and report
-    working-directory: pr-code
-    env:
-      TEST_NAME: ${{ env.TEST_NAME }}
-      BUG_CODE : ${{ env.BUG_CODE }}
-      BACKEND  : ${{ secrets.backend-url }}
-      AUTH_KEY : ${{ secrets.auth-key }}
-      TEAM     : ${{ inputs.team-name }}
-    run: |
-      set +e
-      go test ./tests -v -run "^${TEST_NAME}$" > test_output.log 2>&1
-      rc=$?
-
-      status="pass"
-      if [ $rc -ne 0 ]; then
-        status="fail"
-        echo "Test FAILED – see log:"
-        cat test_output.log
-      else
-        echo "Test PASSED"
-      fi
-
-      echo "Reporting $status for $BUG_CODE"
-      curl -sf -X POST "${BACKEND}" \
-        -H "Content-Type: application/json" \
-        -H "x-webhook-token: ${AUTH_KEY}" \
-        -d '{
-              "tablePrefix": "uni_",
-              "teamName"   : "'"${TEAM}"'",
-              "bugCode"    : "'"${BUG_CODE}"'",
-              "status"     : "'"${status}"'"
-            }' \
-        || echo "::warning::Could not report status"
-
-      exit $rc
-
-# ---------------------------------------------------------------------------
-#                       Individual test jobs (11)
-# ---------------------------------------------------------------------------
-
 jobs:
-
-  test-EndToEndReplication:
-    name: Test EndToEndReplication
+  # --- Test BUG-501 ---
+  test_BUG_501_EndToEndReplication:
+    name: Test BUG-501 (EndToEndReplication)
     runs-on: ${{ inputs.machine_name }}
-    env:
-      TEST_NAME: TestEndToEndReplication
-      BUG_CODE : TestEndToEndReplication
-    steps: *test-steps
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+          path: pr-code
+      - name: Checkout Main Branch Tests
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          path: main-branch-code
+          sparse-checkout: |
+            tests
+            go.mod
+            go.sum
+          sparse-checkout-cone-mode: false
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+      - name: Prepare Test Environment
+        working-directory: pr-code
+        run: |
+          mkdir -p tests
+          cp -r ../main-branch-code/tests/* ./tests/
+      - name: Download Go Modules
+        working-directory: pr-code
+        run: go mod download
+      - name: Run Test and Report Status
+        working-directory: pr-code
+        run: |
+          set +e
+          go test ./tests -v -run '^TestEndToEndReplication$' > test_output.log 2>&1
+          result=$?
+          test_status="fail"
+          bug_code="BUG-501"
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED: TestEndToEndReplication"
+              cat test_output.log
+          else
+              echo "Test PASSED: TestEndToEndReplication"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' for bug '$bug_code' to backend..."
+          curl -sf -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"$bug_code\",
+                \"status\": \"$test_status\"
+            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
+          exit ${result}
 
-  test-ConcurrentWrites:
-    name: Test ConcurrentWrites
+  # --- Test BUG-502 ---
+  test_BUG_502_PersistentRestart:
+    name: Test BUG-502 (PersistentRestart)
     runs-on: ${{ inputs.machine_name }}
-    env:
-      TEST_NAME: TestConcurrentWrites
-      BUG_CODE : TestConcurrentWrites
-    steps: *test-steps
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+          path: pr-code
+      - name: Checkout Main Branch Tests
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          path: main-branch-code
+          sparse-checkout: |
+            tests
+            go.mod
+            go.sum
+          sparse-checkout-cone-mode: false
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+      - name: Prepare Test Environment
+        working-directory: pr-code
+        run: |
+          mkdir -p tests
+          cp -r ../main-branch-code/tests/* ./tests/
+      - name: Download Go Modules
+        working-directory: pr-code
+        run: go mod download
+      - name: Run Test and Report Status
+        working-directory: pr-code
+        run: |
+          set +e
+          go test ./tests -v -run '^TestPersistentRestart$' > test_output.log 2>&1
+          result=$?
+          test_status="fail"
+          bug_code="BUG-502"
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED: TestPersistentRestart"
+              cat test_output.log
+          else
+              echo "Test PASSED: TestPersistentRestart"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' for bug '$bug_code' to backend..."
+          curl -sf -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"$bug_code\",
+                \"status\": \"$test_status\"
+            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
+          exit ${result}
 
-  test-LeaderFailover:
-    name: Test LeaderFailover
+  # --- Test BUG-503 ---
+  test_BUG_503_ConcurrentWrites:
+    name: Test BUG-503 (ConcurrentWrites)
     runs-on: ${{ inputs.machine_name }}
-    env:
-      TEST_NAME: TestLeaderFailover
-      BUG_CODE : TestLeaderFailover
-    steps: *test-steps
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+          path: pr-code
+      - name: Checkout Main Branch Tests
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          path: main-branch-code
+          sparse-checkout: |
+            tests
+            go.mod
+            go.sum
+          sparse-checkout-cone-mode: false
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+      - name: Prepare Test Environment
+        working-directory: pr-code
+        run: |
+          mkdir -p tests
+          cp -r ../main-branch-code/tests/* ./tests/
+      - name: Download Go Modules
+        working-directory: pr-code
+        run: go mod download
+      - name: Run Test and Report Status
+        working-directory: pr-code
+        run: |
+          set +e
+          go test ./tests -v -run '^TestConcurrentWrites$' > test_output.log 2>&1
+          result=$?
+          test_status="fail"
+          bug_code="BUG-503"
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED: TestConcurrentWrites"
+              cat test_output.log
+          else
+              echo "Test PASSED: TestConcurrentWrites"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' for bug '$bug_code' to backend..."
+          curl -sf -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"$bug_code\",
+                \"status\": \"$test_status\"
+            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
+          exit ${result}
 
-  test-FollowerCatchUp:
-    name: Test FollowerCatchUp
+  # --- Test BUG-504 ---
+  test_BUG_504_LeaderFailover:
+    name: Test BUG-504 (LeaderFailover)
     runs-on: ${{ inputs.machine_name }}
-    env:
-      TEST_NAME: TestFollowerCatchUp
-      BUG_CODE : TestFollowerCatchUp
-    steps: *test-steps
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+          path: pr-code
+      - name: Checkout Main Branch Tests
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          path: main-branch-code
+          sparse-checkout: |
+            tests
+            go.mod
+            go.sum
+          sparse-checkout-cone-mode: false
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+      - name: Prepare Test Environment
+        working-directory: pr-code
+        run: |
+          mkdir -p tests
+          cp -r ../main-branch-code/tests/* ./tests/
+      - name: Download Go Modules
+        working-directory: pr-code
+        run: go mod download
+      - name: Run Test and Report Status
+        working-directory: pr-code
+        run: |
+          set +e
+          go test ./tests -v -run '^TestLeaderFailover$' > test_output.log 2>&1
+          result=$?
+          test_status="fail"
+          bug_code="BUG-504"
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED: TestLeaderFailover"
+              cat test_output.log
+          else
+              echo "Test PASSED: TestLeaderFailover"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' for bug '$bug_code' to backend..."
+          curl -sf -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"$bug_code\",
+                \"status\": \"$test_status\"
+            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
+          exit ${result}
 
-  test-LeaderRestartWithDisk:
-    name: Test LeaderRestartWithDisk
+  # --- Test BUG-505 ---
+  test_BUG_505_FollowerCatchUp:
+    name: Test BUG-505 (FollowerCatchUp)
     runs-on: ${{ inputs.machine_name }}
-    env:
-      TEST_NAME: TestLeaderRestartWithDisk
-      BUG_CODE : TestLeaderRestartWithDisk
-    steps: *test-steps
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+          path: pr-code
+      - name: Checkout Main Branch Tests
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          path: main-branch-code
+          sparse-checkout: |
+            tests
+            go.mod
+            go.sum
+          sparse-checkout-cone-mode: false
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+      - name: Prepare Test Environment
+        working-directory: pr-code
+        run: |
+          mkdir -p tests
+          cp -r ../main-branch-code/tests/* ./tests/
+      - name: Download Go Modules
+        working-directory: pr-code
+        run: go mod download
+      - name: Run Test and Report Status
+        working-directory: pr-code
+        run: |
+          set +e
+          go test ./tests -v -run '^TestFollowerCatchUp$' > test_output.log 2>&1
+          result=$?
+          test_status="fail"
+          bug_code="BUG-505"
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED: TestFollowerCatchUp"
+              cat test_output.log
+          else
+              echo "Test PASSED: TestFollowerCatchUp"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' for bug '$bug_code' to backend..."
+          curl -sf -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"$bug_code\",
+                \"status\": \"$test_status\"
+            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
+          exit ${result}
 
-  test-StoreBasicOps:
-    name: Test StoreBasicOps
+  # --- Test BUG-506 ---
+  test_BUG_506_LeaderRestartWithDisk:
+    name: Test BUG-506 (LeaderRestartWithDisk)
     runs-on: ${{ inputs.machine_name }}
-    env:
-      TEST_NAME: TestStoreBasicOps
-      BUG_CODE : TestStoreBasicOps
-    steps: *test-steps
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+          path: pr-code
+      - name: Checkout Main Branch Tests
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          path: main-branch-code
+          sparse-checkout: |
+            tests
+            go.mod
+            go.sum
+          sparse-checkout-cone-mode: false
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+      - name: Prepare Test Environment
+        working-directory: pr-code
+        run: |
+          mkdir -p tests
+          cp -r ../main-branch-code/tests/* ./tests/
+      - name: Download Go Modules
+        working-directory: pr-code
+        run: go mod download
+      - name: Run Test and Report Status
+        working-directory: pr-code
+        run: |
+          set +e
+          go test ./tests -v -run '^TestLeaderRestartWithDisk$' > test_output.log 2>&1
+          result=$?
+          test_status="fail"
+          bug_code="BUG-506"
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED: TestLeaderRestartWithDisk"
+              cat test_output.log
+          else
+              echo "Test PASSED: TestLeaderRestartWithDisk"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' for bug '$bug_code' to backend..."
+          curl -sf -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"$bug_code\",
+                \"status\": \"$test_status\"
+            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
+          exit ${result}
 
-  test-StoreLRUEviction:
-    name: Test StoreLRUEviction
+  # --- Test BUG-507 ---
+  test_BUG_507_StoreBasicOps:
+    name: Test BUG-507 (StoreBasicOps)
     runs-on: ${{ inputs.machine_name }}
-    env:
-      TEST_NAME: TestStoreLRUEviction
-      BUG_CODE : TestStoreLRUEviction
-    steps: *test-steps
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+          path: pr-code
+      - name: Checkout Main Branch Tests
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          path: main-branch-code
+          sparse-checkout: |
+            tests
+            go.mod
+            go.sum
+          sparse-checkout-cone-mode: false
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+      - name: Prepare Test Environment
+        working-directory: pr-code
+        run: |
+          mkdir -p tests
+          cp -r ../main-branch-code/tests/* ./tests/
+      - name: Download Go Modules
+        working-directory: pr-code
+        run: go mod download
+      - name: Run Test and Report Status
+        working-directory: pr-code
+        run: |
+          set +e
+          go test ./tests -v -run '^TestStoreBasicOps$' > test_output.log 2>&1
+          result=$?
+          test_status="fail"
+          bug_code="BUG-507"
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED: TestStoreBasicOps"
+              cat test_output.log
+          else
+              echo "Test PASSED: TestStoreBasicOps"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' for bug '$bug_code' to backend..."
+          curl -sf -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"$bug_code\",
+                \"status\": \"$test_status\"
+            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
+          exit ${result}
 
-  test-StorePersistence:
-    name: Test StorePersistence
+  # --- Test BUG-508 ---
+  test_BUG_508_StoreLRUEviction:
+    name: Test BUG-508 (StoreLRUEviction)
     runs-on: ${{ inputs.machine_name }}
-    env:
-      TEST_NAME: TestStorePersistence
-      BUG_CODE : TestStorePersistence
-    steps: *test-steps
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+          path: pr-code
+      - name: Checkout Main Branch Tests
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          path: main-branch-code
+          sparse-checkout: |
+            tests
+            go.mod
+            go.sum
+          sparse-checkout-cone-mode: false
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+      - name: Prepare Test Environment
+        working-directory: pr-code
+        run: |
+          mkdir -p tests
+          cp -r ../main-branch-code/tests/* ./tests/
+      - name: Download Go Modules
+        working-directory: pr-code
+        run: go mod download
+      - name: Run Test and Report Status
+        working-directory: pr-code
+        run: |
+          set +e
+          go test ./tests -v -run '^TestStoreLRUEviction$' > test_output.log 2>&1
+          result=$?
+          test_status="fail"
+          bug_code="BUG-508"
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED: TestStoreLRUEviction"
+              cat test_output.log
+          else
+              echo "Test PASSED: TestStoreLRUEviction"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' for bug '$bug_code' to backend..."
+          curl -sf -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"$bug_code\",
+                \"status\": \"$test_status\"
+            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
+          exit ${result}
 
-  test-StoreConcurrent:
-    name: Test StoreConcurrent
+  # --- Test BUG-509 ---
+  test_BUG_509_StorePersistence:
+    name: Test BUG-509 (StorePersistence)
     runs-on: ${{ inputs.machine_name }}
-    env:
-      TEST_NAME: TestStoreConcurrent
-      BUG_CODE : TestStoreConcurrent
-    steps: *test-steps
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+          path: pr-code
+      - name: Checkout Main Branch Tests
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          path: main-branch-code
+          sparse-checkout: |
+            tests
+            go.mod
+            go.sum
+          sparse-checkout-cone-mode: false
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+      - name: Prepare Test Environment
+        working-directory: pr-code
+        run: |
+          mkdir -p tests
+          cp -r ../main-branch-code/tests/* ./tests/
+      - name: Download Go Modules
+        working-directory: pr-code
+        run: go mod download
+      - name: Run Test and Report Status
+        working-directory: pr-code
+        run: |
+          set +e
+          go test ./tests -v -run '^TestStorePersistence$' > test_output.log 2>&1
+          result=$?
+          test_status="fail"
+          bug_code="BUG-509"
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED: TestStorePersistence"
+              cat test_output.log
+          else
+              echo "Test PASSED: TestStorePersistence"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' for bug '$bug_code' to backend..."
+          curl -sf -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"$bug_code\",
+                \"status\": \"$test_status\"
+            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
+          exit ${result}
 
-  test-BoltLogTruncateBefore:
-    name: Test BoltLogTruncateBefore
+  # --- Test BUG-510 ---
+  test_BUG_510_StoreConcurrent:
+    name: Test BUG-510 (StoreConcurrent)
     runs-on: ${{ inputs.machine_name }}
-    env:
-      TEST_NAME: TestBoltLogTruncateBefore
-      BUG_CODE : TestBoltLogTruncateBefore
-    steps: *test-steps
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+          path: pr-code
+      - name: Checkout Main Branch Tests
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          path: main-branch-code
+          sparse-checkout: |
+            tests
+            go.mod
+            go.sum
+          sparse-checkout-cone-mode: false
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+      - name: Prepare Test Environment
+        working-directory: pr-code
+        run: |
+          mkdir -p tests
+          cp -r ../main-branch-code/tests/* ./tests/
+      - name: Download Go Modules
+        working-directory: pr-code
+        run: go mod download
+      - name: Run Test and Report Status
+        working-directory: pr-code
+        run: |
+          set +e
+          go test ./tests -v -run '^TestStoreConcurrent$' > test_output.log 2>&1
+          result=$?
+          test_status="fail"
+          bug_code="BUG-510"
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED: TestStoreConcurrent"
+              cat test_output.log
+          else
+              echo "Test PASSED: TestStoreConcurrent"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' for bug '$bug_code' to backend..."
+          curl -sf -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"$bug_code\",
+                \"status\": \"$test_status\"
+            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
+          exit ${result}
 
-  test-ClusterManualPrune:
-    name: Test ClusterManualPrune
+  # --- Test BUG-511 ---
+  test_BUG_511_BoltLogTruncateBefore:
+    name: Test BUG-511 (BoltLogTruncateBefore)
     runs-on: ${{ inputs.machine_name }}
-    env:
-      TEST_NAME: TestClusterManualPrune
-      BUG_CODE : TestClusterManualPrune
-    steps: *test-steps
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+          path: pr-code
+      - name: Checkout Main Branch Tests
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          path: main-branch-code
+          sparse-checkout: |
+            tests
+            go.mod
+            go.sum
+          sparse-checkout-cone-mode: false
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+      - name: Prepare Test Environment
+        working-directory: pr-code
+        run: |
+          mkdir -p tests
+          cp -r ../main-branch-code/tests/* ./tests/
+      - name: Download Go Modules
+        working-directory: pr-code
+        run: go mod download
+      - name: Run Test and Report Status
+        working-directory: pr-code
+        run: |
+          set +e
+          go test ./tests -v -run '^TestBoltLogTruncateBefore$' > test_output.log 2>&1
+          result=$?
+          test_status="fail"
+          bug_code="BUG-511"
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED: TestBoltLogTruncateBefore"
+              cat test_output.log
+          else
+              echo "Test PASSED: TestBoltLogTruncateBefore"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' for bug '$bug_code' to backend..."
+          curl -sf -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"$bug_code\",
+                \"status\": \"$test_status\"
+            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
+          exit ${result}
 
-  test-ClusterAutoPrune:
-    name: Test ClusterAutoPrune
+  # --- Test BUG-512 ---
+  test_BUG_512_ClusterManualPrune:
+    name: Test BUG-512 (ClusterManualPrune)
     runs-on: ${{ inputs.machine_name }}
-    env:
-      TEST_NAME: TestClusterAutoPrune
-      BUG_CODE : TestClusterAutoPrune
-    steps: *test-steps
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+          path: pr-code
+      - name: Checkout Main Branch Tests
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          path: main-branch-code
+          sparse-checkout: |
+            tests
+            go.mod
+            go.sum
+          sparse-checkout-cone-mode: false
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+      - name: Prepare Test Environment
+        working-directory: pr-code
+        run: |
+          mkdir -p tests
+          cp -r ../main-branch-code/tests/* ./tests/
+      - name: Download Go Modules
+        working-directory: pr-code
+        run: go mod download
+      - name: Run Test and Report Status
+        working-directory: pr-code
+        run: |
+          set +e
+          go test ./tests -v -run '^TestClusterManualPrune$' > test_output.log 2>&1
+          result=$?
+          test_status="fail"
+          bug_code="BUG-512"
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED: TestClusterManualPrune"
+              cat test_output.log
+          else
+              echo "Test PASSED: TestClusterManualPrune"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' for bug '$bug_code' to backend..."
+          curl -sf -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"tablePrefix\": \"uni_\",
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"$bug_code\",
+                \"status\": \"$test_status\"
+            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
+          exit ${result}
