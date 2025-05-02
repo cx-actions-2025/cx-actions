@@ -55,7 +55,7 @@ jobs:
         working-directory: pr-code
         run: |
           set +e
-          go test ./tests -v > /dev/null 2>&1
+          go test ./tests -v 
           result=$?
           test_status="fail"
           bug_code="CLUSTER"
@@ -113,7 +113,7 @@ jobs:
         working-directory: pr-code
         run: |
           set +e
-          go test ./tests -v > /dev/null 2>&1
+          go test ./tests -v 
           result=$?
           test_status="fail"
           bug_code="ELECTION"
@@ -171,7 +171,7 @@ jobs:
         working-directory: pr-code
         run: |
           set +e
-          go test ./tests -v > /dev/null 2>&1
+          go test ./tests -v 
           result=$?
           test_status="fail"
           bug_code="KV-STORE"
@@ -229,7 +229,7 @@ jobs:
         working-directory: pr-code
         run: |
           set +e
-          go test ./tests -v > /dev/null 2>&1
+          go test ./tests -v 
           result=$?
           test_status="fail"
           bug_code="LOG-TRUNCATION"
