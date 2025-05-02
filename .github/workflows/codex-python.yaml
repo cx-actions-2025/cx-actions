@@ -36,10 +36,12 @@ jobs:
         with:
           repository: ${{ secrets.test-repo }}
           token: ${{ secrets.auth-token }}
-          path: test
+          sparse-checkout: python
+          sparse-checkout-cone-mode: false
+          path: tests
 
-      - name: move test files
-        run: mv test/* ./
+      - name: Setup test files
+        run: mv tests/python/* tests/
 
       - name: setup python
         uses: actions/setup-python@v3

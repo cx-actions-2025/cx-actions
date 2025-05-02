@@ -1,5 +1,4 @@
-name: Auto Marking
-
+name: Test Node Project
 on:
   workflow_call:
     inputs:
