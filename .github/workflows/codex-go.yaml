@@ -19,9 +19,43 @@ on:
         required: true
 
 jobs:
-  test-cluster:
-    name: Test Cluster Logic
+  discover-tests:
+    name: Discover Tests
+    runs-on: ubuntu-latest # Discovery can run on a standard runner
+    outputs:
+      test_matrix: ${{ steps.generate_matrix.outputs.matrix }}
+    steps:
+      - name: Checkout Main Branch Tests Directory
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          sparse-checkout: |
+            tests
+          sparse-checkout-cone-mode: false
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Generate Test Matrix
+        id: generate_matrix
+        working-directory: tests # Go into the tests directory
+        run: |
+          # List all Test functions, remove lines not starting with Test, format as JSON array
+          test_list=$(go test -list 'Test.*' | grep '^Test' | jq -Rsc 'split("\n") | map(select(length > 0))')
+          echo "Discovered tests: $test_list"
+          echo "::set-output name=matrix::$test_list"
+
+  run-single-test:
+    name: Run Test (${{ matrix.test_name }})
+    needs: discover-tests
+    if: ${{ needs.discover-tests.outputs.test_matrix != '[]' }} # Only run if tests were found
     runs-on: ${{ inputs.machine_name }}
+    strategy:
+      fail-fast: false # Ensure all tests run even if one fails
+      matrix:
+        test_name: ${{ fromJson(needs.discover-tests.outputs.test_matrix) }}
     steps:
       - name: Checkout PR Code
         uses: actions/checkout@v3
@@ -51,22 +85,25 @@ jobs:
           mkdir -p tests
           cp -r ../main-branch-code/tests/* ./tests/
 
-      - name: Download Go Modules # Added step
+      - name: Download Go Modules
         working-directory: pr-code
         run: go mod tidy
 
-      - name: Run Cluster Tests and Report Status
+      - name: Run Test (${{ matrix.test_name }}) and Report Status
         working-directory: pr-code
         run: |
           set +e
-          go test ./tests -v 
+          # Run only the specific test from the matrix
+          go test ./tests -v -run '^${{ matrix.test_name }}$' > test_output.log 2>&1
           result=$?
           test_status="fail"
-          bug_code="CLUSTER"
+          # Use the matrix test name as the bug code for reporting
+          bug_code="${{ matrix.test_name }}"
           if [ ${result} -ne 0 ]; then
-              echo "Test FAILED"
+              echo "Test FAILED: ${{ matrix.test_name }}"
+              cat test_output.log # Show output on failure
           else
-              echo "Test PASSED"
+              echo "Test PASSED: ${{ matrix.test_name }}"
               test_status="pass"
           fi
           echo "Sending status '$test_status' for bug '$bug_code' to backend..."
@@ -79,190 +116,5 @@ jobs:
                 \"bugCode\": \"$bug_code\",
                 \"status\": \"$test_status\"
             }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
-          exit ${result}
-
-  test-election:
-    name: Test Election Logic
-    runs-on: ${{ inputs.machine_name }}
-    steps:
-      - name: Checkout PR Code
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ inputs.pr_head_sha }}
-          path: pr-code
-
-      - name: Checkout Main Branch Tests
-        uses: actions/checkout@v3
-        with:
-          ref: main
-          path: main-branch-code
-          sparse-checkout: |
-            tests
-            go.mod
-            go.sum
-          sparse-checkout-cone-mode: false
-
-      - name: Setup Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: '1.22'
-
-      - name: Prepare Test Environment
-        working-directory: pr-code
-        run: |
-          mkdir -p tests
-          cp -r ../main-branch-code/tests/* ./tests/
-
-      - name: Download Go Modules # Added step
-        working-directory: pr-code
-        run: go mod tidy
-
-      - name: Run Election Tests and Report Status
-        working-directory: pr-code
-        run: |
-          set +e
-          go test ./tests -v 
-          result=$?
-          test_status="fail"
-          bug_code="ELECTION"
-          if [ ${result} -ne 0 ]; then
-              echo "Test FAILED"
-          else
-              echo "Test PASSED"
-              test_status="pass"
-          fi
-          echo "Sending status '$test_status' for bug '$bug_code' to backend..."
-          curl -sf -X POST ${{ secrets.backend-url }} \
-            -H "Content-Type: application/json" \
-            -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d "{
-                \"tablePrefix\": \"uni_\",
-                \"teamName\": \"${{ inputs.team-name }}\",
-                \"bugCode\": \"$bug_code\",
-                \"status\": \"$test_status\"
-            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
-          exit ${result}
-
-  test-kv-store:
-    name: Test KV Store Logic
-    runs-on: ${{ inputs.machine_name }}
-    steps:
-      - name: Checkout PR Code
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ inputs.pr_head_sha }}
-          path: pr-code
-
-      - name: Checkout Main Branch Tests
-        uses: actions/checkout@v3
-        with:
-          ref: main
-          path: main-branch-code
-          sparse-checkout: |
-            tests
-            go.mod
-            go.sum
-          sparse-checkout-cone-mode: false
-
-      - name: Setup Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: '1.22'
-
-      - name: Prepare Test Environment
-        working-directory: pr-code
-        run: |
-          mkdir -p tests
-          cp -r ../main-branch-code/tests/* ./tests/
-
-      - name: Download Go Modules 
-        working-directory: pr-code
-        run: go mod tidy
-
-      - name: Run KV Store Tests and Report Status
-        working-directory: pr-code
-        run: |
-          set +e
-          go test ./tests -v 
-          result=$?
-          test_status="fail"
-          bug_code="KV-STORE"
-          if [ ${result} -ne 0 ]; then
-              echo "Test FAILED"
-          else
-              echo "Test PASSED"
-              test_status="pass"
-          fi
-          echo "Sending status '$test_status' for bug '$bug_code' to backend..."
-          curl -sf -X POST ${{ secrets.backend-url }} \
-            -H "Content-Type: application/json" \
-            -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d "{
-                \"tablePrefix\": \"uni_\",
-                \"teamName\": \"${{ inputs.team-name }}\",
-                \"bugCode\": \"$bug_code\",
-                \"status\": \"$test_status\"
-            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
-          exit ${result}
-
-  test-log-truncation:
-    name: Test Log Truncation Logic
-    runs-on: ${{ inputs.machine_name }}
-    steps:
-      - name: Checkout PR Code
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ inputs.pr_head_sha }}
-          path: pr-code
-
-      - name: Checkout Main Branch Tests
-        uses: actions/checkout@v3
-        with:
-          ref: main
-          path: main-branch-code
-          sparse-checkout: |
-            tests
-            go.mod
-            go.sum
-          sparse-checkout-cone-mode: false
-
-      - name: Setup Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: '1.22'
-
-      - name: Prepare Test Environment
-        working-directory: pr-code
-        run: |
-          mkdir -p tests
-          cp -r ../main-branch-code/tests/* ./tests/
-
-      - name: Download Go Modules # Added step
-        working-directory: pr-code
-        run: go mod tidy
-
-      - name: Run Log Truncation Tests and Report Status
-        working-directory: pr-code
-        run: |
-          set +e
-          go test ./tests -v 
-          result=$?
-          test_status="fail"
-          bug_code="LOG-TRUNCATION"
-          if [ ${result} -ne 0 ]; then
-              echo "Test FAILED"
-          else
-              echo "Test PASSED"
-              test_status="pass"
-          fi
-          echo "Sending status '$test_status' for bug '$bug_code' to backend..."
-          curl -sf -X POST ${{ secrets.backend-url }} \
-            -H "Content-Type: application/json" \
-            -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d "{
-                \"tablePrefix\": \"uni_\",
-                \"teamName\": \"${{ inputs.team-name }}\",
-                \"bugCode\": \"$bug_code\",
-                \"status\": \"$test_status\"
-            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
+          # Exit with the test result code to mark the job status
           exit ${result}
