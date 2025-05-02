@@ -24,7 +24,7 @@ on:
 
 jobs:
   test-bug-01:
-    name: test-bug-01 # Changed
+    name: test-bug-01
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -68,17 +68,35 @@ jobs:
             mkdir -p build && cd build
             cmake ..
             make
-      - name: run test on bug 101
+      - name: run test on bug 101 and report status # Updated name
         shell: bash {0}
         run: |
-          set +e
-          build/quantum_tests --gtest_filter=ParallelizationTest.BUG101 > /dev/null 2>&1
-          result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-101"}'; fi
+          set +e # Allow script to continue after test failure
+          build/quantum_tests --gtest_filter=ParallelizationTest.BUG101 > test_output.log 2>&1 # Run test
+          result=$? # Capture exit code
+          test_status="" # Initialize status variable
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail" # Set status to fail
+          else
+              echo "Test PASSED"
+              test_status="pass" # Set status to pass
+          fi
+          echo "Sending status '$test_status' to backend..."
+          # Send curl request regardless of result, include the status
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-101\",
+                \"status\": \"$test_status\"
+            }"
+          # Exit with the original test result code
           exit ${result}
 
   test-bug-02:
-    name: test-bug-02 # Changed
+    name: test-bug-02
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -122,17 +140,33 @@ jobs:
             mkdir -p build && cd build
             cmake ..
             make
-      - name: run test on bug 102
+      - name: run test on bug 102 and report status # Updated name
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParallelizationTest.BUG102 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ParallelizationTest.BUG102 > test_output.log 2>&1
           result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-102"}'; fi
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-102\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-03:
-    name: test-bug-03 # Changed
+    name: test-bug-03
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -176,17 +210,33 @@ jobs:
             mkdir -p build && cd build
             cmake ..
             make
-      - name: run test on bug 103
+      - name: run test on bug 103 and report status # Updated name
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParallelizationTest.BUG103 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ParallelizationTest.BUG103 > test_output.log 2>&1
           result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-103"}'; fi
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-103\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-04:
-    name: test-bug-04 # Changed
+    name: test-bug-04
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -230,17 +280,33 @@ jobs:
             mkdir -p build && cd build
             cmake ..
             make
-      - name: run test on bug 104
+      - name: run test on bug 104 and report status # Updated name
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParallelizationTest.BUG104 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ParallelizationTest.BUG104 > test_output.log 2>&1
           result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-104"}'; fi
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-104\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-05:
-    name: test-bug-05 # Changed
+    name: test-bug-05
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -284,17 +350,33 @@ jobs:
             mkdir -p build && cd build
             cmake ..
             make
-      - name: run test on bug 105
+      - name: run test on bug 105 and report status # Updated name
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParallelizationTest.BUG105 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ParallelizationTest.BUG105 > test_output.log 2>&1
           result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-105"}'; fi
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-105\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-06:
-    name: test-bug-06 # Changed
+    name: test-bug-06
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -338,17 +420,33 @@ jobs:
             mkdir -p build && cd build
             cmake ..
             make
-      - name: run test on bug 106
+      - name: run test on bug 106 and report status # Updated name
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParallelizationTest.BUG106 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ParallelizationTest.BUG106 > test_output.log 2>&1
           result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-106"}'; fi
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-106\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-07:
-    name: test-bug-07 # Changed
+    name: test-bug-07
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -392,17 +490,33 @@ jobs:
             mkdir -p build && cd build
             cmake ..
             make
-      - name: run test on bug 107
+      - name: run test on bug 107 and report status # Updated name
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParallelizationTest.BUG107 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ParallelizationTest.BUG107 > test_output.log 2>&1
           result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-107"}'; fi
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-107\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-08:
-    name: test-bug-08 # Changed
+    name: test-bug-08
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -446,17 +560,33 @@ jobs:
             mkdir -p build && cd build
             cmake ..
             make
-      - name: run test on bug 108
+      - name: run test on bug 108 and report status # Updated name
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParallelizationTest.BUG108 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ParallelizationTest.BUG108 > test_output.log 2>&1
           result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-108"}'; fi
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-108\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-09:
-    name: test-bug-09 # Changed
+    name: test-bug-09
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -500,17 +630,33 @@ jobs:
             mkdir -p build && cd build
             cmake ..
             make
-      - name: run test on bug 110
+      - name: run test on bug 110 and report status # Updated name
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ContainmentFieldTest.BUG110 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ContainmentFieldTest.BUG110 > test_output.log 2>&1
           result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-110"}'; fi
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-110\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-10:
-    name: test-bug-10 # Changed
+    name: test-bug-10
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -554,17 +700,33 @@ jobs:
             mkdir -p build && cd build
             cmake ..
             make
-      - name: run test on bug 111
+      - name: run test on bug 111 and report status # Updated name
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ContainmentFieldTest.BUG111 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ContainmentFieldTest.BUG111 > test_output.log 2>&1
           result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-111"}'; fi
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-111\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-11:
-    name: test-bug-11 # Changed
+    name: test-bug-11
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -608,17 +770,33 @@ jobs:
             mkdir -p build && cd build
             cmake ..
             make
-      - name: run test on bug 112
+      - name: run test on bug 112 and report status # Updated name
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ContainmentFieldTest.BUG112 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ContainmentFieldTest.BUG112 > test_output.log 2>&1
           result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-112"}'; fi
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-112\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-12:
-    name: test-bug-12 # Changed
+    name: test-bug-12
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -662,17 +840,33 @@ jobs:
             mkdir -p build && cd build
             cmake ..
             make
-      - name: run test on bug 113
+      - name: run test on bug 113 and report status # Updated name
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ContainmentFieldTest.BUG113 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ContainmentFieldTest.BUG113 > test_output.log 2>&1
           result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-113"}'; fi
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-113\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-13:
-    name: test-bug-13 # Changed
+    name: test-bug-13
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -716,17 +910,33 @@ jobs:
             mkdir -p build && cd build
             cmake ..
             make
-      - name: run test on bug 114
+      - name: run test on bug 114 and report status # Updated name
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParticleTest.BUG114 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ParticleTest.BUG114 > test_output.log 2>&1
           result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-114"}'; fi
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-114\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-14:
-    name: test-bug-14 # Changed
+    name: test-bug-14
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -770,17 +980,33 @@ jobs:
             mkdir -p build && cd build
             cmake ..
             make
-      - name: run test on bug 115
+      - name: run test on bug 115 and report status # Updated name
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParticleTest.BUG115 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ParticleTest.BUG115 > test_output.log 2>&1
           result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-115"}'; fi
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-115\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-15:
-    name: test-bug-15 # Changed
+    name: test-bug-15
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -824,17 +1050,33 @@ jobs:
             mkdir -p build && cd build
             cmake ..
             make
-      - name: run test on bug 116
+      - name: run test on bug 116 and report status # Updated name
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParticleTest.BUG116 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ParticleTest.BUG116 > test_output.log 2>&1
           result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-116"}'; fi
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-116\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-16:
-    name: test-bug-16 # Changed
+    name: test-bug-16
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -878,17 +1120,33 @@ jobs:
             mkdir -p build && cd build
             cmake ..
             make
-      - name: run test on bug 117
+      - name: run test on bug 117 and report status # Updated name
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParticleTest.BUG117 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ParticleTest.BUG117 > test_output.log 2>&1
           result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-117"}'; fi
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-117\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-17:
-    name: test-bug-17 # Changed
+    name: test-bug-17
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -932,17 +1190,33 @@ jobs:
             mkdir -p build && cd build
             cmake ..
             make
-      - name: run test on bug 118
+      - name: run test on bug 118 and report status # Updated name
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParticleTest.BUG118 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ParticleTest.BUG118 > test_output.log 2>&1
           result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-118"}'; fi
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-118\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-18:
-    name: test-bug-18 # Changed
+    name: test-bug-18
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -986,17 +1260,33 @@ jobs:
             mkdir -p build && cd build
             cmake ..
             make
-      - name: run test on bug 119
+      - name: run test on bug 119 and report status # Updated name
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=ParticleTest.BUG119 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=ParticleTest.BUG119 > test_output.log 2>&1
           result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-119"}'; fi
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-119\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-19:
-    name: test-bug-19 # Changed
+    name: test-bug-19
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -1040,17 +1330,33 @@ jobs:
             mkdir -p build && cd build
             cmake ..
             make
-      - name: run test on bug 120
+      - name: run test on bug 120 and report status # Updated name
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=SimulationTest.BUG120 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=SimulationTest.BUG120 > test_output.log 2>&1
           result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-120"}'; fi
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-120\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-20:
-    name: test-bug-20 # Changed
+    name: test-bug-20
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -1094,17 +1400,33 @@ jobs:
             mkdir -p build && cd build
             cmake ..
             make
-      - name: run test on bug 121
+      - name: run test on bug 121 and report status # Updated name
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=SimulationTest.BUG121 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=SimulationTest.BUG121 > test_output.log 2>&1
           result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-121"}'; fi
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-121\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-21:
-    name: test-bug-21 # Changed
+    name: test-bug-21
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -1148,17 +1470,33 @@ jobs:
             mkdir -p build && cd build
             cmake ..
             make
-      - name: run test on bug 122
+      - name: run test on bug 122 and report status # Updated name
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=SimulationTest.BUG122 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=SimulationTest.BUG122 > test_output.log 2>&1
           result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-122"}'; fi
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-122\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-22:
-    name: test-bug-22 # Changed
+    name: test-bug-22
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -1202,17 +1540,33 @@ jobs:
             mkdir -p build && cd build
             cmake ..
             make
-      - name: run test on bug 123
+      - name: run test on bug 123 and report status # Updated name
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=SimulationTest.BUG123 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=SimulationTest.BUG123 > test_output.log 2>&1
           result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-123"}'; fi
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-123\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-23:
-    name: test-bug-23 # Changed
+    name: test-bug-23
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -1256,17 +1610,33 @@ jobs:
             mkdir -p build && cd build
             cmake ..
             make
-      - name: run test on bug 124
+      - name: run test on bug 124 and report status # Updated name
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=SimulationTest.BUG124 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=SimulationTest.BUG124 > test_output.log 2>&1
           result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-124"}'; fi
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-124\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
 
   test-bug-24:
-    name: test-bug-24 # Changed
+    name: test-bug-24
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -1310,12 +1680,27 @@ jobs:
             mkdir -p build && cd build
             cmake ..
             make
-      - name: run test on bug 125
+      - name: run test on bug 125 and report status # Updated name
         shell: bash {0}
         run: |
           set +e
-          build/quantum_tests --gtest_filter=SimulationTest.BUG125 > /dev/null 2>&1
+          build/quantum_tests --gtest_filter=SimulationTest.BUG125 > test_output.log 2>&1
           result=$?
-          if [ ${result} -ne 0 ]; then echo "FAILED"; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}","bugCode": "BUG-125"}'; fi
+          test_status=""
+          if [ ${result} -ne 0 ]; then
+              echo "Test FAILED"
+              test_status="fail"
+          else
+              echo "Test PASSED"
+              test_status="pass"
+          fi
+          echo "Sending status '$test_status' to backend..."
+          curl -X POST ${{ secrets.backend-url }} \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-token: ${{ secrets.auth-key }}" \
+            -d "{
+                \"teamName\": \"${{ inputs.team-name }}\",
+                \"bugCode\": \"BUG-125\",
+                \"status\": \"$test_status\"
+            }"
           exit ${result}
-          
