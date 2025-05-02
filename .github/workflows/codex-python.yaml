@@ -56,7 +56,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_password_change.py::test_BUG301
+          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::test_BUG301
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
