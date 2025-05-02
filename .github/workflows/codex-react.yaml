@@ -1,0 +1,679 @@
+name: Test React Project
+on:
+  workflow_call:
+    inputs:
+        team-name:
+            required: true
+            type: string
+        pr_head_sha:
+            required: true
+            type: string
+        machine_name:
+            required: true
+            type: string
+    secrets:
+        test-repo:
+            required: true
+        auth-token:
+            required: true
+        backend-url:
+            required: true
+        auth-key:
+            required: true
+
+jobs:
+  test-bug-01: 
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: react
+          sparse-checkout-cone-mode: false
+          path: src/test
+
+      - name: Setup test files
+        run: |
+            mv src/test/react/* src/test/
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - name: Install Dependencies
+        run: |
+          npm ci
+
+      - name: Run Test 01
+        run: |
+            npx vitest run test/add-1-item.test.jsx  > /dev/null 2>&1
+            result=$?
+            if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-401", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-401", "tablePrefix":"uni_", "status":"pass"}'; fi
+            exit ${result}
+
+  test-bug-02: 
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: react
+          sparse-checkout-cone-mode: false
+          path: src/test
+      - name: Setup test files
+        run: |
+            mv src/test/react/* src/test/
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Install Dependencies
+        run: |
+          npm ci
+      - name: Run Test 02
+        run: |
+            npx vitest run test/add-existing-item.test.jsx > /dev/null 2>&1
+            result=$?
+            if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-402", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-402", "tablePrefix":"uni_", "status":"pass"}'; fi
+            exit ${result}
+
+  test-bug-03: 
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: react
+          sparse-checkout-cone-mode: false
+          path: src/test
+      - name: Setup test files
+        run: |
+            mv src/test/react/* src/test/
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Install Dependencies
+        run: |
+          npm ci
+      - name: Run Test 03
+        run: |
+            npx vitest run test/calc-total.test.jsx > /dev/null 2>&1
+            result=$?
+            if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-403", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-403", "tablePrefix":"uni_", "status":"pass"}'; fi
+            exit ${result}
+
+  test-bug-04: 
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: react
+          sparse-checkout-cone-mode: false
+          path: src/test
+      - name: Setup test files
+        run: |
+            mv src/test/react/* src/test/
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Install Dependencies
+        run: |
+          npm ci
+      - name: Run Test 04
+        run: |
+            npx vitest run test/cart-btn.test.jsx > /dev/null 2>&1
+            result=$?
+            if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-404", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-404", "tablePrefix":"uni_", "status":"pass"}'; fi
+            exit ${result}
+
+  test-bug-05:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: react
+          sparse-checkout-cone-mode: false
+          path: src/test
+      - name: Setup test files
+        run: |
+            mv src/test/react/* src/test/
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Install Dependencies
+        run: |
+          npm ci
+      - name: Run Test 05
+        run: |
+            npx vitest run test/category-filter-functionality.test.jsx > /dev/null 2>&1
+            result=$?
+            if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-405", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-405", "tablePrefix":"uni_", "status":"pass"}'; fi
+            exit ${result}
+
+  test-bug-06: 
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: react
+          sparse-checkout-cone-mode: false
+          path: src/test
+      - name: Setup test files
+        run: |
+            mv src/test/react/* src/test/
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Install Dependencies
+        run: |
+          npm ci
+      - name: Run Test 06
+        run: |
+            npx vitest run test/category-filter-placement.test.jsx > /dev/null 2>&1
+            result=$?
+            if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-406", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-406", "tablePrefix":"uni_", "status":"pass"}'; fi
+            exit ${result}
+
+  test-bug-07:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: react
+          sparse-checkout-cone-mode: false
+          path: src/test
+      - name: Setup test files
+        run: |
+            mv src/test/react/* src/test/
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Install Dependencies
+        run: |
+          npm ci
+      - name: Run Test 07
+        run: |
+            npx vitest run test/checkout-btn.test.jsx > /dev/null 2>&1
+            result=$?
+            if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-407", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-407", "tablePrefix":"uni_", "status":"pass"}'; fi
+            exit ${result}
+
+  test-bug-08: 
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: react
+          sparse-checkout-cone-mode: false
+          path: src/test
+      - name: Setup test files
+        run: |
+            mv src/test/react/* src/test/
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Install Dependencies
+        run: |
+          npm ci
+      - name: Run Test 08
+        run: |
+            npx vitest run test/clear-cart-btn.test.jsx > /dev/null 2>&1
+            result=$?
+            if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-408", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-408", "tablePrefix":"uni_", "status":"pass"}'; fi
+            exit ${result}
+
+  test-bug-09:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: react
+          sparse-checkout-cone-mode: false
+          path: src/test
+      - name: Setup test files
+        run: |
+            mv src/test/react/* src/test/
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Install Dependencies
+        run: |
+          npm ci
+      - name: Run Test 09
+        run: |
+            npx vitest run test/currency-convert.test.jsx > /dev/null 2>&1
+            result=$?
+            if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-409", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-409", "tablePrefix":"uni_", "status":"pass"}'; fi
+            exit ${result}
+
+  test-bug-10: 
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: react
+          sparse-checkout-cone-mode: false
+          path: src/test
+      - name: Setup test files
+        run: |
+            mv src/test/react/* src/test/
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Install Dependencies
+        run: |
+          npm ci
+      - name: Run Test 10
+        run: |
+            npx vitest run test/currency-lkr.test.jsx > /dev/null 2>&1
+            result=$?
+            if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-410", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-410", "tablePrefix":"uni_", "status":"pass"}'; fi
+            exit ${result}
+
+  test-bug-11: 
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: react
+          sparse-checkout-cone-mode: false
+          path: src/test
+      - name: Setup test files
+        run: |
+            mv src/test/react/* src/test/
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Install Dependencies
+        run: |
+          npm ci
+      - name: Run Test 11
+        run: |
+            npx vitest run test/currency-menu.test.jsx > /dev/null 2>&1
+            result=$?
+            if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-411", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-411", "tablePrefix":"uni_", "status":"pass"}'; fi
+            exit ${result}
+
+  test-bug-12:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: react
+          sparse-checkout-cone-mode: false
+          path: src/test
+      - name: Setup test files
+        run: |
+            mv src/test/react/* src/test/
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Install Dependencies
+        run: |
+          npm ci
+      - name: Run Test 12
+        run: |
+            npx vitest run test/fetch-products.test.jsx > /dev/null 2>&1
+            result=$?
+            if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-412", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-412", "tablePrefix":"uni_", "status":"pass"}'; fi
+            exit ${result}
+
+  test-bug-13:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: react
+          sparse-checkout-cone-mode: false
+          path: src/test
+      - name: Setup test files
+        run: |
+            mv src/test/react/* src/test/
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Install Dependencies
+        run: |
+          npm ci
+      - name: Run Test 13
+        run: |
+            npx vitest run test/filter-products.test.jsx > /dev/null 2>&1
+            result=$?
+            if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-413", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-413", "tablePrefix":"uni_", "status":"pass"}'; fi
+            exit ${result}
+
+  test-bug-14: 
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: react
+          sparse-checkout-cone-mode: false
+          path: src/test
+      - name: Setup test files
+        run: |
+            mv src/test/react/* src/test/
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Install Dependencies
+        run: |
+          npm ci
+      - name: Run Test 14
+        run: |
+            npx vitest run test/footer-year.test.jsx > /dev/null 2>&1
+            result=$?
+            if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-414", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-414", "tablePrefix":"uni_", "status":"pass"}'; fi
+            exit ${result}
+
+  test-bug-15:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: react
+          sparse-checkout-cone-mode: false
+          path: src/test
+      - name: Setup test files
+        run: |
+            mv src/test/react/* src/test/
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Install Dependencies
+        run: |
+          npm ci
+      - name: Run Test 15
+        run: |
+            npx vitest run test/form-fields.test.jsx > /dev/null 2>&1
+            result=$?
+            if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-415", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-415", "tablePrefix":"uni_", "status":"pass"}'; fi
+            exit ${result}
+
+  test-bug-16:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: react
+          sparse-checkout-cone-mode: false
+          path: src/test
+      - name: Setup test files
+        run: |
+            mv src/test/react/* src/test/
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Install Dependencies
+        run: |
+          npm ci
+      - name: Run Test 16
+        run: |
+            npx vitest run test/product-details-add-to-cart.test.jsx > /dev/null 2>&1
+            result=$?
+            if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-416", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-416", "tablePrefix":"uni_", "status":"pass"}'; fi
+            exit ${result}
+
+  test-bug-17: 
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: react
+          sparse-checkout-cone-mode: false
+          path: src/test
+      - name: Setup test files
+        run: |
+            mv src/test/react/* src/test/
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Install Dependencies
+        run: |
+          npm ci
+      - name: Run Test 17
+        run: |
+            npx vitest run test/product-details-page.test.jsx > /dev/null 2>&1
+            result=$?
+            if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-417", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-417", "tablePrefix":"uni_", "status":"pass"}'; fi
+            exit ${result}
+
+  test-bug-18:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: react
+          sparse-checkout-cone-mode: false
+          path: src/test
+      - name: Setup test files
+        run: |
+            mv src/test/react/* src/test/
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Install Dependencies
+        run: |
+          npm ci
+      - name: Run Test 18
+        run: |
+            npx vitest run test/product-id-routing.test.jsx > /dev/null 2>&1
+            result=$?
+            if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-418", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-418", "tablePrefix":"uni_", "status":"pass"}'; fi
+            exit ${result}
+
+  test-bug-19:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: react
+          sparse-checkout-cone-mode: false
+          path: src/test
+      - name: Setup test files
+        run: |
+            mv src/test/react/* src/test/
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Install Dependencies
+        run: |
+          npm ci
+      - name: Run Test 19
+        run: |
+            npx vitest run test/remove-cart-item.test.jsx > /dev/null 2>&1
+            result=$?
+            if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-419", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-419", "tablePrefix":"uni_", "status":"pass"}'; fi
+            exit ${result}
+
+  test-bug-20:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: react
+          sparse-checkout-cone-mode: false
+          path: src/test
+      - name: Setup test files
+        run: |
+            mv src/test/react/* src/test/
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Install Dependencies
+        run: |
+          npm ci
+      - name: Run Test 20
+        run: |
+            npx vitest run test/searchbar-functionality.test.jsx > /dev/null 2>&1
+            result=$?
+            if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-420", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-420", "tablePrefix":"uni_", "status":"pass"}'; fi
+            exit ${result}
+
+  test-bug-21:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: react
+          sparse-checkout-cone-mode: false
+          path: src/test
+      - name: Setup test files
+        run: |
+            mv src/test/react/* src/test/
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Install Dependencies
+        run: |
+          npm ci
+      - name: Run Test 21
+        run: |
+            npx vitest run test/searchbar-placement.test.jsx > /dev/null 2>&1
+            result=$?
+            if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-421", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-421", "tablePrefix":"uni_", "status":"pass"}'; fi
+            exit ${result}
