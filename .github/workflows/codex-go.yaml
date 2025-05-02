@@ -1,4 +1,4 @@
-name: Test CodeX Go Project
+name: Test CodeX Go Project (mini-etcd)
 
 on:
   workflow_call:
@@ -18,103 +18,177 @@ on:
       auth-key:
         required: true
 
+
+x-test-steps: &test-steps
+  - name: Checkout PR code
+    uses: actions/checkout@v3
+    with:
+      ref: ${{ inputs.pr_head_sha }}
+      path: pr-code
+
+  - name: Checkout Main-branch tests
+    uses: actions/checkout@v3
+    with:
+      ref: main
+      path: main-tests
+      sparse-checkout: |
+        tests
+        go.mod
+        go.sum
+      sparse-checkout-cone-mode: false
+
+  - name: Setup Go
+    uses: actions/setup-go@v5
+    with:
+      go-version: '1.22'
+
+  - name: Copy public tests into PR workspace
+    working-directory: pr-code
+    run: |
+      mkdir -p tests
+      cp -r ../main-tests/tests/* ./tests/
+
+  - name: Download Go modules
+    working-directory: pr-code
+    run: go mod tidy
+
+  # ------------------------------------------------------------
+  #  The test itself – the two env vars are filled per-job.
+  # ------------------------------------------------------------
+  - name: Run ${{ env.TEST_NAME }} and report
+    working-directory: pr-code
+    env:
+      TEST_NAME: ${{ env.TEST_NAME }}
+      BUG_CODE : ${{ env.BUG_CODE }}
+      BACKEND  : ${{ secrets.backend-url }}
+      AUTH_KEY : ${{ secrets.auth-key }}
+      TEAM     : ${{ inputs.team-name }}
+    run: |
+      set +e
+      go test ./tests -v -run "^${TEST_NAME}$" > test_output.log 2>&1
+      rc=$?
+
+      status="pass"
+      if [ $rc -ne 0 ]; then
+        status="fail"
+        echo "Test FAILED – see log:"
+        cat test_output.log
+      else
+        echo "Test PASSED"
+      fi
+
+      echo "Reporting $status for $BUG_CODE"
+      curl -sf -X POST "${BACKEND}" \
+        -H "Content-Type: application/json" \
+        -H "x-webhook-token: ${AUTH_KEY}" \
+        -d '{
+              "tablePrefix": "uni_",
+              "teamName"   : "'"${TEAM}"'",
+              "bugCode"    : "'"${BUG_CODE}"'",
+              "status"     : "'"${status}"'"
+            }' \
+        || echo "::warning::Could not report status"
+
+      exit $rc
+
+# ---------------------------------------------------------------------------
+#                       Individual test jobs (11)
+# ---------------------------------------------------------------------------
+
 jobs:
-  discover-tests:
-    name: Discover Tests
-    runs-on: ubuntu-latest # Discovery can run on a standard runner
-    outputs:
-      test_matrix: ${{ steps.generate_matrix.outputs.matrix }}
-    steps:
-      - name: Checkout Main Branch Tests Directory
-        uses: actions/checkout@v3
-        with:
-          ref: main
-          sparse-checkout: |
-            tests
-          sparse-checkout-cone-mode: false
 
-      - name: Setup Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: '1.22'
-
-      - name: Generate Test Matrix
-        id: generate_matrix
-        working-directory: tests # Go into the tests directory
-        run: |
-          # List all Test functions, remove lines not starting with Test, format as JSON array
-          test_list=$(go test -list 'Test.*' | grep '^Test' | jq -Rsc 'split("\n") | map(select(length > 0))')
-          echo "Discovered tests: $test_list"
-          echo "::set-output name=matrix::$test_list"
-
-  run-single-test:
-    name: Run Test (${{ matrix.test_name }})
-    needs: discover-tests
-    if: ${{ needs.discover-tests.outputs.test_matrix != '[]' }} # Only run if tests were found
+  test-EndToEndReplication:
+    name: Test EndToEndReplication
     runs-on: ${{ inputs.machine_name }}
-    strategy:
-      fail-fast: false # Ensure all tests run even if one fails
-      matrix:
-        test_name: ${{ fromJson(needs.discover-tests.outputs.test_matrix) }}
-    steps:
-      - name: Checkout PR Code
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ inputs.pr_head_sha }}
-          path: pr-code
+    env:
+      TEST_NAME: TestEndToEndReplication
+      BUG_CODE : TestEndToEndReplication
+    steps: *test-steps
 
-      - name: Checkout Main Branch Tests
-        uses: actions/checkout@v3
-        with:
-          ref: main
-          path: main-branch-code
-          sparse-checkout: |
-            tests
-            go.mod
-            go.sum
-          sparse-checkout-cone-mode: false
+  test-ConcurrentWrites:
+    name: Test ConcurrentWrites
+    runs-on: ${{ inputs.machine_name }}
+    env:
+      TEST_NAME: TestConcurrentWrites
+      BUG_CODE : TestConcurrentWrites
+    steps: *test-steps
 
-      - name: Setup Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: '1.22'
+  test-LeaderFailover:
+    name: Test LeaderFailover
+    runs-on: ${{ inputs.machine_name }}
+    env:
+      TEST_NAME: TestLeaderFailover
+      BUG_CODE : TestLeaderFailover
+    steps: *test-steps
 
-      - name: Prepare Test Environment
-        working-directory: pr-code
-        run: |
-          mkdir -p tests
-          cp -r ../main-branch-code/tests/* ./tests/
+  test-FollowerCatchUp:
+    name: Test FollowerCatchUp
+    runs-on: ${{ inputs.machine_name }}
+    env:
+      TEST_NAME: TestFollowerCatchUp
+      BUG_CODE : TestFollowerCatchUp
+    steps: *test-steps
 
-      - name: Download Go Modules
-        working-directory: pr-code
-        run: go mod tidy
+  test-LeaderRestartWithDisk:
+    name: Test LeaderRestartWithDisk
+    runs-on: ${{ inputs.machine_name }}
+    env:
+      TEST_NAME: TestLeaderRestartWithDisk
+      BUG_CODE : TestLeaderRestartWithDisk
+    steps: *test-steps
 
-      - name: Run Test (${{ matrix.test_name }}) and Report Status
-        working-directory: pr-code
-        run: |
-          set +e
-          # Run only the specific test from the matrix
-          go test ./tests -v -run '^${{ matrix.test_name }}$' > test_output.log 2>&1
-          result=$?
-          test_status="fail"
-          # Use the matrix test name as the bug code for reporting
-          bug_code="${{ matrix.test_name }}"
-          if [ ${result} -ne 0 ]; then
-              echo "Test FAILED: ${{ matrix.test_name }}"
-              cat test_output.log # Show output on failure
-          else
-              echo "Test PASSED: ${{ matrix.test_name }}"
-              test_status="pass"
-          fi
-          echo "Sending status '$test_status' for bug '$bug_code' to backend..."
-          curl -sf -X POST ${{ secrets.backend-url }} \
-            -H "Content-Type: application/json" \
-            -H "x-webhook-token: ${{ secrets.auth-key }}" \
-            -d "{
-                \"tablePrefix\": \"uni_\",
-                \"teamName\": \"${{ inputs.team-name }}\",
-                \"bugCode\": \"$bug_code\",
-                \"status\": \"$test_status\"
-            }" || echo "::warning::Failed to report status '$test_status' for $bug_code to backend."
-          # Exit with the test result code to mark the job status
-          exit ${result}
+  test-StoreBasicOps:
+    name: Test StoreBasicOps
+    runs-on: ${{ inputs.machine_name }}
+    env:
+      TEST_NAME: TestStoreBasicOps
+      BUG_CODE : TestStoreBasicOps
+    steps: *test-steps
+
+  test-StoreLRUEviction:
+    name: Test StoreLRUEviction
+    runs-on: ${{ inputs.machine_name }}
+    env:
+      TEST_NAME: TestStoreLRUEviction
+      BUG_CODE : TestStoreLRUEviction
+    steps: *test-steps
+
+  test-StorePersistence:
+    name: Test StorePersistence
+    runs-on: ${{ inputs.machine_name }}
+    env:
+      TEST_NAME: TestStorePersistence
+      BUG_CODE : TestStorePersistence
+    steps: *test-steps
+
+  test-StoreConcurrent:
+    name: Test StoreConcurrent
+    runs-on: ${{ inputs.machine_name }}
+    env:
+      TEST_NAME: TestStoreConcurrent
+      BUG_CODE : TestStoreConcurrent
+    steps: *test-steps
+
+  test-BoltLogTruncateBefore:
+    name: Test BoltLogTruncateBefore
+    runs-on: ${{ inputs.machine_name }}
+    env:
+      TEST_NAME: TestBoltLogTruncateBefore
+      BUG_CODE : TestBoltLogTruncateBefore
+    steps: *test-steps
+
+  test-ClusterManualPrune:
+    name: Test ClusterManualPrune
+    runs-on: ${{ inputs.machine_name }}
+    env:
+      TEST_NAME: TestClusterManualPrune
+      BUG_CODE : TestClusterManualPrune
+    steps: *test-steps
+
+  test-ClusterAutoPrune:
+    name: Test ClusterAutoPrune
+    runs-on: ${{ inputs.machine_name }}
+    env:
+      TEST_NAME: TestClusterAutoPrune
+      BUG_CODE : TestClusterAutoPrune
+    steps: *test-steps
