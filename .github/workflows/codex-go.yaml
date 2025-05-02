@@ -114,15 +114,15 @@ jobs:
         working-directory: pr-code
         run: |
           set +e
-          go test ./tests -v -run '^TestClusterAutoPrune$'
+          go test ./tests -v -run '^TestPersistentRestart$'
           result=$?
           test_status="fail"
           bug_code="BUG-502"
           if [ ${result} -ne 0 ]; then
-              echo "Test FAILED: TestClusterAutoPrune"
+              echo "Test FAILED: TestPersistentRestart"
               cat test_output.log
           else
-              echo "Test PASSED: TestClusterAutoPrune"
+              echo "Test PASSED: TestPersistentRestart"
               test_status="pass"
           fi
           echo "Sending status '$test_status' for bug '$bug_code' to backend..."
