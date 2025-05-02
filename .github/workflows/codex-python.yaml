@@ -58,7 +58,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_auth_advanced::BUG301
+          python -m pytest -v --disable-warnings tests/test_password_change.py::BUG301
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -81,8 +81,7 @@ jobs:
             }"
           exit ${result}
 
-  test-bug-02: # Keeping original job ID for reference, but correcting name
-    # Corrected name to match bug code
+  test-bug-02: 
     name: test-bug-302
     runs-on: ${{ inputs.machine_name }}
     steps:
@@ -116,7 +115,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_auth_advanced::BUG302
+          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::test_token_refresh
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -172,7 +171,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_auth_advanced::BUG303
+          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::test_token_refresh_with_role
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -228,7 +227,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_auth_advanced::BUG304
+          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::test_verify_token_with_expired_token
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -284,7 +283,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_auth_advanced::BUG305
+          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::test_logout_with_refresh_token
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -340,7 +339,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_auth_advanced::BUG306
+          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::test_fresh_token_required
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -396,7 +395,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_auth_advanced::BUG307
+          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::test_token_claims
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -452,7 +451,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_auth_advanced::BUG308
+          python -m pytest -v --disable-warnings tests/test_auth_advanced.py::test_token_blocklist_persistence
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -508,7 +507,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_security::BUG309
+          python -m pytest -v --disable-warnings tests/test_security.py::test_resource_authorization
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -564,7 +563,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_transactions::BUG310
+          python -m pytest -v --disable-warnings tests/test_transactions.py::test_deposit
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -620,7 +619,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_transactions::BUG311
+          python -m pytest -v --disable-warnings tests/test_transactions.py::test_withdraw
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -676,7 +675,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_transactions::BUG312
+          python -m pytest -v --disable-warnings tests/test_transactions.py::test_withdraw_insufficient_funds
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -732,7 +731,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_transactions::BUG313
+          python -m pytest -v --disable-warnings tests/test_transactions.py::test_transfer
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -788,7 +787,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_transactions::BUG314
+          python -m pytest -v --disable-warnings tests/test_transactions.py::test_get_transactions
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -844,7 +843,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_transactions_advanced::BUG315
+          python -m pytest -v --disable-warnings tests/test_transactions_advanced.py::test_transaction_filtering
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -900,7 +899,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_accounts::BUG316
+          python -m pytest -v --disable-warnings tests/test_accounts.py::test_account_creation
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -956,7 +955,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_accounts::BUG317
+          python -m pytest -v --disable-warnings tests/test_accounts.py::test_account_creation_validation
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1012,7 +1011,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_accounts::BUG318
+          python -m pytest -v --disable-warnings tests/test_accounts.py::test_get_accounts
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1068,7 +1067,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_accounts::BUG319
+          python -m pytest -v --disable-warnings tests/test_accounts.py::test_get_account_by_id
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1124,7 +1123,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_accounts::BUG320
+          python -m pytest -v --disable-warnings tests/test_accounts.py::test_get_nonexistent_account
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1180,7 +1179,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_accounts::BUG321
+          python -m pytest -v --disable-warnings tests/test_accounts.py::test_update_account
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1236,7 +1235,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_accounts::BUG322
+          python -m pytest -v --disable-warnings tests/test_accounts.py::test_delete_account
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1292,7 +1291,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_accounts_advanced::BUG323
+          python -m pytest -v --disable-warnings tests/test_accounts_advanced.py::test_account_type_validation
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1348,7 +1347,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_accounts_advanced::BUG324
+          python -m pytest -v --disable-warnings tests/test_accounts_advanced.py::test_account_name_validation
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1404,7 +1403,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_accounts_advanced::BUG325
+          python -m pytest -v --disable-warnings tests/test_accounts_advanced.py::test_account_listing
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1460,7 +1459,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_accounts_advanced::BUG326
+          python -m pytest -v --disable-warnings tests/test_accounts_advanced.py::test_account_access_control
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
@@ -1516,7 +1515,7 @@ jobs:
         shell: bash {0}
         run: |
           set +e
-          python -m pytest -v --disable-warnings tests/test_accounts_advanced::BUG327
+          python -m pytest -v --disable-warnings tests/test_accounts_advanced.py::test_account_limit
           result=$?
           test_status=""
           if [ ${result} -ne 0 ]; then
