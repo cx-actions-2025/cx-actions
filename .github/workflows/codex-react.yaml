@@ -146,7 +146,7 @@ jobs:
           npm ci
       - name: Run Test 04
         run: |
-            npx vitest run test/BUG404.jsx > /dev/null 2>&1
+            npx vitest run test/BUG404.test.jsx > /dev/null 2>&1
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-404", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-404", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
