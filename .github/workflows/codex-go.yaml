@@ -55,7 +55,7 @@ jobs:
         working-directory: pr-code
         run: |
           set +e
-          go test ./tests -v -run '^TestEndToEndReplication$' > test_output.log 2>&1
+          go test ./tests -v -run '^TestEndToEndReplication$' 
           result=$?
           test_status="fail"
           bug_code="BUG-501"
@@ -79,8 +79,8 @@ jobs:
           exit ${result}
 
   # --- Test BUG-502 ---
-  test_BUG_502_PersistentRestart:
-    name: Test BUG-502 (PersistentRestart)
+  test_BUG_502_ClusterAutoPrune:
+    name: Test BUG-502 (ClusterAutoPrune)
     runs-on: ${{ inputs.machine_name }}
     steps:
       - name: Checkout PR Code
@@ -114,15 +114,15 @@ jobs:
         working-directory: pr-code
         run: |
           set +e
-          go test ./tests -v -run '^TestPersistentRestart$'
+          go test ./tests -v -run '^TestClusterAutoPrune$' 
           result=$?
           test_status="fail"
           bug_code="BUG-502"
           if [ ${result} -ne 0 ]; then
-              echo "Test FAILED: TestPersistentRestart"
+              echo "Test FAILED: TestClusterAutoPrune"
               cat test_output.log
           else
-              echo "Test PASSED: TestPersistentRestart"
+              echo "Test PASSED: TestClusterAutoPrune"
               test_status="pass"
           fi
           echo "Sending status '$test_status' for bug '$bug_code' to backend..."
@@ -173,7 +173,7 @@ jobs:
         working-directory: pr-code
         run: |
           set +e
-          go test ./tests -v -run '^TestConcurrentWrites$' > test_output.log 2>&1
+          go test ./tests -v -run '^TestConcurrentWrites$' 
           result=$?
           test_status="fail"
           bug_code="BUG-503"
@@ -232,7 +232,7 @@ jobs:
         working-directory: pr-code
         run: |
           set +e
-          go test ./tests -v -run '^TestLeaderFailover$' > test_output.log 2>&1
+          go test ./tests -v -run '^TestLeaderFailover$' 
           result=$?
           test_status="fail"
           bug_code="BUG-504"
@@ -291,7 +291,7 @@ jobs:
         working-directory: pr-code
         run: |
           set +e
-          go test ./tests -v -run '^TestFollowerCatchUp$' > test_output.log 2>&1
+          go test ./tests -v -run '^TestFollowerCatchUp$' 
           result=$?
           test_status="fail"
           bug_code="BUG-505"
@@ -350,7 +350,7 @@ jobs:
         working-directory: pr-code
         run: |
           set +e
-          go test ./tests -v -run '^TestLeaderRestartWithDisk$' > test_output.log 2>&1
+          go test ./tests -v -run '^TestLeaderRestartWithDisk$' 
           result=$?
           test_status="fail"
           bug_code="BUG-506"
@@ -409,7 +409,7 @@ jobs:
         working-directory: pr-code
         run: |
           set +e
-          go test ./tests -v -run '^TestStoreBasicOps$' > test_output.log 2>&1
+          go test ./tests -v -run '^TestStoreBasicOps$' 
           result=$?
           test_status="fail"
           bug_code="BUG-507"
@@ -468,7 +468,7 @@ jobs:
         working-directory: pr-code
         run: |
           set +e
-          go test ./tests -v -run '^TestStoreLRUEviction$' > test_output.log 2>&1
+          go test ./tests -v -run '^TestStoreLRUEviction$' 
           result=$?
           test_status="fail"
           bug_code="BUG-508"
@@ -527,7 +527,7 @@ jobs:
         working-directory: pr-code
         run: |
           set +e
-          go test ./tests -v -run '^TestStorePersistence$' > test_output.log 2>&1
+          go test ./tests -v -run '^TestStorePersistence$' 
           result=$?
           test_status="fail"
           bug_code="BUG-509"
@@ -586,7 +586,7 @@ jobs:
         working-directory: pr-code
         run: |
           set +e
-          go test ./tests -v -run '^TestStoreConcurrent$' > test_output.log 2>&1
+          go test ./tests -v -run '^TestStoreConcurrent$' 
           result=$?
           test_status="fail"
           bug_code="BUG-510"
@@ -645,7 +645,7 @@ jobs:
         working-directory: pr-code
         run: |
           set +e
-          go test ./tests -v -run '^TestBoltLogTruncateBefore$' > test_output.log 2>&1
+          go test ./tests -v -run '^TestBoltLogTruncateBefore$' 
           result=$?
           test_status="fail"
           bug_code="BUG-511"
@@ -704,7 +704,7 @@ jobs:
         working-directory: pr-code
         run: |
           set +e
-          go test ./tests -v -run '^TestClusterManualPrune$' > test_output.log 2>&1
+          go test ./tests -v -run '^TestClusterManualPrune$' 
           result=$?
           test_status="fail"
           bug_code="BUG-512"
