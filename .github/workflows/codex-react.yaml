@@ -706,5 +706,5 @@ jobs:
         run: |
             npx vitest run test/searchbar-placement.test.jsx > /dev/null 2>&1
             result=$?
-            if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-421", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-421", "tablePrefix":"uni_", "status":"pass"}'; fi
+            if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-422", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-422", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
