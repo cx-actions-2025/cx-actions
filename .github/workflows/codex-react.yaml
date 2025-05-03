@@ -53,7 +53,7 @@ jobs:
 
       - name: Run Test 01
         run: |
-            npx vitest run test/BUG401.test.jsx  > /dev/null 2>&1
+            npx vitest run test/add-1-item.test.jsx  > /dev/null 2>&1
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-401", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-401", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
@@ -84,7 +84,7 @@ jobs:
           npm ci
       - name: Run Test 02
         run: |
-            npx vitest run test/BUG402.test.jsx > /dev/null 2>&1
+            npx vitest run test/add-existing-item.test.jsx > /dev/null 2>&1
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-402", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-402", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
@@ -115,7 +115,7 @@ jobs:
           npm ci
       - name: Run Test 03
         run: |
-            npx vitest run test/BUG403.test.jsx > /dev/null 2>&1
+            npx vitest run test/AuthProvider.test.jsx > /dev/null 2>&1
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-403", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-403", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
@@ -146,7 +146,7 @@ jobs:
           npm ci
       - name: Run Test 04
         run: |
-            npx vitest run test/BUG404.test.jsx > /dev/null 2>&1
+            npx vitest run test/calc-total.test.jsx > /dev/null 2>&1
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-404", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-404", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
@@ -177,7 +177,7 @@ jobs:
           npm ci
       - name: Run Test 05
         run: |
-            npx vitest run test/BUG405.test.jsx > /dev/null 2>&1
+            npx vitest run test/cart-btn.test.jsx > /dev/null 2>&1
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-405", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-405", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
@@ -208,7 +208,7 @@ jobs:
           npm ci
       - name: Run Test 06
         run: |
-            npx vitest run test/BUG406.test.jsx > /dev/null 2>&1
+            npx vitest run test/category-filter-functionality.test.jsx > /dev/null 2>&1
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-406", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-406", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
@@ -239,7 +239,7 @@ jobs:
           npm ci
       - name: Run Test 07
         run: |
-            npx vitest run test/BUG407.test.jsx > /dev/null 2>&1
+            npx vitest run test/category-filter-placement.test.jsx > /dev/null 2>&1
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-407", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-407", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
@@ -270,7 +270,7 @@ jobs:
           npm ci
       - name: Run Test 08
         run: |
-            npx vitest run test/BUG408.test.jsx > /dev/null 2>&1
+            npx vitest run test/checkout-btn.test.jsx > /dev/null 2>&1
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-408", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-408", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
@@ -301,7 +301,7 @@ jobs:
           npm ci
       - name: Run Test 09
         run: |
-            npx vitest run test/BUG409.test.jsx > /dev/null 2>&1
+            npx vitest run test/clear-cart-btn.test.jsx > /dev/null 2>&1
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-409", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-409", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
@@ -332,7 +332,7 @@ jobs:
           npm ci
       - name: Run Test 10
         run: |
-            npx vitest run test/BUG410.test.jsx > /dev/null 2>&1
+            npx vitest run test/currency-convert.test.jsx > /dev/null 2>&1
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-410", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-410", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
@@ -363,7 +363,7 @@ jobs:
           npm ci
       - name: Run Test 11
         run: |
-            npx vitest run test/BUG411.test.jsx > /dev/null 2>&1
+            npx vitest run test/currency-lkr.test.jsx > /dev/null 2>&1
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-411", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-411", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
@@ -394,7 +394,7 @@ jobs:
           npm ci
       - name: Run Test 12
         run: |
-            npx vitest run test/BUG412.test.jsx > /dev/null 2>&1
+            npx vitest run test/currency-menu.test.jsx > /dev/null 2>&1
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-412", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-412", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
@@ -425,7 +425,7 @@ jobs:
           npm ci
       - name: Run Test 13
         run: |
-            npx vitest run test/BUG413.test.jsx > /dev/null 2>&1
+            npx vitest run test/fetch-products.test.jsx > /dev/null 2>&1
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-413", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-413", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
@@ -456,7 +456,7 @@ jobs:
           npm ci
       - name: Run Test 14
         run: |
-            npx vitest run test/BUG414.test.jsx > /dev/null 2>&1
+            npx vitest run test/filter-products.test.jsx > /dev/null 2>&1
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-414", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-414", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
@@ -487,7 +487,7 @@ jobs:
           npm ci
       - name: Run Test 15
         run: |
-            npx vitest run test/BUG415.test.jsx > /dev/null 2>&1
+            npx vitest run test/footer-year.test.jsx > /dev/null 2>&1
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-415", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-415", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
@@ -518,7 +518,7 @@ jobs:
           npm ci
       - name: Run Test 16
         run: |
-            npx vitest run test/BUG416.test.jsx > /dev/null 2>&1
+            npx vitest run test/form-fields.test.jsx > /dev/null 2>&1
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-416", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-416", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
@@ -549,7 +549,7 @@ jobs:
           npm ci
       - name: Run Test 17
         run: |
-            npx vitest run test/BUG417.test.jsx > /dev/null 2>&1
+            npx vitest run test/product-details-add-to-cart.test.jsx > /dev/null 2>&1
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-417", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-417", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
@@ -580,7 +580,7 @@ jobs:
           npm ci
       - name: Run Test 18
         run: |
-            npx vitest run test/BUG418.test.jsx > /dev/null 2>&1
+            npx vitest run test/product-details-page.test.jsx > /dev/null 2>&1
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-418", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-418", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
@@ -611,7 +611,7 @@ jobs:
           npm ci
       - name: Run Test 19
         run: |
-            npx vitest run test/BUG419.test.jsx > /dev/null 2>&1
+            npx vitest run test/product-id-routing.test.jsx > /dev/null 2>&1
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-419", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-419", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
@@ -642,7 +642,7 @@ jobs:
           npm ci
       - name: Run Test 20
         run: |
-            npx vitest run test/BUG420.test.jsx > /dev/null 2>&1
+            npx vitest run test/remove-cart-item.test.jsx > /dev/null 2>&1
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-420", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-420", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
@@ -673,7 +673,38 @@ jobs:
           npm ci
       - name: Run Test 21
         run: |
-            npx vitest run test/BUG421.test.jsx > /dev/null 2>&1
+            npx vitest run test/searchbar-functionality.test.jsx > /dev/null 2>&1
+            result=$?
+            if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-421", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-421", "tablePrefix":"uni_", "status":"pass"}'; fi
+            exit ${result}
+
+  test-bug-22:
+    runs-on: ${{ inputs.machine_name }}
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.pr_head_sha }}
+      - name: checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.test-repo }}
+          token: ${{ secrets.auth-token }}
+          sparse-checkout: react
+          sparse-checkout-cone-mode: false
+          path: src/test
+      - name: Setup test files
+        run: |
+            mv src/test/react/* src/test/
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Install Dependencies
+        run: |
+          npm ci
+      - name: Run Test 22
+        run: |
+            npx vitest run test/searchbar-placement.test.jsx > /dev/null 2>&1
             result=$?
             if [ ${result} -ne 0 ]; then echo "FAILED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-421", "tablePrefix":"uni_", "status":"fail"}'; else echo "PASSED"; curl -X POST ${{ secrets.backend-url }} -H "Content-Type: application/json" -H "x-webhook-token: ${{ secrets.auth-key }}" -d '{"teamName": "${{ inputs.team-name }}", "bugCode": "BUG-421", "tablePrefix":"uni_", "status":"pass"}'; fi
             exit ${result}
